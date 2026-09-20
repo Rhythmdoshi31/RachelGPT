@@ -158,10 +158,10 @@ export type UserInteractionWhereInput = {
     type?: Prisma.StringFilter<"UserInteraction"> | string;
     metadata?: Prisma.JsonNullableFilter<"UserInteraction">;
     createdAt?: Prisma.DateTimeFilter<"UserInteraction"> | Date | string;
-    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
-    outfit?: Prisma.XOR<Prisma.OutfitNullableScalarRelationFilter, Prisma.OutfitWhereInput> | null;
-    wardrobeItem?: Prisma.XOR<Prisma.WardrobeItemNullableScalarRelationFilter, Prisma.WardrobeItemWhereInput> | null;
     message?: Prisma.XOR<Prisma.MessageNullableScalarRelationFilter, Prisma.MessageWhereInput> | null;
+    outfit?: Prisma.XOR<Prisma.OutfitNullableScalarRelationFilter, Prisma.OutfitWhereInput> | null;
+    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
+    wardrobeItem?: Prisma.XOR<Prisma.WardrobeItemNullableScalarRelationFilter, Prisma.WardrobeItemWhereInput> | null;
 };
 export type UserInteractionOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -172,10 +172,10 @@ export type UserInteractionOrderByWithRelationInput = {
     type?: Prisma.SortOrder;
     metadata?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
-    user?: Prisma.UserOrderByWithRelationInput;
-    outfit?: Prisma.OutfitOrderByWithRelationInput;
-    wardrobeItem?: Prisma.WardrobeItemOrderByWithRelationInput;
     message?: Prisma.MessageOrderByWithRelationInput;
+    outfit?: Prisma.OutfitOrderByWithRelationInput;
+    user?: Prisma.UserOrderByWithRelationInput;
+    wardrobeItem?: Prisma.WardrobeItemOrderByWithRelationInput;
 };
 export type UserInteractionWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -189,10 +189,10 @@ export type UserInteractionWhereUniqueInput = Prisma.AtLeast<{
     type?: Prisma.StringFilter<"UserInteraction"> | string;
     metadata?: Prisma.JsonNullableFilter<"UserInteraction">;
     createdAt?: Prisma.DateTimeFilter<"UserInteraction"> | Date | string;
-    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
-    outfit?: Prisma.XOR<Prisma.OutfitNullableScalarRelationFilter, Prisma.OutfitWhereInput> | null;
-    wardrobeItem?: Prisma.XOR<Prisma.WardrobeItemNullableScalarRelationFilter, Prisma.WardrobeItemWhereInput> | null;
     message?: Prisma.XOR<Prisma.MessageNullableScalarRelationFilter, Prisma.MessageWhereInput> | null;
+    outfit?: Prisma.XOR<Prisma.OutfitNullableScalarRelationFilter, Prisma.OutfitWhereInput> | null;
+    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
+    wardrobeItem?: Prisma.XOR<Prisma.WardrobeItemNullableScalarRelationFilter, Prisma.WardrobeItemWhereInput> | null;
 }, "id">;
 export type UserInteractionOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -225,10 +225,10 @@ export type UserInteractionCreateInput = {
     type: string;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Date | string;
-    user: Prisma.UserCreateNestedOneWithoutInteractionsInput;
-    outfit?: Prisma.OutfitCreateNestedOneWithoutInteractionsInput;
-    wardrobeItem?: Prisma.WardrobeItemCreateNestedOneWithoutInteractionsInput;
     message?: Prisma.MessageCreateNestedOneWithoutInteractionsInput;
+    outfit?: Prisma.OutfitCreateNestedOneWithoutInteractionsInput;
+    user: Prisma.UserCreateNestedOneWithoutInteractionsInput;
+    wardrobeItem?: Prisma.WardrobeItemCreateNestedOneWithoutInteractionsInput;
 };
 export type UserInteractionUncheckedCreateInput = {
     id?: string;
@@ -245,10 +245,10 @@ export type UserInteractionUpdateInput = {
     type?: Prisma.StringFieldUpdateOperationsInput | string;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    user?: Prisma.UserUpdateOneRequiredWithoutInteractionsNestedInput;
-    outfit?: Prisma.OutfitUpdateOneWithoutInteractionsNestedInput;
-    wardrobeItem?: Prisma.WardrobeItemUpdateOneWithoutInteractionsNestedInput;
     message?: Prisma.MessageUpdateOneWithoutInteractionsNestedInput;
+    outfit?: Prisma.OutfitUpdateOneWithoutInteractionsNestedInput;
+    user?: Prisma.UserUpdateOneRequiredWithoutInteractionsNestedInput;
+    wardrobeItem?: Prisma.WardrobeItemUpdateOneWithoutInteractionsNestedInput;
 };
 export type UserInteractionUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -479,9 +479,9 @@ export type UserInteractionCreateWithoutUserInput = {
     type: string;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Date | string;
+    message?: Prisma.MessageCreateNestedOneWithoutInteractionsInput;
     outfit?: Prisma.OutfitCreateNestedOneWithoutInteractionsInput;
     wardrobeItem?: Prisma.WardrobeItemCreateNestedOneWithoutInteractionsInput;
-    message?: Prisma.MessageCreateNestedOneWithoutInteractionsInput;
 };
 export type UserInteractionUncheckedCreateWithoutUserInput = {
     id?: string;
@@ -531,9 +531,9 @@ export type UserInteractionCreateWithoutWardrobeItemInput = {
     type: string;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Date | string;
-    user: Prisma.UserCreateNestedOneWithoutInteractionsInput;
-    outfit?: Prisma.OutfitCreateNestedOneWithoutInteractionsInput;
     message?: Prisma.MessageCreateNestedOneWithoutInteractionsInput;
+    outfit?: Prisma.OutfitCreateNestedOneWithoutInteractionsInput;
+    user: Prisma.UserCreateNestedOneWithoutInteractionsInput;
 };
 export type UserInteractionUncheckedCreateWithoutWardrobeItemInput = {
     id?: string;
@@ -570,9 +570,9 @@ export type UserInteractionCreateWithoutOutfitInput = {
     type: string;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Date | string;
+    message?: Prisma.MessageCreateNestedOneWithoutInteractionsInput;
     user: Prisma.UserCreateNestedOneWithoutInteractionsInput;
     wardrobeItem?: Prisma.WardrobeItemCreateNestedOneWithoutInteractionsInput;
-    message?: Prisma.MessageCreateNestedOneWithoutInteractionsInput;
 };
 export type UserInteractionUncheckedCreateWithoutOutfitInput = {
     id?: string;
@@ -609,8 +609,8 @@ export type UserInteractionCreateWithoutMessageInput = {
     type: string;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Date | string;
-    user: Prisma.UserCreateNestedOneWithoutInteractionsInput;
     outfit?: Prisma.OutfitCreateNestedOneWithoutInteractionsInput;
+    user: Prisma.UserCreateNestedOneWithoutInteractionsInput;
     wardrobeItem?: Prisma.WardrobeItemCreateNestedOneWithoutInteractionsInput;
 };
 export type UserInteractionUncheckedCreateWithoutMessageInput = {
@@ -657,9 +657,9 @@ export type UserInteractionUpdateWithoutUserInput = {
     type?: Prisma.StringFieldUpdateOperationsInput | string;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    message?: Prisma.MessageUpdateOneWithoutInteractionsNestedInput;
     outfit?: Prisma.OutfitUpdateOneWithoutInteractionsNestedInput;
     wardrobeItem?: Prisma.WardrobeItemUpdateOneWithoutInteractionsNestedInput;
-    message?: Prisma.MessageUpdateOneWithoutInteractionsNestedInput;
 };
 export type UserInteractionUncheckedUpdateWithoutUserInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -693,9 +693,9 @@ export type UserInteractionUpdateWithoutWardrobeItemInput = {
     type?: Prisma.StringFieldUpdateOperationsInput | string;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    user?: Prisma.UserUpdateOneRequiredWithoutInteractionsNestedInput;
-    outfit?: Prisma.OutfitUpdateOneWithoutInteractionsNestedInput;
     message?: Prisma.MessageUpdateOneWithoutInteractionsNestedInput;
+    outfit?: Prisma.OutfitUpdateOneWithoutInteractionsNestedInput;
+    user?: Prisma.UserUpdateOneRequiredWithoutInteractionsNestedInput;
 };
 export type UserInteractionUncheckedUpdateWithoutWardrobeItemInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -729,9 +729,9 @@ export type UserInteractionUpdateWithoutOutfitInput = {
     type?: Prisma.StringFieldUpdateOperationsInput | string;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    message?: Prisma.MessageUpdateOneWithoutInteractionsNestedInput;
     user?: Prisma.UserUpdateOneRequiredWithoutInteractionsNestedInput;
     wardrobeItem?: Prisma.WardrobeItemUpdateOneWithoutInteractionsNestedInput;
-    message?: Prisma.MessageUpdateOneWithoutInteractionsNestedInput;
 };
 export type UserInteractionUncheckedUpdateWithoutOutfitInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -765,8 +765,8 @@ export type UserInteractionUpdateWithoutMessageInput = {
     type?: Prisma.StringFieldUpdateOperationsInput | string;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    user?: Prisma.UserUpdateOneRequiredWithoutInteractionsNestedInput;
     outfit?: Prisma.OutfitUpdateOneWithoutInteractionsNestedInput;
+    user?: Prisma.UserUpdateOneRequiredWithoutInteractionsNestedInput;
     wardrobeItem?: Prisma.WardrobeItemUpdateOneWithoutInteractionsNestedInput;
 };
 export type UserInteractionUncheckedUpdateWithoutMessageInput = {
@@ -796,10 +796,10 @@ export type UserInteractionSelect<ExtArgs extends runtime.Types.Extensions.Inter
     type?: boolean;
     metadata?: boolean;
     createdAt?: boolean;
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
-    outfit?: boolean | Prisma.UserInteraction$outfitArgs<ExtArgs>;
-    wardrobeItem?: boolean | Prisma.UserInteraction$wardrobeItemArgs<ExtArgs>;
     message?: boolean | Prisma.UserInteraction$messageArgs<ExtArgs>;
+    outfit?: boolean | Prisma.UserInteraction$outfitArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+    wardrobeItem?: boolean | Prisma.UserInteraction$wardrobeItemArgs<ExtArgs>;
 }, ExtArgs["result"]["userInteraction"]>;
 export type UserInteractionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -810,10 +810,10 @@ export type UserInteractionSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
     type?: boolean;
     metadata?: boolean;
     createdAt?: boolean;
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
-    outfit?: boolean | Prisma.UserInteraction$outfitArgs<ExtArgs>;
-    wardrobeItem?: boolean | Prisma.UserInteraction$wardrobeItemArgs<ExtArgs>;
     message?: boolean | Prisma.UserInteraction$messageArgs<ExtArgs>;
+    outfit?: boolean | Prisma.UserInteraction$outfitArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+    wardrobeItem?: boolean | Prisma.UserInteraction$wardrobeItemArgs<ExtArgs>;
 }, ExtArgs["result"]["userInteraction"]>;
 export type UserInteractionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -824,10 +824,10 @@ export type UserInteractionSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
     type?: boolean;
     metadata?: boolean;
     createdAt?: boolean;
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
-    outfit?: boolean | Prisma.UserInteraction$outfitArgs<ExtArgs>;
-    wardrobeItem?: boolean | Prisma.UserInteraction$wardrobeItemArgs<ExtArgs>;
     message?: boolean | Prisma.UserInteraction$messageArgs<ExtArgs>;
+    outfit?: boolean | Prisma.UserInteraction$outfitArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+    wardrobeItem?: boolean | Prisma.UserInteraction$wardrobeItemArgs<ExtArgs>;
 }, ExtArgs["result"]["userInteraction"]>;
 export type UserInteractionSelectScalar = {
     id?: boolean;
@@ -841,30 +841,30 @@ export type UserInteractionSelectScalar = {
 };
 export type UserInteractionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "outfitId" | "wardrobeItemId" | "messageId" | "type" | "metadata" | "createdAt", ExtArgs["result"]["userInteraction"]>;
 export type UserInteractionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
-    outfit?: boolean | Prisma.UserInteraction$outfitArgs<ExtArgs>;
-    wardrobeItem?: boolean | Prisma.UserInteraction$wardrobeItemArgs<ExtArgs>;
     message?: boolean | Prisma.UserInteraction$messageArgs<ExtArgs>;
+    outfit?: boolean | Prisma.UserInteraction$outfitArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+    wardrobeItem?: boolean | Prisma.UserInteraction$wardrobeItemArgs<ExtArgs>;
 };
 export type UserInteractionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
-    outfit?: boolean | Prisma.UserInteraction$outfitArgs<ExtArgs>;
-    wardrobeItem?: boolean | Prisma.UserInteraction$wardrobeItemArgs<ExtArgs>;
     message?: boolean | Prisma.UserInteraction$messageArgs<ExtArgs>;
+    outfit?: boolean | Prisma.UserInteraction$outfitArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+    wardrobeItem?: boolean | Prisma.UserInteraction$wardrobeItemArgs<ExtArgs>;
 };
 export type UserInteractionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
-    outfit?: boolean | Prisma.UserInteraction$outfitArgs<ExtArgs>;
-    wardrobeItem?: boolean | Prisma.UserInteraction$wardrobeItemArgs<ExtArgs>;
     message?: boolean | Prisma.UserInteraction$messageArgs<ExtArgs>;
+    outfit?: boolean | Prisma.UserInteraction$outfitArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+    wardrobeItem?: boolean | Prisma.UserInteraction$wardrobeItemArgs<ExtArgs>;
 };
 export type $UserInteractionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "UserInteraction";
     objects: {
-        user: Prisma.$UserPayload<ExtArgs>;
-        outfit: Prisma.$OutfitPayload<ExtArgs> | null;
-        wardrobeItem: Prisma.$WardrobeItemPayload<ExtArgs> | null;
         message: Prisma.$MessagePayload<ExtArgs> | null;
+        outfit: Prisma.$OutfitPayload<ExtArgs> | null;
+        user: Prisma.$UserPayload<ExtArgs>;
+        wardrobeItem: Prisma.$WardrobeItemPayload<ExtArgs> | null;
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -874,20 +874,20 @@ export type $UserInteractionPayload<ExtArgs extends runtime.Types.Extensions.Int
         messageId: string | null;
         /**
          * * LIKE
-         *    * DISLIKE
-         *    * SAVE
-         *    * MODIFY
-         *    * SHARE
-         *    * VIEW
-         *    * etc.
+         * * DISLIKE
+         * * SAVE
+         * * MODIFY
+         * * SHARE
+         * * VIEW
+         * * etc.
          */
         type: string;
         /**
          * * Optional explanation:
-         *    *
-         *    * {
-         *    *   "reason": "don't like heels"
-         *    * }
+         * *
+         * * {
+         * *   "reason": "don't like heels"
+         * * }
          */
         metadata: runtime.JsonValue | null;
         createdAt: Date;
@@ -1220,10 +1220,10 @@ export interface UserInteractionDelegate<ExtArgs extends runtime.Types.Extension
  */
 export interface Prisma__UserInteractionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
-    user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
-    outfit<T extends Prisma.UserInteraction$outfitArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserInteraction$outfitArgs<ExtArgs>>): Prisma.Prisma__OutfitClient<runtime.Types.Result.GetResult<Prisma.$OutfitPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
-    wardrobeItem<T extends Prisma.UserInteraction$wardrobeItemArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserInteraction$wardrobeItemArgs<ExtArgs>>): Prisma.Prisma__WardrobeItemClient<runtime.Types.Result.GetResult<Prisma.$WardrobeItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
     message<T extends Prisma.UserInteraction$messageArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserInteraction$messageArgs<ExtArgs>>): Prisma.Prisma__MessageClient<runtime.Types.Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    outfit<T extends Prisma.UserInteraction$outfitArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserInteraction$outfitArgs<ExtArgs>>): Prisma.Prisma__OutfitClient<runtime.Types.Result.GetResult<Prisma.$OutfitPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    wardrobeItem<T extends Prisma.UserInteraction$wardrobeItemArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserInteraction$wardrobeItemArgs<ExtArgs>>): Prisma.Prisma__WardrobeItemClient<runtime.Types.Result.GetResult<Prisma.$WardrobeItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1641,6 +1641,24 @@ export type UserInteractionDeleteManyArgs<ExtArgs extends runtime.Types.Extensio
     limit?: number;
 };
 /**
+ * UserInteraction.message
+ */
+export type UserInteraction$messageArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Message
+     */
+    select?: Prisma.MessageSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Message
+     */
+    omit?: Prisma.MessageOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.MessageInclude<ExtArgs> | null;
+    where?: Prisma.MessageWhereInput;
+};
+/**
  * UserInteraction.outfit
  */
 export type UserInteraction$outfitArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1675,24 +1693,6 @@ export type UserInteraction$wardrobeItemArgs<ExtArgs extends runtime.Types.Exten
      */
     include?: Prisma.WardrobeItemInclude<ExtArgs> | null;
     where?: Prisma.WardrobeItemWhereInput;
-};
-/**
- * UserInteraction.message
- */
-export type UserInteraction$messageArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Message
-     */
-    select?: Prisma.MessageSelect<ExtArgs> | null;
-    /**
-     * Omit specific fields from the Message
-     */
-    omit?: Prisma.MessageOmit<ExtArgs> | null;
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: Prisma.MessageInclude<ExtArgs> | null;
-    where?: Prisma.MessageWhereInput;
 };
 /**
  * UserInteraction without action

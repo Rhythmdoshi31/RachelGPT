@@ -150,8 +150,8 @@ export type MessageWhereInput = {
     content?: Prisma.StringFilter<"Message"> | string;
     metadata?: Prisma.JsonNullableFilter<"Message">;
     createdAt?: Prisma.DateTimeFilter<"Message"> | Date | string;
-    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
     conversation?: Prisma.XOR<Prisma.ConversationScalarRelationFilter, Prisma.ConversationWhereInput>;
+    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
     interactions?: Prisma.UserInteractionListRelationFilter;
 };
 export type MessageOrderByWithRelationInput = {
@@ -162,8 +162,8 @@ export type MessageOrderByWithRelationInput = {
     content?: Prisma.SortOrder;
     metadata?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
-    user?: Prisma.UserOrderByWithRelationInput;
     conversation?: Prisma.ConversationOrderByWithRelationInput;
+    user?: Prisma.UserOrderByWithRelationInput;
     interactions?: Prisma.UserInteractionOrderByRelationAggregateInput;
 };
 export type MessageWhereUniqueInput = Prisma.AtLeast<{
@@ -177,8 +177,8 @@ export type MessageWhereUniqueInput = Prisma.AtLeast<{
     content?: Prisma.StringFilter<"Message"> | string;
     metadata?: Prisma.JsonNullableFilter<"Message">;
     createdAt?: Prisma.DateTimeFilter<"Message"> | Date | string;
-    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
     conversation?: Prisma.XOR<Prisma.ConversationScalarRelationFilter, Prisma.ConversationWhereInput>;
+    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
     interactions?: Prisma.UserInteractionListRelationFilter;
 }, "id">;
 export type MessageOrderByWithAggregationInput = {
@@ -211,8 +211,8 @@ export type MessageCreateInput = {
     content: string;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Date | string;
-    user: Prisma.UserCreateNestedOneWithoutMessagesInput;
     conversation: Prisma.ConversationCreateNestedOneWithoutMessagesInput;
+    user: Prisma.UserCreateNestedOneWithoutMessagesInput;
     interactions?: Prisma.UserInteractionCreateNestedManyWithoutMessageInput;
 };
 export type MessageUncheckedCreateInput = {
@@ -231,8 +231,8 @@ export type MessageUpdateInput = {
     content?: Prisma.StringFieldUpdateOperationsInput | string;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    user?: Prisma.UserUpdateOneRequiredWithoutMessagesNestedInput;
     conversation?: Prisma.ConversationUpdateOneRequiredWithoutMessagesNestedInput;
+    user?: Prisma.UserUpdateOneRequiredWithoutMessagesNestedInput;
     interactions?: Prisma.UserInteractionUpdateManyWithoutMessageNestedInput;
 };
 export type MessageUncheckedUpdateInput = {
@@ -454,8 +454,8 @@ export type MessageCreateWithoutInteractionsInput = {
     content: string;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Date | string;
-    user: Prisma.UserCreateNestedOneWithoutMessagesInput;
     conversation: Prisma.ConversationCreateNestedOneWithoutMessagesInput;
+    user: Prisma.UserCreateNestedOneWithoutMessagesInput;
 };
 export type MessageUncheckedCreateWithoutInteractionsInput = {
     id?: string;
@@ -485,8 +485,8 @@ export type MessageUpdateWithoutInteractionsInput = {
     content?: Prisma.StringFieldUpdateOperationsInput | string;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    user?: Prisma.UserUpdateOneRequiredWithoutMessagesNestedInput;
     conversation?: Prisma.ConversationUpdateOneRequiredWithoutMessagesNestedInput;
+    user?: Prisma.UserUpdateOneRequiredWithoutMessagesNestedInput;
 };
 export type MessageUncheckedUpdateWithoutInteractionsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -636,8 +636,8 @@ export type MessageSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     content?: boolean;
     metadata?: boolean;
     createdAt?: boolean;
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     conversation?: boolean | Prisma.ConversationDefaultArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     interactions?: boolean | Prisma.Message$interactionsArgs<ExtArgs>;
     _count?: boolean | Prisma.MessageCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["message"]>;
@@ -649,8 +649,8 @@ export type MessageSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
     content?: boolean;
     metadata?: boolean;
     createdAt?: boolean;
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     conversation?: boolean | Prisma.ConversationDefaultArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["message"]>;
 export type MessageSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -660,8 +660,8 @@ export type MessageSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
     content?: boolean;
     metadata?: boolean;
     createdAt?: boolean;
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     conversation?: boolean | Prisma.ConversationDefaultArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["message"]>;
 export type MessageSelectScalar = {
     id?: boolean;
@@ -674,24 +674,24 @@ export type MessageSelectScalar = {
 };
 export type MessageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "conversationId" | "role" | "content" | "metadata" | "createdAt", ExtArgs["result"]["message"]>;
 export type MessageInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     conversation?: boolean | Prisma.ConversationDefaultArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     interactions?: boolean | Prisma.Message$interactionsArgs<ExtArgs>;
     _count?: boolean | Prisma.MessageCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type MessageIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     conversation?: boolean | Prisma.ConversationDefaultArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 };
 export type MessageIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     conversation?: boolean | Prisma.ConversationDefaultArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 };
 export type $MessagePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "Message";
     objects: {
-        user: Prisma.$UserPayload<ExtArgs>;
         conversation: Prisma.$ConversationPayload<ExtArgs>;
+        user: Prisma.$UserPayload<ExtArgs>;
         interactions: Prisma.$UserInteractionPayload<ExtArgs>[];
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -700,18 +700,18 @@ export type $MessagePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
         conversationId: string;
         /**
          * * USER
-         *    * ASSISTANT
-         *    * SYSTEM
+         * * ASSISTANT
+         * * SYSTEM
          */
         role: string;
         content: string;
         /**
          * * Optional information such as:
-         *    *
-         *    * model used
-         *    * token usage
-         *    * referenced wardrobe IDs
-         *    * tool calls
+         * *
+         * * model used
+         * * token usage
+         * * referenced wardrobe IDs
+         * * tool calls
          */
         metadata: runtime.JsonValue | null;
         createdAt: Date;
@@ -1044,8 +1044,8 @@ export interface MessageDelegate<ExtArgs extends runtime.Types.Extensions.Intern
  */
 export interface Prisma__MessageClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
-    user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     conversation<T extends Prisma.ConversationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ConversationDefaultArgs<ExtArgs>>): Prisma.Prisma__ConversationClient<runtime.Types.Result.GetResult<Prisma.$ConversationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     interactions<T extends Prisma.Message$interactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Message$interactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserInteractionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.

@@ -7,76 +7,45 @@ datasource db {
   provider = "postgresql"
 }
 
-/*
-|--------------------------------------------------------------------------
-| USERS
-|--------------------------------------------------------------------------
-*/
-
 model User {
-  id        String   @id @db.Uuid
-  email     String?  @unique
-  name      String?
-  avatarUrl String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // Persona / personalization
-  personas       UserPersona[]
-  styleProfile   UserStyleProfile?
-  preferenceEvents PreferenceEvent[]
-
-  // Wardrobe
-  wardrobeItems WardrobeItem[]
-  wardrobeImages WardrobeImage[]
-
-  // Outfits
-  outfits         Outfit[]
-  outfitItems     OutfitItem[]
-  interactions    UserInteraction[]
-  wearEvents      WearEvent[]
-
-  // Conversations
-  conversations    Conversation[]
-  messages         Message[]
+  id                   String               @id @db.Uuid
+  email                String?              @unique
+  name                 String?
+  avatarUrl            String?
+  createdAt            DateTime             @default(now())
+  updatedAt            DateTime             @updatedAt
+  avatar               Avatar?
+  conversations        Conversation[]
   conversationMemories ConversationMemory[]
-
-  // Inspiration
-  inspirations      Inspiration[]
-  inspirationItems  InspirationItem[]
-
-  // Shopping
-  shoppingSearches ShoppingSearch[]
-  savedProducts    SavedProduct[]
-
-  // Avatar
-  avatar Avatar?
-
-  // Subscription
-  subscriptions Subscription[]
+  inspirations         Inspiration[]
+  inspirationItems     InspirationItem[]
+  messages             Message[]
+  outfits              Outfit[]
+  outfitItems          OutfitItem[]
+  preferenceEvents     PreferenceEvent[]
+  savedProducts        SavedProduct[]
+  shoppingSearches     ShoppingSearch[]
+  subscriptions        Subscription[]
+  interactions         UserInteraction[]
+  personas             UserPersona[]
+  styleProfile         UserStyleProfile?
+  wardrobeImages       WardrobeImage[]
+  wardrobeItems        WardrobeItem[]
+  wearEvents           WearEvent[]
 }
-
-
-/*
-|--------------------------------------------------------------------------
-| PERSONAS
-|--------------------------------------------------------------------------
-*/
 
 model Persona {
-  id                  String   @id @default(uuid())
-  name                String   @unique
-  description         String?
-  personality         Json
-  stylingPhilosophy   Json?
-  riskLevel           String?
-  trendiness          String?
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
-
-  users UserPersona[]
+  id                String        @id @default(uuid())
+  name              String        @unique
+  description       String?
+  personality       Json
+  stylingPhilosophy Json?
+  riskLevel         String?
+  trendiness        String?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  users             UserPersona[]
 }
-
 
 model UserPersona {
   id         String   @id @default(uuid())
@@ -84,193 +53,124 @@ model UserPersona {
   personaId  String
   isActive   Boolean  @default(false)
   selectedAt DateTime @default(now())
-
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  persona Persona @relation(fields: [personaId], references: [id], onDelete: Cascade)
+  persona    Persona  @relation(fields: [personaId], references: [id], onDelete: Cascade)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, personaId])
   @@index([userId])
   @@index([personaId])
 }
 
-
-/*
-|--------------------------------------------------------------------------
-| USER STYLE PROFILE
-|--------------------------------------------------------------------------
-*/
-
 model UserStyleProfile {
-  id        String   @id @default(uuid())
-  userId    String   @unique @db.Uuid
-
-  /*
-   * Flexible AI-generated style information.
-   *
-   * Example:
-   * {
-   *   "preferredColors": ["black", "beige"],
-   *   "avoidedColors": ["neon green"],
-   *   "preferredFits": ["relaxed", "straight"],
-   *   "avoidedFits": ["very tight"],
-   *   "preferredStyles": ["minimal", "polished"],
-   *   "shoePreferences": ["sneakers", "loafers"],
-   *   "comfortPriority": "high"
-   * }
-   */
-  preferences Json
-
-  /*
-   * Things the user is currently experimenting with.
-   */
+  id                String   @id @default(uuid())
+  userId            String   @unique @db.Uuid
+  /// * Flexible AI-generated style information.
+  ///    *
+  ///    * Example:
+  ///    * {
+  ///    *   "preferredColors": ["black", "beige"],
+  ///    *   "avoidedColors": ["neon green"],
+  ///    *   "preferredFits": ["relaxed", "straight"],
+  ///    *   "avoidedFits": ["very tight"],
+  ///    *   "preferredStyles": ["minimal", "polished"],
+  ///    *   "shoePreferences": ["sneakers", "loafers"],
+  ///    *   "comfortPriority": "high"
+  ///    * }
+  preferences       Json
+  /// * Things the user is currently experimenting with.
   experimentingWith Json?
-
-  /*
-   * Lifestyle / occasions / desired appearance.
-   */
-  lifestyle Json?
-  occasions Json?
+  /// * Lifestyle / occasions / desired appearance.
+  lifestyle         Json?
+  occasions         Json?
   desiredAppearance Json?
-
-  /*
-   * AI's compact understanding of the user.
-   */
-  summary String?
-
-  updatedAt DateTime @updatedAt
-  createdAt DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  /// * AI's compact understanding of the user.
+  summary           String?
+  updatedAt         DateTime @updatedAt
+  createdAt         DateTime @default(now())
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-
-/*
-|--------------------------------------------------------------------------
-| WARDROBE
-|--------------------------------------------------------------------------
-*/
-
 model WardrobeItem {
-  id        String   @id @default(uuid())
-  userId    String   @db.Uuid
-
-  category    String
-  subcategory String?
-
-  /*
-   * AI-generated structured attributes.
-   *
-   * Example:
-   * {
-   *   "colors": ["black"],
-   *   "pattern": "solid",
-   *   "material": "cotton",
-   *   "fit": "oversized",
-   *   "styles": ["minimal", "casual"],
-   *   "formality": "smart-casual",
-   *   "seasons": ["all-season"],
-   *   "occasions": ["casual", "date-night"]
-   * }
-   */
-  attributes Json
-
-  /*
-   * Object-storage path.
-   *
-   * Example:
-   * users/<userId>/wardrobe/<itemId>/main.jpg
-   */
+  id               String                 @id @default(uuid())
+  userId           String                 @db.Uuid
+  category         String
+  subcategory      String?
+  /// * AI-generated structured attributes.
+  ///    *
+  ///    * Example:
+  ///    * {
+  ///    *   "colors": ["black"],
+  ///    *   "pattern": "solid",
+  ///    *   "material": "cotton",
+  ///    *   "fit": "oversized",
+  ///    *   "styles": ["minimal", "casual"],
+  ///    *   "formality": "smart-casual",
+  ///    *   "seasons": ["all-season"],
+  ///    *   "occasions": ["casual", "date-night"]
+  ///    * }
+  attributes       Json
+  /// * Object-storage path.
+  ///    *
+  ///    * Example:
+  ///    * users/<userId>/wardrobe/<itemId>/main.jpg
   primaryImagePath String?
-
-  /*
-   * pgvector.
-   *
-   * Prisma does not natively understand the vector type.
-   * Vector operations will use raw SQL.
-   */
-  embedding Unsupported("vector")?
-
-  /*
-   * Wear / usage tracking.
-   */
-  addedAt     DateTime @default(now())
-  lastWornAt  DateTime?
-  timesWorn   Int      @default(0)
-
-  isArchived Boolean @default(false)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user   User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  images WardrobeImage[]
-
-  outfitItems  OutfitItem[]
-  interactions UserInteraction[]
-  wearEvents   WearEvent[]
+  /// * pgvector.
+  ///    *
+  ///    * Prisma does not natively understand the vector type.
+  ///    * Vector operations will use raw SQL.
+  embedding        Unsupported("vector")?
+  /// * Wear / usage tracking.
+  addedAt          DateTime               @default(now())
+  lastWornAt       DateTime?
+  timesWorn        Int                    @default(0)
+  isArchived       Boolean                @default(false)
+  createdAt        DateTime               @default(now())
+  updatedAt        DateTime               @updatedAt
+  outfitItems      OutfitItem[]
+  interactions     UserInteraction[]
+  images           WardrobeImage[]
+  user             User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  wearEvents       WearEvent[]
 
   @@index([userId])
   @@index([userId, category])
   @@index([userId, lastWornAt])
 }
 
-
 model WardrobeImage {
-  id            String   @id @default(uuid())
-  userId        String   @db.Uuid
+  id             String       @id @default(uuid())
+  userId         String       @db.Uuid
   wardrobeItemId String
-
-  storagePath String
-  isPrimary   Boolean  @default(false)
-
-  createdAt DateTime @default(now())
-
-  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  wardrobeItem WardrobeItem @relation(fields: [wardrobeItemId], references: [id], onDelete: Cascade)
+  storagePath    String
+  isPrimary      Boolean      @default(false)
+  createdAt      DateTime     @default(now())
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  wardrobeItem   WardrobeItem @relation(fields: [wardrobeItemId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([wardrobeItemId])
 }
 
-
-/*
-|--------------------------------------------------------------------------
-| OUTFITS
-|--------------------------------------------------------------------------
-*/
-
 model Outfit {
-  id        String   @id @default(uuid())
-  userId    String   @db.Uuid
-
-  name        String?
-  description String?
-
-  occasion String?
-  style    String?
-
-  /*
-   * Additional AI reasoning / metadata.
-   */
-  metadata Json?
-
-  /*
-   * Where this outfit came from:
-   *
-   * RACHEL
-   * INSPIRATION
-   * USER_CREATED
-   * etc.
-   */
-  source String?
-
-  isSaved Boolean @default(false)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+  id           String            @id @default(uuid())
+  userId       String            @db.Uuid
+  name         String?
+  description  String?
+  occasion     String?
+  style        String?
+  /// * Additional AI reasoning / metadata.
+  metadata     Json?
+  /// * Where this outfit came from:
+  ///    *
+  ///    * RACHEL
+  ///    * INSPIRATION
+  ///    * USER_CREATED
+  ///    * etc.
+  source       String?
+  isSaved      Boolean           @default(false)
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   items        OutfitItem[]
   interactions UserInteraction[]
   wearEvents   WearEvent[]
@@ -279,28 +179,22 @@ model Outfit {
   @@index([userId, isSaved])
 }
 
-
 model OutfitItem {
-  id             String @id @default(uuid())
+  id             String       @id @default(uuid())
   outfitId       String
   wardrobeItemId String
-  userId         String @db.Uuid
-
-  /*
-   * Example:
-   * TOP
-   * BOTTOM
-   * SHOES
-   * BAG
-   * ACCESSORY
-   */
-  role String?
-
-  sortOrder Int?
-
-  outfit       Outfit       @relation(fields: [outfitId], references: [id], onDelete: Cascade)
-  wardrobeItem WardrobeItem @relation(fields: [wardrobeItemId], references: [id], onDelete: Cascade)
-  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String       @db.Uuid
+  /// * Example:
+  ///    * TOP
+  ///    * BOTTOM
+  ///    * SHOES
+  ///    * BAG
+  ///    * ACCESSORY
+  role           String?
+  sortOrder      Int?
+  outfit         Outfit       @relation(fields: [outfitId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  wardrobeItem   WardrobeItem @relation(fields: [wardrobeItemId], references: [id], onDelete: Cascade)
 
   @@unique([outfitId, wardrobeItemId])
   @@index([userId])
@@ -308,47 +202,31 @@ model OutfitItem {
   @@index([wardrobeItemId])
 }
 
-
-/*
-|--------------------------------------------------------------------------
-| USER INTERACTIONS
-|--------------------------------------------------------------------------
-*/
-
 model UserInteraction {
-  id     String @id @default(uuid())
-  userId String @db.Uuid
-
+  id             String        @id @default(uuid())
+  userId         String        @db.Uuid
   outfitId       String?
   wardrobeItemId String?
   messageId      String?
-
-  /*
-   * LIKE
-   * DISLIKE
-   * SAVE
-   * MODIFY
-   * SHARE
-   * VIEW
-   * etc.
-   */
-  type String
-
-  /*
-   * Optional explanation:
-   *
-   * {
-   *   "reason": "don't like heels"
-   * }
-   */
-  metadata Json?
-
-  createdAt DateTime @default(now())
-
-  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  outfit       Outfit?       @relation(fields: [outfitId], references: [id], onDelete: Cascade)
-  wardrobeItem WardrobeItem? @relation(fields: [wardrobeItemId], references: [id], onDelete: Cascade)
-  message      Message?      @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  /// * LIKE
+  ///    * DISLIKE
+  ///    * SAVE
+  ///    * MODIFY
+  ///    * SHARE
+  ///    * VIEW
+  ///    * etc.
+  type           String
+  /// * Optional explanation:
+  ///    *
+  ///    * {
+  ///    *   "reason": "don't like heels"
+  ///    * }
+  metadata       Json?
+  createdAt      DateTime      @default(now())
+  message        Message?      @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  outfit         Outfit?       @relation(fields: [outfitId], references: [id], onDelete: Cascade)
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  wardrobeItem   WardrobeItem? @relation(fields: [wardrobeItemId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([userId, type])
@@ -356,418 +234,259 @@ model UserInteraction {
   @@index([wardrobeItemId])
 }
 
-
-/*
-|--------------------------------------------------------------------------
-| WEAR EVENTS
-|--------------------------------------------------------------------------
-*/
-
 model WearEvent {
-  id     String   @id @default(uuid())
-  userId String   @db.Uuid
-
+  id             String        @id @default(uuid())
+  userId         String        @db.Uuid
   outfitId       String?
   wardrobeItemId String?
-
-  wornAt   DateTime @default(now())
-  occasion String?
-
-  /*
-   * Optional feedback after wearing.
-   */
-  feedback Json?
-
-  createdAt DateTime @default(now())
-
-  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  outfit       Outfit?       @relation(fields: [outfitId], references: [id], onDelete: Cascade)
-  wardrobeItem WardrobeItem? @relation(fields: [wardrobeItemId], references: [id], onDelete: Cascade)
+  wornAt         DateTime      @default(now())
+  occasion       String?
+  /// * Optional feedback after wearing.
+  feedback       Json?
+  createdAt      DateTime      @default(now())
+  outfit         Outfit?       @relation(fields: [outfitId], references: [id], onDelete: Cascade)
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  wardrobeItem   WardrobeItem? @relation(fields: [wardrobeItemId], references: [id], onDelete: Cascade)
 
   @@index([userId, wornAt])
   @@index([wardrobeItemId])
   @@index([outfitId])
 }
 
-
-/*
-|--------------------------------------------------------------------------
-| CONVERSATIONS
-|--------------------------------------------------------------------------
-*/
-
 model Conversation {
-  id     String @id @default(uuid())
-  userId String @db.Uuid
-
-  title String?
-
-  /*
-   * Useful for categorizing:
-   *
-   * STYLING
-   * SHOPPING
-   * WARDROBE
-   * GENERAL
-   */
-  type String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  messages  Message[]
+  id        String              @id @default(uuid())
+  userId    String              @db.Uuid
+  title     String?
+  /// * Useful for categorizing:
+  ///    *
+  ///    * STYLING
+  ///    * SHOPPING
+  ///    * WARDROBE
+  ///    * GENERAL
+  type      String?
+  createdAt DateTime            @default(now())
+  updatedAt DateTime            @updatedAt
+  user      User                @relation(fields: [userId], references: [id], onDelete: Cascade)
   memory    ConversationMemory?
+  messages  Message[]
 
   @@index([userId])
   @@index([userId, updatedAt])
 }
 
-
 model Message {
-  id             String @id @default(uuid())
-  userId         String @db.Uuid
+  id             String            @id @default(uuid())
+  userId         String            @db.Uuid
   conversationId String
-
-  /*
-   * USER
-   * ASSISTANT
-   * SYSTEM
-   */
-  role String
-
-  content String
-
-  /*
-   * Optional information such as:
-   *
-   * model used
-   * token usage
-   * referenced wardrobe IDs
-   * tool calls
-   */
-  metadata Json?
-
-  createdAt DateTime @default(now())
-
-  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
-
-  interactions UserInteraction[]
+  /// * USER
+  ///    * ASSISTANT
+  ///    * SYSTEM
+  role           String
+  content        String
+  /// * Optional information such as:
+  ///    *
+  ///    * model used
+  ///    * token usage
+  ///    * referenced wardrobe IDs
+  ///    * tool calls
+  metadata       Json?
+  createdAt      DateTime          @default(now())
+  conversation   Conversation      @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  user           User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  interactions   UserInteraction[]
 
   @@index([userId])
   @@index([conversationId, createdAt])
 }
 
-
 model ConversationMemory {
-  id             String @id @default(uuid())
-  userId         String @db.Uuid
-  conversationId String @unique
-
-  /*
-   * Compact summary of the conversation.
-   */
-  summary String?
-
-  /*
-   * Current temporary context.
-   *
-   * Example:
-   * {
-   *   "occasion": "date-night",
-   *   "avoid": ["heels"],
-   *   "weather": "rainy"
-   * }
-   */
-  state Json?
-
-  updatedAt DateTime @updatedAt
-  createdAt DateTime @default(now())
-
-  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  id             String       @id @default(uuid())
+  userId         String       @db.Uuid
+  conversationId String       @unique
+  /// * Compact summary of the conversation.
+  summary        String?
+  /// * Current temporary context.
+  ///    *
+  ///    * Example:
+  ///    * {
+  ///    *   "occasion": "date-night",
+  ///    *   "avoid": ["heels"],
+  ///    *   "weather": "rainy"
+  ///    * }
+  state          Json?
+  updatedAt      DateTime     @updatedAt
+  createdAt      DateTime     @default(now())
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }
 
-
-/*
-|--------------------------------------------------------------------------
-| PREFERENCE LEARNING
-|--------------------------------------------------------------------------
-*/
-
 model PreferenceEvent {
-  id     String @id @default(uuid())
-  userId String @db.Uuid
-
-  /*
-   * Example:
-   *
-   * preference: "shoe_type"
-   * value: "heels"
-   * sentiment: "negative"
-   */
-  preference String
-  value      Json
-  sentiment  String?
-
-  /*
-   * EXPLICIT
-   * REJECTION
-   * SELECTION
-   * WEAR
-   * CONVERSATION
-   */
-  source String?
-
-  /*
-   * Confidence that this is actually a stable preference.
-   */
-  confidence Float?
-
-  /*
-   * Whether this event has contributed to
-   * the user's current style profile.
-   */
-  appliedToProfile Boolean @default(false)
-
-  createdAt DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id               String   @id @default(uuid())
+  userId           String   @db.Uuid
+  /// * Example:
+  ///    *
+  ///    * preference: "shoe_type"
+  ///    * value: "heels"
+  ///    * sentiment: "negative"
+  preference       String
+  value            Json
+  sentiment        String?
+  /// * EXPLICIT
+  ///    * REJECTION
+  ///    * SELECTION
+  ///    * WEAR
+  ///    * CONVERSATION
+  source           String?
+  /// * Confidence that this is actually a stable preference.
+  confidence       Float?
+  /// * Whether this event has contributed to
+  ///    * the user's current style profile.
+  appliedToProfile Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, createdAt])
   @@index([userId, preference])
 }
 
-
-/*
-|--------------------------------------------------------------------------
-| INSPIRATION
-|--------------------------------------------------------------------------
-*/
-
 model Inspiration {
-  id     String @id @default(uuid())
-  userId String @db.Uuid
-
+  id        String            @id @default(uuid())
+  userId    String            @db.Uuid
   imagePath String
-
-  /*
-   * Overall AI analysis.
-   *
-   * Example:
-   * {
-   *   "overallStyle": ["minimal", "smart-casual"],
-   *   "colors": ["black", "white"],
-   *   "occasion": "date-night"
-   * }
-   */
-  analysis Json?
-
-  createdAt DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  items InspirationItem[]
+  /// * Overall AI analysis.
+  ///    *
+  ///    * Example:
+  ///    * {
+  ///    *   "overallStyle": ["minimal", "smart-casual"],
+  ///    *   "colors": ["black", "white"],
+  ///    *   "occasion": "date-night"
+  ///    * }
+  analysis  Json?
+  createdAt DateTime          @default(now())
+  user      User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items     InspirationItem[]
 
   @@index([userId])
 }
 
-
 model InspirationItem {
-  id            String @id @default(uuid())
-  userId        String @db.Uuid
+  id            String                 @id @default(uuid())
+  userId        String                 @db.Uuid
   inspirationId String
-
-  /*
-   * Example:
-   * TOP
-   * BOTTOM
-   * SHOES
-   * BAG
-   */
-  category String
-
-  subcategory String?
-
-  attributes Json
-
-  /*
-   * Optional embedding of the individual
-   * inspiration clothing item.
-   */
-  embedding Unsupported("vector")?
-
-  createdAt DateTime @default(now())
-
-  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  inspiration Inspiration @relation(fields: [inspirationId], references: [id], onDelete: Cascade)
+  /// * Example:
+  ///    * TOP
+  ///    * BOTTOM
+  ///    * SHOES
+  ///    * BAG
+  category      String
+  subcategory   String?
+  attributes    Json
+  /// * Optional embedding of the individual
+  ///    * inspiration clothing item.
+  embedding     Unsupported("vector")?
+  createdAt     DateTime               @default(now())
+  inspiration   Inspiration            @relation(fields: [inspirationId], references: [id], onDelete: Cascade)
+  user          User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([inspirationId])
 }
 
-
-/*
-|--------------------------------------------------------------------------
-| SHOPPING
-|--------------------------------------------------------------------------
-*/
-
 model ShoppingSearch {
-  id     String @id @default(uuid())
-  userId String @db.Uuid
-
-  query String
-
-  /*
-   * Why Rachel recommended searching:
-   *
-   * WARDROBE_GAP
-   * USER_REQUEST
-   * INSPIRATION_MISSING_ITEM
-   */
-  reason String?
-
-  /*
-   * Search parameters:
-   * {
-   *   "category": "black midi skirt",
-   *   "budget": 5000,
-   *   "colors": ["black"]
-   * }
-   */
-  filters Json?
-
-  createdAt DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+  id            String         @id @default(uuid())
+  userId        String         @db.Uuid
+  query         String
+  /// * Why Rachel recommended searching:
+  ///    *
+  ///    * WARDROBE_GAP
+  ///    * USER_REQUEST
+  ///    * INSPIRATION_MISSING_ITEM
+  reason        String?
+  /// * Search parameters:
+  ///    * {
+  ///    *   "category": "black midi skirt",
+  ///    *   "budget": 5000,
+  ///    *   "colors": ["black"]
+  ///    * }
+  filters       Json?
+  createdAt     DateTime       @default(now())
   savedProducts SavedProduct[]
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, createdAt])
 }
 
-
 model SavedProduct {
-  id               String @id @default(uuid())
-  userId           String @db.Uuid
-  shoppingSearchId String?
-
-  /*
-   * External product ID from shopping provider.
-   */
+  id                String          @id @default(uuid())
+  userId            String          @db.Uuid
+  shoppingSearchId  String?
+  /// * External product ID from shopping provider.
   externalProductId String?
-
-  name     String
-  brand    String?
-  url      String
-
-  imageUrl String?
-  price    Float?
-  currency String?
-
-  /*
-   * Store the relevant product snapshot so
-   * the saved product doesn't depend entirely
-   * on the external API remaining unchanged.
-   */
-  productData Json?
-
-  createdAt DateTime @default(now())
-
-  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  shoppingSearch ShoppingSearch? @relation(fields: [shoppingSearchId], references: [id], onDelete: SetNull)
+  name              String
+  brand             String?
+  url               String
+  imageUrl          String?
+  price             Float?
+  currency          String?
+  /// * Store the relevant product snapshot so
+  ///    * the saved product doesn't depend entirely
+  ///    * on the external API remaining unchanged.
+  productData       Json?
+  createdAt         DateTime        @default(now())
+  shoppingSearch    ShoppingSearch? @relation(fields: [shoppingSearchId], references: [id])
+  user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([shoppingSearchId])
 }
 
-
-/*
-|--------------------------------------------------------------------------
-| AVATAR / VISUALIZATION
-|--------------------------------------------------------------------------
-*/
-
 model Avatar {
-  id     String @id @default(uuid())
-  userId String @unique @db.Uuid
-
-  /*
-   * General avatar configuration.
-   */
-  metadata Json?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+  id              String                 @id @default(uuid())
+  userId          String                 @unique @db.Uuid
+  /// * General avatar configuration.
+  metadata        Json?
+  createdAt       DateTime               @default(now())
+  updatedAt       DateTime               @updatedAt
+  user            User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
   referenceImages AvatarReferenceImage[]
 }
 
-
 model AvatarReferenceImage {
-  id       String @id @default(uuid())
-  avatarId String
-
+  id          String   @id @default(uuid())
+  avatarId    String
   storagePath String
-
-  /*
-   * FRONT
-   * SIDE
-   * FULL_BODY
-   * FACE
-   * OTHER
-   */
-  type String?
-
-  createdAt DateTime @default(now())
-
-  avatar Avatar @relation(fields: [avatarId], references: [id], onDelete: Cascade)
+  /// * FRONT
+  ///    * SIDE
+  ///    * FULL_BODY
+  ///    * FACE
+  ///    * OTHER
+  type        String?
+  createdAt   DateTime @default(now())
+  avatar      Avatar   @relation(fields: [avatarId], references: [id], onDelete: Cascade)
 
   @@index([avatarId])
 }
 
-
-/*
-|--------------------------------------------------------------------------
-| SUBSCRIPTIONS
-|--------------------------------------------------------------------------
-*/
-
 model Subscription {
-  id     String @id @default(uuid())
-  userId String @db.Uuid
-
-  /*
-   * FREE
-   * PREMIUM
-   */
-  plan String
-
-  /*
-   * ACTIVE
-   * CANCELLED
-   * EXPIRED
-   * TRIALING
-   */
-  status String
-
-  provider String?
+  id                     String    @id @default(uuid())
+  userId                 String    @db.Uuid
+  /// * FREE
+  ///    * PREMIUM
+  plan                   String
+  /// * ACTIVE
+  ///    * CANCELLED
+  ///    * EXPIRED
+  ///    * TRIALING
+  status                 String
+  provider               String?
   externalSubscriptionId String?
-
-  currentPeriodStart DateTime?
-  currentPeriodEnd   DateTime?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  currentPeriodStart     DateTime?
+  currentPeriodEnd       DateTime?
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+  user                   User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([userId, status])

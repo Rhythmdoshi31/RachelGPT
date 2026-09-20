@@ -577,14 +577,14 @@ export type $SubscriptionPayload<ExtArgs extends runtime.Types.Extensions.Intern
         userId: string;
         /**
          * * FREE
-         *    * PREMIUM
+         * * PREMIUM
          */
         plan: string;
         /**
          * * ACTIVE
-         *    * CANCELLED
-         *    * EXPIRED
-         *    * TRIALING
+         * * CANCELLED
+         * * EXPIRED
+         * * TRIALING
          */
         status: string;
         provider: string | null;

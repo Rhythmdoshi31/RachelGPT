@@ -220,10 +220,10 @@ export type WardrobeItemWhereInput = {
     isArchived?: Prisma.BoolFilter<"WardrobeItem"> | boolean;
     createdAt?: Prisma.DateTimeFilter<"WardrobeItem"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"WardrobeItem"> | Date | string;
-    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
-    images?: Prisma.WardrobeImageListRelationFilter;
     outfitItems?: Prisma.OutfitItemListRelationFilter;
     interactions?: Prisma.UserInteractionListRelationFilter;
+    images?: Prisma.WardrobeImageListRelationFilter;
+    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
     wearEvents?: Prisma.WearEventListRelationFilter;
 };
 export type WardrobeItemOrderByWithRelationInput = {
@@ -239,10 +239,10 @@ export type WardrobeItemOrderByWithRelationInput = {
     isArchived?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
-    user?: Prisma.UserOrderByWithRelationInput;
-    images?: Prisma.WardrobeImageOrderByRelationAggregateInput;
     outfitItems?: Prisma.OutfitItemOrderByRelationAggregateInput;
     interactions?: Prisma.UserInteractionOrderByRelationAggregateInput;
+    images?: Prisma.WardrobeImageOrderByRelationAggregateInput;
+    user?: Prisma.UserOrderByWithRelationInput;
     wearEvents?: Prisma.WearEventOrderByRelationAggregateInput;
 };
 export type WardrobeItemWhereUniqueInput = Prisma.AtLeast<{
@@ -261,10 +261,10 @@ export type WardrobeItemWhereUniqueInput = Prisma.AtLeast<{
     isArchived?: Prisma.BoolFilter<"WardrobeItem"> | boolean;
     createdAt?: Prisma.DateTimeFilter<"WardrobeItem"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"WardrobeItem"> | Date | string;
-    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
-    images?: Prisma.WardrobeImageListRelationFilter;
     outfitItems?: Prisma.OutfitItemListRelationFilter;
     interactions?: Prisma.UserInteractionListRelationFilter;
+    images?: Prisma.WardrobeImageListRelationFilter;
+    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
     wearEvents?: Prisma.WearEventListRelationFilter;
 }, "id">;
 export type WardrobeItemOrderByWithAggregationInput = {
@@ -315,10 +315,10 @@ export type WardrobeItemCreateInput = {
     isArchived?: boolean;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    user: Prisma.UserCreateNestedOneWithoutWardrobeItemsInput;
-    images?: Prisma.WardrobeImageCreateNestedManyWithoutWardrobeItemInput;
     outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutWardrobeItemInput;
     interactions?: Prisma.UserInteractionCreateNestedManyWithoutWardrobeItemInput;
+    images?: Prisma.WardrobeImageCreateNestedManyWithoutWardrobeItemInput;
+    user: Prisma.UserCreateNestedOneWithoutWardrobeItemsInput;
     wearEvents?: Prisma.WearEventCreateNestedManyWithoutWardrobeItemInput;
 };
 export type WardrobeItemUncheckedCreateInput = {
@@ -334,9 +334,9 @@ export type WardrobeItemUncheckedCreateInput = {
     isArchived?: boolean;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    images?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutWardrobeItemInput;
     outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutWardrobeItemInput;
     interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutWardrobeItemInput;
+    images?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutWardrobeItemInput;
     wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutWardrobeItemInput;
 };
 export type WardrobeItemUpdateInput = {
@@ -351,10 +351,10 @@ export type WardrobeItemUpdateInput = {
     isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    user?: Prisma.UserUpdateOneRequiredWithoutWardrobeItemsNestedInput;
-    images?: Prisma.WardrobeImageUpdateManyWithoutWardrobeItemNestedInput;
     outfitItems?: Prisma.OutfitItemUpdateManyWithoutWardrobeItemNestedInput;
     interactions?: Prisma.UserInteractionUpdateManyWithoutWardrobeItemNestedInput;
+    images?: Prisma.WardrobeImageUpdateManyWithoutWardrobeItemNestedInput;
+    user?: Prisma.UserUpdateOneRequiredWithoutWardrobeItemsNestedInput;
     wearEvents?: Prisma.WearEventUpdateManyWithoutWardrobeItemNestedInput;
 };
 export type WardrobeItemUncheckedUpdateInput = {
@@ -370,9 +370,9 @@ export type WardrobeItemUncheckedUpdateInput = {
     isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    images?: Prisma.WardrobeImageUncheckedUpdateManyWithoutWardrobeItemNestedInput;
     outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutWardrobeItemNestedInput;
     interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutWardrobeItemNestedInput;
+    images?: Prisma.WardrobeImageUncheckedUpdateManyWithoutWardrobeItemNestedInput;
     wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutWardrobeItemNestedInput;
 };
 export type WardrobeItemCreateManyInput = {
@@ -590,9 +590,9 @@ export type WardrobeItemCreateWithoutUserInput = {
     isArchived?: boolean;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    images?: Prisma.WardrobeImageCreateNestedManyWithoutWardrobeItemInput;
     outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutWardrobeItemInput;
     interactions?: Prisma.UserInteractionCreateNestedManyWithoutWardrobeItemInput;
+    images?: Prisma.WardrobeImageCreateNestedManyWithoutWardrobeItemInput;
     wearEvents?: Prisma.WearEventCreateNestedManyWithoutWardrobeItemInput;
 };
 export type WardrobeItemUncheckedCreateWithoutUserInput = {
@@ -607,9 +607,9 @@ export type WardrobeItemUncheckedCreateWithoutUserInput = {
     isArchived?: boolean;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    images?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutWardrobeItemInput;
     outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutWardrobeItemInput;
     interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutWardrobeItemInput;
+    images?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutWardrobeItemInput;
     wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutWardrobeItemInput;
 };
 export type WardrobeItemCreateOrConnectWithoutUserInput = {
@@ -662,9 +662,9 @@ export type WardrobeItemCreateWithoutImagesInput = {
     isArchived?: boolean;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    user: Prisma.UserCreateNestedOneWithoutWardrobeItemsInput;
     outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutWardrobeItemInput;
     interactions?: Prisma.UserInteractionCreateNestedManyWithoutWardrobeItemInput;
+    user: Prisma.UserCreateNestedOneWithoutWardrobeItemsInput;
     wearEvents?: Prisma.WearEventCreateNestedManyWithoutWardrobeItemInput;
 };
 export type WardrobeItemUncheckedCreateWithoutImagesInput = {
@@ -709,9 +709,9 @@ export type WardrobeItemUpdateWithoutImagesInput = {
     isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    user?: Prisma.UserUpdateOneRequiredWithoutWardrobeItemsNestedInput;
     outfitItems?: Prisma.OutfitItemUpdateManyWithoutWardrobeItemNestedInput;
     interactions?: Prisma.UserInteractionUpdateManyWithoutWardrobeItemNestedInput;
+    user?: Prisma.UserUpdateOneRequiredWithoutWardrobeItemsNestedInput;
     wearEvents?: Prisma.WearEventUpdateManyWithoutWardrobeItemNestedInput;
 };
 export type WardrobeItemUncheckedUpdateWithoutImagesInput = {
@@ -743,9 +743,9 @@ export type WardrobeItemCreateWithoutOutfitItemsInput = {
     isArchived?: boolean;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    user: Prisma.UserCreateNestedOneWithoutWardrobeItemsInput;
-    images?: Prisma.WardrobeImageCreateNestedManyWithoutWardrobeItemInput;
     interactions?: Prisma.UserInteractionCreateNestedManyWithoutWardrobeItemInput;
+    images?: Prisma.WardrobeImageCreateNestedManyWithoutWardrobeItemInput;
+    user: Prisma.UserCreateNestedOneWithoutWardrobeItemsInput;
     wearEvents?: Prisma.WearEventCreateNestedManyWithoutWardrobeItemInput;
 };
 export type WardrobeItemUncheckedCreateWithoutOutfitItemsInput = {
@@ -761,8 +761,8 @@ export type WardrobeItemUncheckedCreateWithoutOutfitItemsInput = {
     isArchived?: boolean;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    images?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutWardrobeItemInput;
     interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutWardrobeItemInput;
+    images?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutWardrobeItemInput;
     wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutWardrobeItemInput;
 };
 export type WardrobeItemCreateOrConnectWithoutOutfitItemsInput = {
@@ -790,9 +790,9 @@ export type WardrobeItemUpdateWithoutOutfitItemsInput = {
     isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    user?: Prisma.UserUpdateOneRequiredWithoutWardrobeItemsNestedInput;
-    images?: Prisma.WardrobeImageUpdateManyWithoutWardrobeItemNestedInput;
     interactions?: Prisma.UserInteractionUpdateManyWithoutWardrobeItemNestedInput;
+    images?: Prisma.WardrobeImageUpdateManyWithoutWardrobeItemNestedInput;
+    user?: Prisma.UserUpdateOneRequiredWithoutWardrobeItemsNestedInput;
     wearEvents?: Prisma.WearEventUpdateManyWithoutWardrobeItemNestedInput;
 };
 export type WardrobeItemUncheckedUpdateWithoutOutfitItemsInput = {
@@ -808,8 +808,8 @@ export type WardrobeItemUncheckedUpdateWithoutOutfitItemsInput = {
     isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    images?: Prisma.WardrobeImageUncheckedUpdateManyWithoutWardrobeItemNestedInput;
     interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutWardrobeItemNestedInput;
+    images?: Prisma.WardrobeImageUncheckedUpdateManyWithoutWardrobeItemNestedInput;
     wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutWardrobeItemNestedInput;
 };
 export type WardrobeItemCreateWithoutInteractionsInput = {
@@ -824,9 +824,9 @@ export type WardrobeItemCreateWithoutInteractionsInput = {
     isArchived?: boolean;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    user: Prisma.UserCreateNestedOneWithoutWardrobeItemsInput;
-    images?: Prisma.WardrobeImageCreateNestedManyWithoutWardrobeItemInput;
     outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutWardrobeItemInput;
+    images?: Prisma.WardrobeImageCreateNestedManyWithoutWardrobeItemInput;
+    user: Prisma.UserCreateNestedOneWithoutWardrobeItemsInput;
     wearEvents?: Prisma.WearEventCreateNestedManyWithoutWardrobeItemInput;
 };
 export type WardrobeItemUncheckedCreateWithoutInteractionsInput = {
@@ -842,8 +842,8 @@ export type WardrobeItemUncheckedCreateWithoutInteractionsInput = {
     isArchived?: boolean;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    images?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutWardrobeItemInput;
     outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutWardrobeItemInput;
+    images?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutWardrobeItemInput;
     wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutWardrobeItemInput;
 };
 export type WardrobeItemCreateOrConnectWithoutInteractionsInput = {
@@ -871,9 +871,9 @@ export type WardrobeItemUpdateWithoutInteractionsInput = {
     isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    user?: Prisma.UserUpdateOneRequiredWithoutWardrobeItemsNestedInput;
-    images?: Prisma.WardrobeImageUpdateManyWithoutWardrobeItemNestedInput;
     outfitItems?: Prisma.OutfitItemUpdateManyWithoutWardrobeItemNestedInput;
+    images?: Prisma.WardrobeImageUpdateManyWithoutWardrobeItemNestedInput;
+    user?: Prisma.UserUpdateOneRequiredWithoutWardrobeItemsNestedInput;
     wearEvents?: Prisma.WearEventUpdateManyWithoutWardrobeItemNestedInput;
 };
 export type WardrobeItemUncheckedUpdateWithoutInteractionsInput = {
@@ -889,8 +889,8 @@ export type WardrobeItemUncheckedUpdateWithoutInteractionsInput = {
     isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    images?: Prisma.WardrobeImageUncheckedUpdateManyWithoutWardrobeItemNestedInput;
     outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutWardrobeItemNestedInput;
+    images?: Prisma.WardrobeImageUncheckedUpdateManyWithoutWardrobeItemNestedInput;
     wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutWardrobeItemNestedInput;
 };
 export type WardrobeItemCreateWithoutWearEventsInput = {
@@ -905,10 +905,10 @@ export type WardrobeItemCreateWithoutWearEventsInput = {
     isArchived?: boolean;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    user: Prisma.UserCreateNestedOneWithoutWardrobeItemsInput;
-    images?: Prisma.WardrobeImageCreateNestedManyWithoutWardrobeItemInput;
     outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutWardrobeItemInput;
     interactions?: Prisma.UserInteractionCreateNestedManyWithoutWardrobeItemInput;
+    images?: Prisma.WardrobeImageCreateNestedManyWithoutWardrobeItemInput;
+    user: Prisma.UserCreateNestedOneWithoutWardrobeItemsInput;
 };
 export type WardrobeItemUncheckedCreateWithoutWearEventsInput = {
     id?: string;
@@ -923,9 +923,9 @@ export type WardrobeItemUncheckedCreateWithoutWearEventsInput = {
     isArchived?: boolean;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    images?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutWardrobeItemInput;
     outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutWardrobeItemInput;
     interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutWardrobeItemInput;
+    images?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutWardrobeItemInput;
 };
 export type WardrobeItemCreateOrConnectWithoutWearEventsInput = {
     where: Prisma.WardrobeItemWhereUniqueInput;
@@ -952,10 +952,10 @@ export type WardrobeItemUpdateWithoutWearEventsInput = {
     isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    user?: Prisma.UserUpdateOneRequiredWithoutWardrobeItemsNestedInput;
-    images?: Prisma.WardrobeImageUpdateManyWithoutWardrobeItemNestedInput;
     outfitItems?: Prisma.OutfitItemUpdateManyWithoutWardrobeItemNestedInput;
     interactions?: Prisma.UserInteractionUpdateManyWithoutWardrobeItemNestedInput;
+    images?: Prisma.WardrobeImageUpdateManyWithoutWardrobeItemNestedInput;
+    user?: Prisma.UserUpdateOneRequiredWithoutWardrobeItemsNestedInput;
 };
 export type WardrobeItemUncheckedUpdateWithoutWearEventsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -970,9 +970,9 @@ export type WardrobeItemUncheckedUpdateWithoutWearEventsInput = {
     isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    images?: Prisma.WardrobeImageUncheckedUpdateManyWithoutWardrobeItemNestedInput;
     outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutWardrobeItemNestedInput;
     interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutWardrobeItemNestedInput;
+    images?: Prisma.WardrobeImageUncheckedUpdateManyWithoutWardrobeItemNestedInput;
 };
 export type WardrobeItemCreateManyUserInput = {
     id?: string;
@@ -999,9 +999,9 @@ export type WardrobeItemUpdateWithoutUserInput = {
     isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    images?: Prisma.WardrobeImageUpdateManyWithoutWardrobeItemNestedInput;
     outfitItems?: Prisma.OutfitItemUpdateManyWithoutWardrobeItemNestedInput;
     interactions?: Prisma.UserInteractionUpdateManyWithoutWardrobeItemNestedInput;
+    images?: Prisma.WardrobeImageUpdateManyWithoutWardrobeItemNestedInput;
     wearEvents?: Prisma.WearEventUpdateManyWithoutWardrobeItemNestedInput;
 };
 export type WardrobeItemUncheckedUpdateWithoutUserInput = {
@@ -1016,9 +1016,9 @@ export type WardrobeItemUncheckedUpdateWithoutUserInput = {
     isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    images?: Prisma.WardrobeImageUncheckedUpdateManyWithoutWardrobeItemNestedInput;
     outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutWardrobeItemNestedInput;
     interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutWardrobeItemNestedInput;
+    images?: Prisma.WardrobeImageUncheckedUpdateManyWithoutWardrobeItemNestedInput;
     wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutWardrobeItemNestedInput;
 };
 export type WardrobeItemUncheckedUpdateManyWithoutUserInput = {
@@ -1038,15 +1038,15 @@ export type WardrobeItemUncheckedUpdateManyWithoutUserInput = {
  * Count Type WardrobeItemCountOutputType
  */
 export type WardrobeItemCountOutputType = {
-    images: number;
     outfitItems: number;
     interactions: number;
+    images: number;
     wearEvents: number;
 };
 export type WardrobeItemCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    images?: boolean | WardrobeItemCountOutputTypeCountImagesArgs;
     outfitItems?: boolean | WardrobeItemCountOutputTypeCountOutfitItemsArgs;
     interactions?: boolean | WardrobeItemCountOutputTypeCountInteractionsArgs;
+    images?: boolean | WardrobeItemCountOutputTypeCountImagesArgs;
     wearEvents?: boolean | WardrobeItemCountOutputTypeCountWearEventsArgs;
 };
 /**
@@ -1061,12 +1061,6 @@ export type WardrobeItemCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types
 /**
  * WardrobeItemCountOutputType without action
  */
-export type WardrobeItemCountOutputTypeCountImagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    where?: Prisma.WardrobeImageWhereInput;
-};
-/**
- * WardrobeItemCountOutputType without action
- */
 export type WardrobeItemCountOutputTypeCountOutfitItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.OutfitItemWhereInput;
 };
@@ -1075,6 +1069,12 @@ export type WardrobeItemCountOutputTypeCountOutfitItemsArgs<ExtArgs extends runt
  */
 export type WardrobeItemCountOutputTypeCountInteractionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.UserInteractionWhereInput;
+};
+/**
+ * WardrobeItemCountOutputType without action
+ */
+export type WardrobeItemCountOutputTypeCountImagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.WardrobeImageWhereInput;
 };
 /**
  * WardrobeItemCountOutputType without action
@@ -1095,10 +1095,10 @@ export type WardrobeItemSelect<ExtArgs extends runtime.Types.Extensions.Internal
     isArchived?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
-    images?: boolean | Prisma.WardrobeItem$imagesArgs<ExtArgs>;
     outfitItems?: boolean | Prisma.WardrobeItem$outfitItemsArgs<ExtArgs>;
     interactions?: boolean | Prisma.WardrobeItem$interactionsArgs<ExtArgs>;
+    images?: boolean | Prisma.WardrobeItem$imagesArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     wearEvents?: boolean | Prisma.WardrobeItem$wearEventsArgs<ExtArgs>;
     _count?: boolean | Prisma.WardrobeItemCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["wardrobeItem"]>;
@@ -1148,10 +1148,10 @@ export type WardrobeItemSelectScalar = {
 };
 export type WardrobeItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "category" | "subcategory" | "attributes" | "primaryImagePath" | "addedAt" | "lastWornAt" | "timesWorn" | "isArchived" | "createdAt" | "updatedAt", ExtArgs["result"]["wardrobeItem"]>;
 export type WardrobeItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
-    images?: boolean | Prisma.WardrobeItem$imagesArgs<ExtArgs>;
     outfitItems?: boolean | Prisma.WardrobeItem$outfitItemsArgs<ExtArgs>;
     interactions?: boolean | Prisma.WardrobeItem$interactionsArgs<ExtArgs>;
+    images?: boolean | Prisma.WardrobeItem$imagesArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     wearEvents?: boolean | Prisma.WardrobeItem$wearEventsArgs<ExtArgs>;
     _count?: boolean | Prisma.WardrobeItemCountOutputTypeDefaultArgs<ExtArgs>;
 };
@@ -1164,10 +1164,10 @@ export type WardrobeItemIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types
 export type $WardrobeItemPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "WardrobeItem";
     objects: {
-        user: Prisma.$UserPayload<ExtArgs>;
-        images: Prisma.$WardrobeImagePayload<ExtArgs>[];
         outfitItems: Prisma.$OutfitItemPayload<ExtArgs>[];
         interactions: Prisma.$UserInteractionPayload<ExtArgs>[];
+        images: Prisma.$WardrobeImagePayload<ExtArgs>[];
+        user: Prisma.$UserPayload<ExtArgs>;
         wearEvents: Prisma.$WearEventPayload<ExtArgs>[];
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1177,25 +1177,25 @@ export type $WardrobeItemPayload<ExtArgs extends runtime.Types.Extensions.Intern
         subcategory: string | null;
         /**
          * * AI-generated structured attributes.
-         *    *
-         *    * Example:
-         *    * {
-         *    *   "colors": ["black"],
-         *    *   "pattern": "solid",
-         *    *   "material": "cotton",
-         *    *   "fit": "oversized",
-         *    *   "styles": ["minimal", "casual"],
-         *    *   "formality": "smart-casual",
-         *    *   "seasons": ["all-season"],
-         *    *   "occasions": ["casual", "date-night"]
-         *    * }
+         * *
+         * * Example:
+         * * {
+         * *   "colors": ["black"],
+         * *   "pattern": "solid",
+         * *   "material": "cotton",
+         * *   "fit": "oversized",
+         * *   "styles": ["minimal", "casual"],
+         * *   "formality": "smart-casual",
+         * *   "seasons": ["all-season"],
+         * *   "occasions": ["casual", "date-night"]
+         * * }
          */
         attributes: runtime.JsonValue;
         /**
          * * Object-storage path.
-         *    *
-         *    * Example:
-         *    * users/<userId>/wardrobe/<itemId>/main.jpg
+         * *
+         * * Example:
+         * * users/<userId>/wardrobe/<itemId>/main.jpg
          */
         primaryImagePath: string | null;
         /**
@@ -1536,10 +1536,10 @@ export interface WardrobeItemDelegate<ExtArgs extends runtime.Types.Extensions.I
  */
 export interface Prisma__WardrobeItemClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
-    user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
-    images<T extends Prisma.WardrobeItem$imagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WardrobeItem$imagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WardrobeImagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     outfitItems<T extends Prisma.WardrobeItem$outfitItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WardrobeItem$outfitItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OutfitItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     interactions<T extends Prisma.WardrobeItem$interactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WardrobeItem$interactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserInteractionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    images<T extends Prisma.WardrobeItem$imagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WardrobeItem$imagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WardrobeImagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     wearEvents<T extends Prisma.WardrobeItem$wearEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WardrobeItem$wearEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WearEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1962,29 +1962,6 @@ export type WardrobeItemDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.
     limit?: number;
 };
 /**
- * WardrobeItem.images
- */
-export type WardrobeItem$imagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the WardrobeImage
-     */
-    select?: Prisma.WardrobeImageSelect<ExtArgs> | null;
-    /**
-     * Omit specific fields from the WardrobeImage
-     */
-    omit?: Prisma.WardrobeImageOmit<ExtArgs> | null;
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: Prisma.WardrobeImageInclude<ExtArgs> | null;
-    where?: Prisma.WardrobeImageWhereInput;
-    orderBy?: Prisma.WardrobeImageOrderByWithRelationInput | Prisma.WardrobeImageOrderByWithRelationInput[];
-    cursor?: Prisma.WardrobeImageWhereUniqueInput;
-    take?: number;
-    skip?: number;
-    distinct?: Prisma.WardrobeImageScalarFieldEnum | Prisma.WardrobeImageScalarFieldEnum[];
-};
-/**
  * WardrobeItem.outfitItems
  */
 export type WardrobeItem$outfitItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2029,6 +2006,29 @@ export type WardrobeItem$interactionsArgs<ExtArgs extends runtime.Types.Extensio
     take?: number;
     skip?: number;
     distinct?: Prisma.UserInteractionScalarFieldEnum | Prisma.UserInteractionScalarFieldEnum[];
+};
+/**
+ * WardrobeItem.images
+ */
+export type WardrobeItem$imagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WardrobeImage
+     */
+    select?: Prisma.WardrobeImageSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the WardrobeImage
+     */
+    omit?: Prisma.WardrobeImageOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.WardrobeImageInclude<ExtArgs> | null;
+    where?: Prisma.WardrobeImageWhereInput;
+    orderBy?: Prisma.WardrobeImageOrderByWithRelationInput | Prisma.WardrobeImageOrderByWithRelationInput[];
+    cursor?: Prisma.WardrobeImageWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.WardrobeImageScalarFieldEnum | Prisma.WardrobeImageScalarFieldEnum[];
 };
 /**
  * WardrobeItem.wearEvents

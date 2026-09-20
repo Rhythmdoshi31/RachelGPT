@@ -220,8 +220,8 @@ export type SavedProductWhereInput = {
     currency?: Prisma.StringNullableFilter<"SavedProduct"> | string | null;
     productData?: Prisma.JsonNullableFilter<"SavedProduct">;
     createdAt?: Prisma.DateTimeFilter<"SavedProduct"> | Date | string;
-    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
     shoppingSearch?: Prisma.XOR<Prisma.ShoppingSearchNullableScalarRelationFilter, Prisma.ShoppingSearchWhereInput> | null;
+    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
 };
 export type SavedProductOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -236,8 +236,8 @@ export type SavedProductOrderByWithRelationInput = {
     currency?: Prisma.SortOrderInput | Prisma.SortOrder;
     productData?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
-    user?: Prisma.UserOrderByWithRelationInput;
     shoppingSearch?: Prisma.ShoppingSearchOrderByWithRelationInput;
+    user?: Prisma.UserOrderByWithRelationInput;
 };
 export type SavedProductWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -255,8 +255,8 @@ export type SavedProductWhereUniqueInput = Prisma.AtLeast<{
     currency?: Prisma.StringNullableFilter<"SavedProduct"> | string | null;
     productData?: Prisma.JsonNullableFilter<"SavedProduct">;
     createdAt?: Prisma.DateTimeFilter<"SavedProduct"> | Date | string;
-    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
     shoppingSearch?: Prisma.XOR<Prisma.ShoppingSearchNullableScalarRelationFilter, Prisma.ShoppingSearchWhereInput> | null;
+    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
 }, "id">;
 export type SavedProductOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -305,8 +305,8 @@ export type SavedProductCreateInput = {
     currency?: string | null;
     productData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Date | string;
-    user: Prisma.UserCreateNestedOneWithoutSavedProductsInput;
     shoppingSearch?: Prisma.ShoppingSearchCreateNestedOneWithoutSavedProductsInput;
+    user: Prisma.UserCreateNestedOneWithoutSavedProductsInput;
 };
 export type SavedProductUncheckedCreateInput = {
     id?: string;
@@ -333,8 +333,8 @@ export type SavedProductUpdateInput = {
     currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     productData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    user?: Prisma.UserUpdateOneRequiredWithoutSavedProductsNestedInput;
     shoppingSearch?: Prisma.ShoppingSearchUpdateOneWithoutSavedProductsNestedInput;
+    user?: Prisma.UserUpdateOneRequiredWithoutSavedProductsNestedInput;
 };
 export type SavedProductUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -748,8 +748,8 @@ export type SavedProductSelect<ExtArgs extends runtime.Types.Extensions.Internal
     currency?: boolean;
     productData?: boolean;
     createdAt?: boolean;
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     shoppingSearch?: boolean | Prisma.SavedProduct$shoppingSearchArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["savedProduct"]>;
 export type SavedProductSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -764,8 +764,8 @@ export type SavedProductSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
     currency?: boolean;
     productData?: boolean;
     createdAt?: boolean;
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     shoppingSearch?: boolean | Prisma.SavedProduct$shoppingSearchArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["savedProduct"]>;
 export type SavedProductSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -780,8 +780,8 @@ export type SavedProductSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
     currency?: boolean;
     productData?: boolean;
     createdAt?: boolean;
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     shoppingSearch?: boolean | Prisma.SavedProduct$shoppingSearchArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["savedProduct"]>;
 export type SavedProductSelectScalar = {
     id?: boolean;
@@ -799,22 +799,22 @@ export type SavedProductSelectScalar = {
 };
 export type SavedProductOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "shoppingSearchId" | "externalProductId" | "name" | "brand" | "url" | "imageUrl" | "price" | "currency" | "productData" | "createdAt", ExtArgs["result"]["savedProduct"]>;
 export type SavedProductInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     shoppingSearch?: boolean | Prisma.SavedProduct$shoppingSearchArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 };
 export type SavedProductIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     shoppingSearch?: boolean | Prisma.SavedProduct$shoppingSearchArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 };
 export type SavedProductIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     shoppingSearch?: boolean | Prisma.SavedProduct$shoppingSearchArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 };
 export type $SavedProductPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "SavedProduct";
     objects: {
-        user: Prisma.$UserPayload<ExtArgs>;
         shoppingSearch: Prisma.$ShoppingSearchPayload<ExtArgs> | null;
+        user: Prisma.$UserPayload<ExtArgs>;
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -832,8 +832,8 @@ export type $SavedProductPayload<ExtArgs extends runtime.Types.Extensions.Intern
         currency: string | null;
         /**
          * * Store the relevant product snapshot so
-         *    * the saved product doesn't depend entirely
-         *    * on the external API remaining unchanged.
+         * * the saved product doesn't depend entirely
+         * * on the external API remaining unchanged.
          */
         productData: runtime.JsonValue | null;
         createdAt: Date;
@@ -1166,8 +1166,8 @@ export interface SavedProductDelegate<ExtArgs extends runtime.Types.Extensions.I
  */
 export interface Prisma__SavedProductClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
-    user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     shoppingSearch<T extends Prisma.SavedProduct$shoppingSearchArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SavedProduct$shoppingSearchArgs<ExtArgs>>): Prisma.Prisma__ShoppingSearchClient<runtime.Types.Result.GetResult<Prisma.$ShoppingSearchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.

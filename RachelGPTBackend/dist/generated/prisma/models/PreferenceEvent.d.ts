@@ -583,20 +583,20 @@ export type $PreferenceEventPayload<ExtArgs extends runtime.Types.Extensions.Int
         userId: string;
         /**
          * * Example:
-         *    *
-         *    * preference: "shoe_type"
-         *    * value: "heels"
-         *    * sentiment: "negative"
+         * *
+         * * preference: "shoe_type"
+         * * value: "heels"
+         * * sentiment: "negative"
          */
         preference: string;
         value: runtime.JsonValue;
         sentiment: string | null;
         /**
          * * EXPLICIT
-         *    * REJECTION
-         *    * SELECTION
-         *    * WEAR
-         *    * CONVERSATION
+         * * REJECTION
+         * * SELECTION
+         * * WEAR
+         * * CONVERSATION
          */
         source: string | null;
         /**
@@ -605,7 +605,7 @@ export type $PreferenceEventPayload<ExtArgs extends runtime.Types.Extensions.Int
         confidence: number | null;
         /**
          * * Whether this event has contributed to
-         *    * the user's current style profile.
+         * * the user's current style profile.
          */
         appliedToProfile: boolean;
         createdAt: Date;

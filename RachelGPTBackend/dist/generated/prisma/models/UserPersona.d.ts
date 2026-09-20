@@ -138,8 +138,8 @@ export type UserPersonaWhereInput = {
     personaId?: Prisma.StringFilter<"UserPersona"> | string;
     isActive?: Prisma.BoolFilter<"UserPersona"> | boolean;
     selectedAt?: Prisma.DateTimeFilter<"UserPersona"> | Date | string;
-    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
     persona?: Prisma.XOR<Prisma.PersonaScalarRelationFilter, Prisma.PersonaWhereInput>;
+    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
 };
 export type UserPersonaOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -147,8 +147,8 @@ export type UserPersonaOrderByWithRelationInput = {
     personaId?: Prisma.SortOrder;
     isActive?: Prisma.SortOrder;
     selectedAt?: Prisma.SortOrder;
-    user?: Prisma.UserOrderByWithRelationInput;
     persona?: Prisma.PersonaOrderByWithRelationInput;
+    user?: Prisma.UserOrderByWithRelationInput;
 };
 export type UserPersonaWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -160,8 +160,8 @@ export type UserPersonaWhereUniqueInput = Prisma.AtLeast<{
     personaId?: Prisma.StringFilter<"UserPersona"> | string;
     isActive?: Prisma.BoolFilter<"UserPersona"> | boolean;
     selectedAt?: Prisma.DateTimeFilter<"UserPersona"> | Date | string;
-    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
     persona?: Prisma.XOR<Prisma.PersonaScalarRelationFilter, Prisma.PersonaWhereInput>;
+    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
 }, "id" | "userId_personaId">;
 export type UserPersonaOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -187,8 +187,8 @@ export type UserPersonaCreateInput = {
     id?: string;
     isActive?: boolean;
     selectedAt?: Date | string;
-    user: Prisma.UserCreateNestedOneWithoutPersonasInput;
     persona: Prisma.PersonaCreateNestedOneWithoutUsersInput;
+    user: Prisma.UserCreateNestedOneWithoutPersonasInput;
 };
 export type UserPersonaUncheckedCreateInput = {
     id?: string;
@@ -201,8 +201,8 @@ export type UserPersonaUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     selectedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    user?: Prisma.UserUpdateOneRequiredWithoutPersonasNestedInput;
     persona?: Prisma.PersonaUpdateOneRequiredWithoutUsersNestedInput;
+    user?: Prisma.UserUpdateOneRequiredWithoutPersonasNestedInput;
 };
 export type UserPersonaUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -472,8 +472,8 @@ export type UserPersonaSelect<ExtArgs extends runtime.Types.Extensions.InternalA
     personaId?: boolean;
     isActive?: boolean;
     selectedAt?: boolean;
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     persona?: boolean | Prisma.PersonaDefaultArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["userPersona"]>;
 export type UserPersonaSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -481,8 +481,8 @@ export type UserPersonaSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
     personaId?: boolean;
     isActive?: boolean;
     selectedAt?: boolean;
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     persona?: boolean | Prisma.PersonaDefaultArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["userPersona"]>;
 export type UserPersonaSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -490,8 +490,8 @@ export type UserPersonaSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
     personaId?: boolean;
     isActive?: boolean;
     selectedAt?: boolean;
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     persona?: boolean | Prisma.PersonaDefaultArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["userPersona"]>;
 export type UserPersonaSelectScalar = {
     id?: boolean;
@@ -502,22 +502,22 @@ export type UserPersonaSelectScalar = {
 };
 export type UserPersonaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "personaId" | "isActive" | "selectedAt", ExtArgs["result"]["userPersona"]>;
 export type UserPersonaInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     persona?: boolean | Prisma.PersonaDefaultArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 };
 export type UserPersonaIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     persona?: boolean | Prisma.PersonaDefaultArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 };
 export type UserPersonaIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     persona?: boolean | Prisma.PersonaDefaultArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 };
 export type $UserPersonaPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "UserPersona";
     objects: {
-        user: Prisma.$UserPayload<ExtArgs>;
         persona: Prisma.$PersonaPayload<ExtArgs>;
+        user: Prisma.$UserPayload<ExtArgs>;
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -854,8 +854,8 @@ export interface UserPersonaDelegate<ExtArgs extends runtime.Types.Extensions.In
  */
 export interface Prisma__UserPersonaClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
-    user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     persona<T extends Prisma.PersonaDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PersonaDefaultArgs<ExtArgs>>): Prisma.Prisma__PersonaClient<runtime.Types.Result.GetResult<Prisma.$PersonaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.

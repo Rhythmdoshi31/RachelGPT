@@ -1,0 +1,465 @@
+{
+  "preferences": {
+    "preferredColors": [
+      "black",
+      "white",
+      "grey",
+      "charcoal",
+      "navy",
+      "royal blue",
+      "sky blue",
+      "light blue",
+      "teal",
+      "turquoise",
+      "green",
+      "olive",
+      "sage",
+      "forest green",
+      "mint",
+      "brown",
+      "dark brown",
+      "camel",
+      "tan",
+      "beige",
+      "cream",
+      "ivory",
+      "off-white",
+      "khaki",
+      "mustard",
+      "yellow",
+      "orange",
+      "rust",
+      "red",
+      "maroon",
+      "burgundy",
+      "pink",
+      "blush",
+      "purple",
+      "lavender"
+    ],
+
+    "avoidedColors": [
+      "neon green",
+      "neon yellow",
+      "neon orange",
+      "neon pink",
+      "neon blue",
+      "bright red",
+      "bright yellow",
+      "bright orange",
+      "lime green",
+      "fluorescent colors",
+      "pastel colors",
+      "earth tones",
+      "dark colors",
+      "light colors"
+    ],
+
+    "preferredFits": [
+      "slim",
+      "fitted",
+      "regular",
+      "straight",
+      "relaxed",
+      "oversized",
+      "loose",
+      "boxy",
+      "tailored",
+      "athletic",
+      "tapered",
+      "wide-leg",
+      "bootcut"
+    ],
+
+    "avoidedFits": [
+      "very tight",
+      "tight",
+      "skinny",
+      "very loose",
+      "oversized",
+      "baggy",
+      "boxy",
+      "cropped",
+      "low-rise",
+      "high-rise"
+    ],
+
+    "preferredStyles": [
+      "minimal",
+      "classic",
+      "casual",
+      "smart-casual",
+      "formal",
+      "business-casual",
+      "streetwear",
+      "street-style",
+      "sporty",
+      "athleisure",
+      "preppy",
+      "old-money",
+      "quiet luxury",
+      "luxury",
+      "modern",
+      "contemporary",
+      "clean",
+      "polished",
+      "effortless",
+      "elegant",
+      "sophisticated",
+      "edgy",
+      "grunge",
+      "vintage",
+      "retro",
+      "bohemian",
+      "artsy",
+      "minimalist",
+      "monochrome",
+      "experimental",
+      "trendy",
+      "y2k",
+      "korean",
+      "japanese",
+      "indie",
+      "resort",
+      "preppy-casual"
+    ],
+
+    "shoePreferences": [
+      "sneakers",
+      "running shoes",
+      "trainers",
+      "chunky sneakers",
+      "minimal sneakers",
+      "high-top sneakers",
+      "low-top sneakers",
+      "loafers",
+      "penny loafers",
+      "tassel loafers",
+      "derby shoes",
+      "oxford shoes",
+      "formal shoes",
+      "chelsea boots",
+      "ankle boots",
+      "combat boots",
+      "desert boots",
+      "chukka boots",
+      "sandals",
+      "slides",
+      "flip flops",
+      "mules",
+      "slip-ons",
+      "espadrilles",
+      "dress shoes"
+    ],
+
+    "comfortPriority": [
+      "low",
+      "medium",
+      "high"
+    ],
+
+    "patternPreferences": [
+      "solid",
+      "stripes",
+      "checks",
+      "plaid",
+      "floral",
+      "geometric",
+      "abstract",
+      "graphic",
+      "camouflage",
+      "polka dots",
+      "subtle patterns",
+      "bold patterns"
+    ],
+
+    "patternAvoidances": [
+      "stripes",
+      "checks",
+      "plaid",
+      "floral",
+      "geometric",
+      "abstract",
+      "graphic",
+      "camouflage",
+      "polka dots",
+      "bold patterns",
+      "large prints"
+    ],
+
+    "fabricPreferences": [
+      "cotton",
+      "linen",
+      "denim",
+      "wool",
+      "cashmere",
+      "leather",
+      "suede",
+      "corduroy",
+      "silk",
+      "satin",
+      "knit",
+      "jersey",
+      "fleece",
+      "performance fabric",
+      "breathable fabrics",
+      "stretch fabrics"
+    ],
+
+    "fabricAvoidances": [
+      "wool",
+      "leather",
+      "suede",
+      "synthetic fabrics",
+      "heavy fabrics",
+      "rough fabrics",
+      "stiff fabrics",
+      "non-stretch fabrics"
+    ]
+  },
+
+  "experimentingWith": {
+    "styles": [
+      "layering",
+      "oversized",
+      "streetwear",
+      "minimalism",
+      "smart-casual",
+      "formalwear",
+      "athleisure",
+      "vintage",
+      "retro",
+      "preppy",
+      "old-money",
+      "quiet luxury",
+      "monochrome",
+      "workwear",
+      "utility",
+      "experimental fashion",
+      "androgynous styling"
+    ],
+
+    "colors": [
+      "olive",
+      "burgundy",
+      "mustard",
+      "rust",
+      "lavender",
+      "pastel blue",
+      "sage",
+      "teal",
+      "terracotta",
+      "maroon",
+      "pink",
+      "purple",
+      "orange",
+      "yellow"
+    ],
+
+    "fits": [
+      "oversized",
+      "relaxed",
+      "wide-leg",
+      "cropped",
+      "boxy",
+      "tapered",
+      "layered",
+      "tailored"
+    ],
+
+    "patterns": [
+      "stripes",
+      "checks",
+      "plaid",
+      "floral",
+      "geometric",
+      "abstract",
+      "graphic prints",
+      "animal prints"
+    ],
+
+    "pieces": [
+      "oversized shirts",
+      "wide-leg trousers",
+      "baggy jeans",
+      "cropped jackets",
+      "blazers",
+      "vests",
+      "cardigans",
+      "turtlenecks",
+      "boots",
+      "loafers",
+      "statement sneakers",
+      "statement jackets",
+      "layered necklaces",
+      "rings",
+      "crossbody bags"
+    ]
+  },
+
+  "lifestyle": {
+    "work": [
+      "remote",
+      "office",
+      "hybrid",
+      "student",
+      "freelancer",
+      "business owner",
+      "field work",
+      "creative work",
+      "corporate",
+      "professional",
+      "casual workplace"
+    ],
+
+    "social": [
+      "rarely",
+      "occasionally",
+      "sometimes",
+      "frequently",
+      "very frequently"
+    ],
+
+    "travel": [
+      "rarely",
+      "occasionally",
+      "sometimes",
+      "frequently",
+      "very frequently"
+    ],
+
+    "activityLevel": [
+      "mostly sedentary",
+      "lightly active",
+      "moderately active",
+      "very active"
+    ],
+
+    "climate": [
+      "hot",
+      "warm",
+      "mild",
+      "cool",
+      "cold",
+      "humid",
+      "dry",
+      "variable"
+    ],
+
+    "dailyEnvironment": [
+      "mostly indoors",
+      "mostly outdoors",
+      "mixed indoor and outdoor"
+    ],
+
+    "fashionPriority": [
+      "comfort first",
+      "balanced comfort and style",
+      "style first"
+    ]
+  },
+
+  "occasions": {
+    "work": true,
+    "casual": true,
+    "dates": true,
+    "parties": true,
+    "formal": true,
+    "weddings": true,
+    "festivals": true,
+    "travel": true,
+    "college": true,
+    "interviews": true,
+    "business": true,
+    "dinners": true,
+    "night_out": true,
+    "brunch": true,
+    "gym": true,
+    "beach": true,
+    "vacation": true,
+    "family_events": true,
+    "religious_events": true
+  },
+
+  "desiredAppearance": {
+    "vibes": [
+      "clean",
+      "confident",
+      "effortless",
+      "polished",
+      "elegant",
+      "sophisticated",
+      "masculine",
+      "feminine",
+      "androgynous",
+      "relaxed",
+      "approachable",
+      "professional",
+      "powerful",
+      "creative",
+      "edgy",
+      "trendy",
+      "fashion-forward",
+      "minimal",
+      "luxurious",
+      "youthful",
+      "mature",
+      "sporty",
+      "casual",
+      "cool",
+      "refined",
+      "playful",
+      "mysterious",
+      "romantic",
+      "bold",
+      "understated"
+    ],
+
+    "goals": [
+      "look more put together",
+      "look more confident",
+      "look more attractive",
+      "look more professional",
+      "look more mature",
+      "look younger",
+      "look taller",
+      "look slimmer",
+      "look broader",
+      "look more relaxed",
+      "develop a personal style",
+      "dress better for work",
+      "dress better for dates",
+      "dress better for social events",
+      "build a versatile wardrobe",
+      "experiment with fashion",
+      "stop repeating the same outfits",
+      "make better use of existing clothes"
+    ],
+
+    "styleDirection": [
+      "minimal",
+      "classic",
+      "modern",
+      "trendy",
+      "luxurious",
+      "casual",
+      "formal",
+      "streetwear",
+      "smart-casual",
+      "experimental",
+      "timeless",
+      "fashion-forward"
+    ]
+  },
+
+  "summaryExamples": [
+    "Prefers clean, minimal and polished outfits with relaxed fits and high comfort.",
+    "Likes classic and timeless clothing with neutral colors and tailored fits.",
+    "Prefers casual streetwear with oversized silhouettes, sneakers and darker colors.",
+    "Likes smart-casual outfits that look polished without feeling too formal.",
+    "Prefers comfortable everyday clothing with simple colors and minimal patterns.",
+    "Enjoys experimenting with colors, layering and contemporary silhouettes.",
+    "Likes elegant and sophisticated outfits with a quiet-luxury aesthetic.",
+    "Prefers sporty and functional clothing with an athleisure influence."
+  ]
+}

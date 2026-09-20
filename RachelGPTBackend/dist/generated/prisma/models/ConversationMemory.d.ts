@@ -150,8 +150,8 @@ export type ConversationMemoryWhereInput = {
     state?: Prisma.JsonNullableFilter<"ConversationMemory">;
     updatedAt?: Prisma.DateTimeFilter<"ConversationMemory"> | Date | string;
     createdAt?: Prisma.DateTimeFilter<"ConversationMemory"> | Date | string;
-    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
     conversation?: Prisma.XOR<Prisma.ConversationScalarRelationFilter, Prisma.ConversationWhereInput>;
+    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
 };
 export type ConversationMemoryOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -161,8 +161,8 @@ export type ConversationMemoryOrderByWithRelationInput = {
     state?: Prisma.SortOrderInput | Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
-    user?: Prisma.UserOrderByWithRelationInput;
     conversation?: Prisma.ConversationOrderByWithRelationInput;
+    user?: Prisma.UserOrderByWithRelationInput;
 };
 export type ConversationMemoryWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -175,8 +175,8 @@ export type ConversationMemoryWhereUniqueInput = Prisma.AtLeast<{
     state?: Prisma.JsonNullableFilter<"ConversationMemory">;
     updatedAt?: Prisma.DateTimeFilter<"ConversationMemory"> | Date | string;
     createdAt?: Prisma.DateTimeFilter<"ConversationMemory"> | Date | string;
-    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
     conversation?: Prisma.XOR<Prisma.ConversationScalarRelationFilter, Prisma.ConversationWhereInput>;
+    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
 }, "id" | "conversationId">;
 export type ConversationMemoryOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -208,8 +208,8 @@ export type ConversationMemoryCreateInput = {
     state?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     updatedAt?: Date | string;
     createdAt?: Date | string;
-    user: Prisma.UserCreateNestedOneWithoutConversationMemoriesInput;
     conversation: Prisma.ConversationCreateNestedOneWithoutMemoryInput;
+    user: Prisma.UserCreateNestedOneWithoutConversationMemoriesInput;
 };
 export type ConversationMemoryUncheckedCreateInput = {
     id?: string;
@@ -226,8 +226,8 @@ export type ConversationMemoryUpdateInput = {
     state?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    user?: Prisma.UserUpdateOneRequiredWithoutConversationMemoriesNestedInput;
     conversation?: Prisma.ConversationUpdateOneRequiredWithoutMemoryNestedInput;
+    user?: Prisma.UserUpdateOneRequiredWithoutConversationMemoriesNestedInput;
 };
 export type ConversationMemoryUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -500,8 +500,8 @@ export type ConversationMemorySelect<ExtArgs extends runtime.Types.Extensions.In
     state?: boolean;
     updatedAt?: boolean;
     createdAt?: boolean;
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     conversation?: boolean | Prisma.ConversationDefaultArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["conversationMemory"]>;
 export type ConversationMemorySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -511,8 +511,8 @@ export type ConversationMemorySelectCreateManyAndReturn<ExtArgs extends runtime.
     state?: boolean;
     updatedAt?: boolean;
     createdAt?: boolean;
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     conversation?: boolean | Prisma.ConversationDefaultArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["conversationMemory"]>;
 export type ConversationMemorySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -522,8 +522,8 @@ export type ConversationMemorySelectUpdateManyAndReturn<ExtArgs extends runtime.
     state?: boolean;
     updatedAt?: boolean;
     createdAt?: boolean;
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     conversation?: boolean | Prisma.ConversationDefaultArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["conversationMemory"]>;
 export type ConversationMemorySelectScalar = {
     id?: boolean;
@@ -536,22 +536,22 @@ export type ConversationMemorySelectScalar = {
 };
 export type ConversationMemoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "conversationId" | "summary" | "state" | "updatedAt" | "createdAt", ExtArgs["result"]["conversationMemory"]>;
 export type ConversationMemoryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     conversation?: boolean | Prisma.ConversationDefaultArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 };
 export type ConversationMemoryIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     conversation?: boolean | Prisma.ConversationDefaultArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 };
 export type ConversationMemoryIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     conversation?: boolean | Prisma.ConversationDefaultArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 };
 export type $ConversationMemoryPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "ConversationMemory";
     objects: {
-        user: Prisma.$UserPayload<ExtArgs>;
         conversation: Prisma.$ConversationPayload<ExtArgs>;
+        user: Prisma.$UserPayload<ExtArgs>;
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -563,13 +563,13 @@ export type $ConversationMemoryPayload<ExtArgs extends runtime.Types.Extensions.
         summary: string | null;
         /**
          * * Current temporary context.
-         *    *
-         *    * Example:
-         *    * {
-         *    *   "occasion": "date-night",
-         *    *   "avoid": ["heels"],
-         *    *   "weather": "rainy"
-         *    * }
+         * *
+         * * Example:
+         * * {
+         * *   "occasion": "date-night",
+         * *   "avoid": ["heels"],
+         * *   "weather": "rainy"
+         * * }
          */
         state: runtime.JsonValue | null;
         updatedAt: Date;
@@ -903,8 +903,8 @@ export interface ConversationMemoryDelegate<ExtArgs extends runtime.Types.Extens
  */
 export interface Prisma__ConversationMemoryClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
-    user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     conversation<T extends Prisma.ConversationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ConversationDefaultArgs<ExtArgs>>): Prisma.Prisma__ConversationClient<runtime.Types.Result.GetResult<Prisma.$ConversationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.

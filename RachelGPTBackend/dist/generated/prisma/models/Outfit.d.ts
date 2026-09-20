@@ -963,11 +963,11 @@ export type $OutfitPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
         metadata: runtime.JsonValue | null;
         /**
          * * Where this outfit came from:
-         *    *
-         *    * RACHEL
-         *    * INSPIRATION
-         *    * USER_CREATED
-         *    * etc.
+         * *
+         * * RACHEL
+         * * INSPIRATION
+         * * USER_CREATED
+         * * etc.
          */
         source: string | null;
         isSaved: boolean;

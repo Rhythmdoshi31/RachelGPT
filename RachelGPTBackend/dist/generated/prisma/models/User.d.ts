@@ -146,24 +146,24 @@ export type UserWhereInput = {
     avatarUrl?: Prisma.StringNullableFilter<"User"> | string | null;
     createdAt?: Prisma.DateTimeFilter<"User"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string;
-    personas?: Prisma.UserPersonaListRelationFilter;
-    styleProfile?: Prisma.XOR<Prisma.UserStyleProfileNullableScalarRelationFilter, Prisma.UserStyleProfileWhereInput> | null;
-    preferenceEvents?: Prisma.PreferenceEventListRelationFilter;
-    wardrobeItems?: Prisma.WardrobeItemListRelationFilter;
-    wardrobeImages?: Prisma.WardrobeImageListRelationFilter;
-    outfits?: Prisma.OutfitListRelationFilter;
-    outfitItems?: Prisma.OutfitItemListRelationFilter;
-    interactions?: Prisma.UserInteractionListRelationFilter;
-    wearEvents?: Prisma.WearEventListRelationFilter;
+    avatar?: Prisma.XOR<Prisma.AvatarNullableScalarRelationFilter, Prisma.AvatarWhereInput> | null;
     conversations?: Prisma.ConversationListRelationFilter;
-    messages?: Prisma.MessageListRelationFilter;
     conversationMemories?: Prisma.ConversationMemoryListRelationFilter;
     inspirations?: Prisma.InspirationListRelationFilter;
     inspirationItems?: Prisma.InspirationItemListRelationFilter;
-    shoppingSearches?: Prisma.ShoppingSearchListRelationFilter;
+    messages?: Prisma.MessageListRelationFilter;
+    outfits?: Prisma.OutfitListRelationFilter;
+    outfitItems?: Prisma.OutfitItemListRelationFilter;
+    preferenceEvents?: Prisma.PreferenceEventListRelationFilter;
     savedProducts?: Prisma.SavedProductListRelationFilter;
-    avatar?: Prisma.XOR<Prisma.AvatarNullableScalarRelationFilter, Prisma.AvatarWhereInput> | null;
+    shoppingSearches?: Prisma.ShoppingSearchListRelationFilter;
     subscriptions?: Prisma.SubscriptionListRelationFilter;
+    interactions?: Prisma.UserInteractionListRelationFilter;
+    personas?: Prisma.UserPersonaListRelationFilter;
+    styleProfile?: Prisma.XOR<Prisma.UserStyleProfileNullableScalarRelationFilter, Prisma.UserStyleProfileWhereInput> | null;
+    wardrobeImages?: Prisma.WardrobeImageListRelationFilter;
+    wardrobeItems?: Prisma.WardrobeItemListRelationFilter;
+    wearEvents?: Prisma.WearEventListRelationFilter;
 };
 export type UserOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -172,24 +172,24 @@ export type UserOrderByWithRelationInput = {
     avatarUrl?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
-    personas?: Prisma.UserPersonaOrderByRelationAggregateInput;
-    styleProfile?: Prisma.UserStyleProfileOrderByWithRelationInput;
-    preferenceEvents?: Prisma.PreferenceEventOrderByRelationAggregateInput;
-    wardrobeItems?: Prisma.WardrobeItemOrderByRelationAggregateInput;
-    wardrobeImages?: Prisma.WardrobeImageOrderByRelationAggregateInput;
-    outfits?: Prisma.OutfitOrderByRelationAggregateInput;
-    outfitItems?: Prisma.OutfitItemOrderByRelationAggregateInput;
-    interactions?: Prisma.UserInteractionOrderByRelationAggregateInput;
-    wearEvents?: Prisma.WearEventOrderByRelationAggregateInput;
+    avatar?: Prisma.AvatarOrderByWithRelationInput;
     conversations?: Prisma.ConversationOrderByRelationAggregateInput;
-    messages?: Prisma.MessageOrderByRelationAggregateInput;
     conversationMemories?: Prisma.ConversationMemoryOrderByRelationAggregateInput;
     inspirations?: Prisma.InspirationOrderByRelationAggregateInput;
     inspirationItems?: Prisma.InspirationItemOrderByRelationAggregateInput;
-    shoppingSearches?: Prisma.ShoppingSearchOrderByRelationAggregateInput;
+    messages?: Prisma.MessageOrderByRelationAggregateInput;
+    outfits?: Prisma.OutfitOrderByRelationAggregateInput;
+    outfitItems?: Prisma.OutfitItemOrderByRelationAggregateInput;
+    preferenceEvents?: Prisma.PreferenceEventOrderByRelationAggregateInput;
     savedProducts?: Prisma.SavedProductOrderByRelationAggregateInput;
-    avatar?: Prisma.AvatarOrderByWithRelationInput;
+    shoppingSearches?: Prisma.ShoppingSearchOrderByRelationAggregateInput;
     subscriptions?: Prisma.SubscriptionOrderByRelationAggregateInput;
+    interactions?: Prisma.UserInteractionOrderByRelationAggregateInput;
+    personas?: Prisma.UserPersonaOrderByRelationAggregateInput;
+    styleProfile?: Prisma.UserStyleProfileOrderByWithRelationInput;
+    wardrobeImages?: Prisma.WardrobeImageOrderByRelationAggregateInput;
+    wardrobeItems?: Prisma.WardrobeItemOrderByRelationAggregateInput;
+    wearEvents?: Prisma.WearEventOrderByRelationAggregateInput;
 };
 export type UserWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -201,24 +201,24 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
     avatarUrl?: Prisma.StringNullableFilter<"User"> | string | null;
     createdAt?: Prisma.DateTimeFilter<"User"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string;
-    personas?: Prisma.UserPersonaListRelationFilter;
-    styleProfile?: Prisma.XOR<Prisma.UserStyleProfileNullableScalarRelationFilter, Prisma.UserStyleProfileWhereInput> | null;
-    preferenceEvents?: Prisma.PreferenceEventListRelationFilter;
-    wardrobeItems?: Prisma.WardrobeItemListRelationFilter;
-    wardrobeImages?: Prisma.WardrobeImageListRelationFilter;
-    outfits?: Prisma.OutfitListRelationFilter;
-    outfitItems?: Prisma.OutfitItemListRelationFilter;
-    interactions?: Prisma.UserInteractionListRelationFilter;
-    wearEvents?: Prisma.WearEventListRelationFilter;
+    avatar?: Prisma.XOR<Prisma.AvatarNullableScalarRelationFilter, Prisma.AvatarWhereInput> | null;
     conversations?: Prisma.ConversationListRelationFilter;
-    messages?: Prisma.MessageListRelationFilter;
     conversationMemories?: Prisma.ConversationMemoryListRelationFilter;
     inspirations?: Prisma.InspirationListRelationFilter;
     inspirationItems?: Prisma.InspirationItemListRelationFilter;
-    shoppingSearches?: Prisma.ShoppingSearchListRelationFilter;
+    messages?: Prisma.MessageListRelationFilter;
+    outfits?: Prisma.OutfitListRelationFilter;
+    outfitItems?: Prisma.OutfitItemListRelationFilter;
+    preferenceEvents?: Prisma.PreferenceEventListRelationFilter;
     savedProducts?: Prisma.SavedProductListRelationFilter;
-    avatar?: Prisma.XOR<Prisma.AvatarNullableScalarRelationFilter, Prisma.AvatarWhereInput> | null;
+    shoppingSearches?: Prisma.ShoppingSearchListRelationFilter;
     subscriptions?: Prisma.SubscriptionListRelationFilter;
+    interactions?: Prisma.UserInteractionListRelationFilter;
+    personas?: Prisma.UserPersonaListRelationFilter;
+    styleProfile?: Prisma.XOR<Prisma.UserStyleProfileNullableScalarRelationFilter, Prisma.UserStyleProfileWhereInput> | null;
+    wardrobeImages?: Prisma.WardrobeImageListRelationFilter;
+    wardrobeItems?: Prisma.WardrobeItemListRelationFilter;
+    wearEvents?: Prisma.WearEventListRelationFilter;
 }, "id" | "email">;
 export type UserOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -249,24 +249,24 @@ export type UserCreateInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    personas?: Prisma.UserPersonaCreateNestedManyWithoutUserInput;
-    styleProfile?: Prisma.UserStyleProfileCreateNestedOneWithoutUserInput;
-    preferenceEvents?: Prisma.PreferenceEventCreateNestedManyWithoutUserInput;
-    wardrobeItems?: Prisma.WardrobeItemCreateNestedManyWithoutUserInput;
-    wardrobeImages?: Prisma.WardrobeImageCreateNestedManyWithoutUserInput;
-    outfits?: Prisma.OutfitCreateNestedManyWithoutUserInput;
-    outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutUserInput;
-    interactions?: Prisma.UserInteractionCreateNestedManyWithoutUserInput;
-    wearEvents?: Prisma.WearEventCreateNestedManyWithoutUserInput;
+    avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput;
-    messages?: Prisma.MessageCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationCreateNestedManyWithoutUserInput;
     inspirationItems?: Prisma.InspirationItemCreateNestedManyWithoutUserInput;
-    shoppingSearches?: Prisma.ShoppingSearchCreateNestedManyWithoutUserInput;
+    messages?: Prisma.MessageCreateNestedManyWithoutUserInput;
+    outfits?: Prisma.OutfitCreateNestedManyWithoutUserInput;
+    outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutUserInput;
+    preferenceEvents?: Prisma.PreferenceEventCreateNestedManyWithoutUserInput;
     savedProducts?: Prisma.SavedProductCreateNestedManyWithoutUserInput;
-    avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
+    shoppingSearches?: Prisma.ShoppingSearchCreateNestedManyWithoutUserInput;
     subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput;
+    interactions?: Prisma.UserInteractionCreateNestedManyWithoutUserInput;
+    personas?: Prisma.UserPersonaCreateNestedManyWithoutUserInput;
+    styleProfile?: Prisma.UserStyleProfileCreateNestedOneWithoutUserInput;
+    wardrobeImages?: Prisma.WardrobeImageCreateNestedManyWithoutUserInput;
+    wardrobeItems?: Prisma.WardrobeItemCreateNestedManyWithoutUserInput;
+    wearEvents?: Prisma.WearEventCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateInput = {
     id: string;
@@ -275,24 +275,24 @@ export type UserUncheckedCreateInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    personas?: Prisma.UserPersonaUncheckedCreateNestedManyWithoutUserInput;
-    styleProfile?: Prisma.UserStyleProfileUncheckedCreateNestedOneWithoutUserInput;
-    preferenceEvents?: Prisma.PreferenceEventUncheckedCreateNestedManyWithoutUserInput;
-    wardrobeItems?: Prisma.WardrobeItemUncheckedCreateNestedManyWithoutUserInput;
-    wardrobeImages?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutUserInput;
-    outfits?: Prisma.OutfitUncheckedCreateNestedManyWithoutUserInput;
-    outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutUserInput;
-    interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutUserInput;
-    wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutUserInput;
+    avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput;
-    messages?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationUncheckedCreateNestedManyWithoutUserInput;
     inspirationItems?: Prisma.InspirationItemUncheckedCreateNestedManyWithoutUserInput;
-    shoppingSearches?: Prisma.ShoppingSearchUncheckedCreateNestedManyWithoutUserInput;
+    messages?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput;
+    outfits?: Prisma.OutfitUncheckedCreateNestedManyWithoutUserInput;
+    outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutUserInput;
+    preferenceEvents?: Prisma.PreferenceEventUncheckedCreateNestedManyWithoutUserInput;
     savedProducts?: Prisma.SavedProductUncheckedCreateNestedManyWithoutUserInput;
-    avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
+    shoppingSearches?: Prisma.ShoppingSearchUncheckedCreateNestedManyWithoutUserInput;
     subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput;
+    interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutUserInput;
+    personas?: Prisma.UserPersonaUncheckedCreateNestedManyWithoutUserInput;
+    styleProfile?: Prisma.UserStyleProfileUncheckedCreateNestedOneWithoutUserInput;
+    wardrobeImages?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutUserInput;
+    wardrobeItems?: Prisma.WardrobeItemUncheckedCreateNestedManyWithoutUserInput;
+    wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -301,24 +301,24 @@ export type UserUpdateInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    personas?: Prisma.UserPersonaUpdateManyWithoutUserNestedInput;
-    styleProfile?: Prisma.UserStyleProfileUpdateOneWithoutUserNestedInput;
-    preferenceEvents?: Prisma.PreferenceEventUpdateManyWithoutUserNestedInput;
-    wardrobeItems?: Prisma.WardrobeItemUpdateManyWithoutUserNestedInput;
-    wardrobeImages?: Prisma.WardrobeImageUpdateManyWithoutUserNestedInput;
-    outfits?: Prisma.OutfitUpdateManyWithoutUserNestedInput;
-    outfitItems?: Prisma.OutfitItemUpdateManyWithoutUserNestedInput;
-    interactions?: Prisma.UserInteractionUpdateManyWithoutUserNestedInput;
-    wearEvents?: Prisma.WearEventUpdateManyWithoutUserNestedInput;
+    avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput;
-    messages?: Prisma.MessageUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUpdateManyWithoutUserNestedInput;
     inspirationItems?: Prisma.InspirationItemUpdateManyWithoutUserNestedInput;
-    shoppingSearches?: Prisma.ShoppingSearchUpdateManyWithoutUserNestedInput;
+    messages?: Prisma.MessageUpdateManyWithoutUserNestedInput;
+    outfits?: Prisma.OutfitUpdateManyWithoutUserNestedInput;
+    outfitItems?: Prisma.OutfitItemUpdateManyWithoutUserNestedInput;
+    preferenceEvents?: Prisma.PreferenceEventUpdateManyWithoutUserNestedInput;
     savedProducts?: Prisma.SavedProductUpdateManyWithoutUserNestedInput;
-    avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
+    shoppingSearches?: Prisma.ShoppingSearchUpdateManyWithoutUserNestedInput;
     subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput;
+    interactions?: Prisma.UserInteractionUpdateManyWithoutUserNestedInput;
+    personas?: Prisma.UserPersonaUpdateManyWithoutUserNestedInput;
+    styleProfile?: Prisma.UserStyleProfileUpdateOneWithoutUserNestedInput;
+    wardrobeImages?: Prisma.WardrobeImageUpdateManyWithoutUserNestedInput;
+    wardrobeItems?: Prisma.WardrobeItemUpdateManyWithoutUserNestedInput;
+    wearEvents?: Prisma.WearEventUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -327,24 +327,24 @@ export type UserUncheckedUpdateInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    personas?: Prisma.UserPersonaUncheckedUpdateManyWithoutUserNestedInput;
-    styleProfile?: Prisma.UserStyleProfileUncheckedUpdateOneWithoutUserNestedInput;
-    preferenceEvents?: Prisma.PreferenceEventUncheckedUpdateManyWithoutUserNestedInput;
-    wardrobeItems?: Prisma.WardrobeItemUncheckedUpdateManyWithoutUserNestedInput;
-    wardrobeImages?: Prisma.WardrobeImageUncheckedUpdateManyWithoutUserNestedInput;
-    outfits?: Prisma.OutfitUncheckedUpdateManyWithoutUserNestedInput;
-    outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutUserNestedInput;
-    interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutUserNestedInput;
-    wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutUserNestedInput;
+    avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput;
-    messages?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUncheckedUpdateManyWithoutUserNestedInput;
     inspirationItems?: Prisma.InspirationItemUncheckedUpdateManyWithoutUserNestedInput;
-    shoppingSearches?: Prisma.ShoppingSearchUncheckedUpdateManyWithoutUserNestedInput;
+    messages?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput;
+    outfits?: Prisma.OutfitUncheckedUpdateManyWithoutUserNestedInput;
+    outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutUserNestedInput;
+    preferenceEvents?: Prisma.PreferenceEventUncheckedUpdateManyWithoutUserNestedInput;
     savedProducts?: Prisma.SavedProductUncheckedUpdateManyWithoutUserNestedInput;
-    avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
+    shoppingSearches?: Prisma.ShoppingSearchUncheckedUpdateManyWithoutUserNestedInput;
     subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput;
+    interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutUserNestedInput;
+    personas?: Prisma.UserPersonaUncheckedUpdateManyWithoutUserNestedInput;
+    styleProfile?: Prisma.UserStyleProfileUncheckedUpdateOneWithoutUserNestedInput;
+    wardrobeImages?: Prisma.WardrobeImageUncheckedUpdateManyWithoutUserNestedInput;
+    wardrobeItems?: Prisma.WardrobeItemUncheckedUpdateManyWithoutUserNestedInput;
+    wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateManyInput = {
     id: string;
@@ -630,23 +630,23 @@ export type UserCreateWithoutPersonasInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    styleProfile?: Prisma.UserStyleProfileCreateNestedOneWithoutUserInput;
-    preferenceEvents?: Prisma.PreferenceEventCreateNestedManyWithoutUserInput;
-    wardrobeItems?: Prisma.WardrobeItemCreateNestedManyWithoutUserInput;
-    wardrobeImages?: Prisma.WardrobeImageCreateNestedManyWithoutUserInput;
-    outfits?: Prisma.OutfitCreateNestedManyWithoutUserInput;
-    outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutUserInput;
-    interactions?: Prisma.UserInteractionCreateNestedManyWithoutUserInput;
-    wearEvents?: Prisma.WearEventCreateNestedManyWithoutUserInput;
+    avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput;
-    messages?: Prisma.MessageCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationCreateNestedManyWithoutUserInput;
     inspirationItems?: Prisma.InspirationItemCreateNestedManyWithoutUserInput;
-    shoppingSearches?: Prisma.ShoppingSearchCreateNestedManyWithoutUserInput;
+    messages?: Prisma.MessageCreateNestedManyWithoutUserInput;
+    outfits?: Prisma.OutfitCreateNestedManyWithoutUserInput;
+    outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutUserInput;
+    preferenceEvents?: Prisma.PreferenceEventCreateNestedManyWithoutUserInput;
     savedProducts?: Prisma.SavedProductCreateNestedManyWithoutUserInput;
-    avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
+    shoppingSearches?: Prisma.ShoppingSearchCreateNestedManyWithoutUserInput;
     subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput;
+    interactions?: Prisma.UserInteractionCreateNestedManyWithoutUserInput;
+    styleProfile?: Prisma.UserStyleProfileCreateNestedOneWithoutUserInput;
+    wardrobeImages?: Prisma.WardrobeImageCreateNestedManyWithoutUserInput;
+    wardrobeItems?: Prisma.WardrobeItemCreateNestedManyWithoutUserInput;
+    wearEvents?: Prisma.WearEventCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutPersonasInput = {
     id: string;
@@ -655,23 +655,23 @@ export type UserUncheckedCreateWithoutPersonasInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    styleProfile?: Prisma.UserStyleProfileUncheckedCreateNestedOneWithoutUserInput;
-    preferenceEvents?: Prisma.PreferenceEventUncheckedCreateNestedManyWithoutUserInput;
-    wardrobeItems?: Prisma.WardrobeItemUncheckedCreateNestedManyWithoutUserInput;
-    wardrobeImages?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutUserInput;
-    outfits?: Prisma.OutfitUncheckedCreateNestedManyWithoutUserInput;
-    outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutUserInput;
-    interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutUserInput;
-    wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutUserInput;
+    avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput;
-    messages?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationUncheckedCreateNestedManyWithoutUserInput;
     inspirationItems?: Prisma.InspirationItemUncheckedCreateNestedManyWithoutUserInput;
-    shoppingSearches?: Prisma.ShoppingSearchUncheckedCreateNestedManyWithoutUserInput;
+    messages?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput;
+    outfits?: Prisma.OutfitUncheckedCreateNestedManyWithoutUserInput;
+    outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutUserInput;
+    preferenceEvents?: Prisma.PreferenceEventUncheckedCreateNestedManyWithoutUserInput;
     savedProducts?: Prisma.SavedProductUncheckedCreateNestedManyWithoutUserInput;
-    avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
+    shoppingSearches?: Prisma.ShoppingSearchUncheckedCreateNestedManyWithoutUserInput;
     subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput;
+    interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutUserInput;
+    styleProfile?: Prisma.UserStyleProfileUncheckedCreateNestedOneWithoutUserInput;
+    wardrobeImages?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutUserInput;
+    wardrobeItems?: Prisma.WardrobeItemUncheckedCreateNestedManyWithoutUserInput;
+    wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutPersonasInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -693,23 +693,23 @@ export type UserUpdateWithoutPersonasInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    styleProfile?: Prisma.UserStyleProfileUpdateOneWithoutUserNestedInput;
-    preferenceEvents?: Prisma.PreferenceEventUpdateManyWithoutUserNestedInput;
-    wardrobeItems?: Prisma.WardrobeItemUpdateManyWithoutUserNestedInput;
-    wardrobeImages?: Prisma.WardrobeImageUpdateManyWithoutUserNestedInput;
-    outfits?: Prisma.OutfitUpdateManyWithoutUserNestedInput;
-    outfitItems?: Prisma.OutfitItemUpdateManyWithoutUserNestedInput;
-    interactions?: Prisma.UserInteractionUpdateManyWithoutUserNestedInput;
-    wearEvents?: Prisma.WearEventUpdateManyWithoutUserNestedInput;
+    avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput;
-    messages?: Prisma.MessageUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUpdateManyWithoutUserNestedInput;
     inspirationItems?: Prisma.InspirationItemUpdateManyWithoutUserNestedInput;
-    shoppingSearches?: Prisma.ShoppingSearchUpdateManyWithoutUserNestedInput;
+    messages?: Prisma.MessageUpdateManyWithoutUserNestedInput;
+    outfits?: Prisma.OutfitUpdateManyWithoutUserNestedInput;
+    outfitItems?: Prisma.OutfitItemUpdateManyWithoutUserNestedInput;
+    preferenceEvents?: Prisma.PreferenceEventUpdateManyWithoutUserNestedInput;
     savedProducts?: Prisma.SavedProductUpdateManyWithoutUserNestedInput;
-    avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
+    shoppingSearches?: Prisma.ShoppingSearchUpdateManyWithoutUserNestedInput;
     subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput;
+    interactions?: Prisma.UserInteractionUpdateManyWithoutUserNestedInput;
+    styleProfile?: Prisma.UserStyleProfileUpdateOneWithoutUserNestedInput;
+    wardrobeImages?: Prisma.WardrobeImageUpdateManyWithoutUserNestedInput;
+    wardrobeItems?: Prisma.WardrobeItemUpdateManyWithoutUserNestedInput;
+    wearEvents?: Prisma.WearEventUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutPersonasInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -718,23 +718,23 @@ export type UserUncheckedUpdateWithoutPersonasInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    styleProfile?: Prisma.UserStyleProfileUncheckedUpdateOneWithoutUserNestedInput;
-    preferenceEvents?: Prisma.PreferenceEventUncheckedUpdateManyWithoutUserNestedInput;
-    wardrobeItems?: Prisma.WardrobeItemUncheckedUpdateManyWithoutUserNestedInput;
-    wardrobeImages?: Prisma.WardrobeImageUncheckedUpdateManyWithoutUserNestedInput;
-    outfits?: Prisma.OutfitUncheckedUpdateManyWithoutUserNestedInput;
-    outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutUserNestedInput;
-    interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutUserNestedInput;
-    wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutUserNestedInput;
+    avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput;
-    messages?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUncheckedUpdateManyWithoutUserNestedInput;
     inspirationItems?: Prisma.InspirationItemUncheckedUpdateManyWithoutUserNestedInput;
-    shoppingSearches?: Prisma.ShoppingSearchUncheckedUpdateManyWithoutUserNestedInput;
+    messages?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput;
+    outfits?: Prisma.OutfitUncheckedUpdateManyWithoutUserNestedInput;
+    outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutUserNestedInput;
+    preferenceEvents?: Prisma.PreferenceEventUncheckedUpdateManyWithoutUserNestedInput;
     savedProducts?: Prisma.SavedProductUncheckedUpdateManyWithoutUserNestedInput;
-    avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
+    shoppingSearches?: Prisma.ShoppingSearchUncheckedUpdateManyWithoutUserNestedInput;
     subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput;
+    interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutUserNestedInput;
+    styleProfile?: Prisma.UserStyleProfileUncheckedUpdateOneWithoutUserNestedInput;
+    wardrobeImages?: Prisma.WardrobeImageUncheckedUpdateManyWithoutUserNestedInput;
+    wardrobeItems?: Prisma.WardrobeItemUncheckedUpdateManyWithoutUserNestedInput;
+    wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutStyleProfileInput = {
     id: string;
@@ -743,23 +743,23 @@ export type UserCreateWithoutStyleProfileInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    personas?: Prisma.UserPersonaCreateNestedManyWithoutUserInput;
-    preferenceEvents?: Prisma.PreferenceEventCreateNestedManyWithoutUserInput;
-    wardrobeItems?: Prisma.WardrobeItemCreateNestedManyWithoutUserInput;
-    wardrobeImages?: Prisma.WardrobeImageCreateNestedManyWithoutUserInput;
-    outfits?: Prisma.OutfitCreateNestedManyWithoutUserInput;
-    outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutUserInput;
-    interactions?: Prisma.UserInteractionCreateNestedManyWithoutUserInput;
-    wearEvents?: Prisma.WearEventCreateNestedManyWithoutUserInput;
+    avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput;
-    messages?: Prisma.MessageCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationCreateNestedManyWithoutUserInput;
     inspirationItems?: Prisma.InspirationItemCreateNestedManyWithoutUserInput;
-    shoppingSearches?: Prisma.ShoppingSearchCreateNestedManyWithoutUserInput;
+    messages?: Prisma.MessageCreateNestedManyWithoutUserInput;
+    outfits?: Prisma.OutfitCreateNestedManyWithoutUserInput;
+    outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutUserInput;
+    preferenceEvents?: Prisma.PreferenceEventCreateNestedManyWithoutUserInput;
     savedProducts?: Prisma.SavedProductCreateNestedManyWithoutUserInput;
-    avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
+    shoppingSearches?: Prisma.ShoppingSearchCreateNestedManyWithoutUserInput;
     subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput;
+    interactions?: Prisma.UserInteractionCreateNestedManyWithoutUserInput;
+    personas?: Prisma.UserPersonaCreateNestedManyWithoutUserInput;
+    wardrobeImages?: Prisma.WardrobeImageCreateNestedManyWithoutUserInput;
+    wardrobeItems?: Prisma.WardrobeItemCreateNestedManyWithoutUserInput;
+    wearEvents?: Prisma.WearEventCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutStyleProfileInput = {
     id: string;
@@ -768,23 +768,23 @@ export type UserUncheckedCreateWithoutStyleProfileInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    personas?: Prisma.UserPersonaUncheckedCreateNestedManyWithoutUserInput;
-    preferenceEvents?: Prisma.PreferenceEventUncheckedCreateNestedManyWithoutUserInput;
-    wardrobeItems?: Prisma.WardrobeItemUncheckedCreateNestedManyWithoutUserInput;
-    wardrobeImages?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutUserInput;
-    outfits?: Prisma.OutfitUncheckedCreateNestedManyWithoutUserInput;
-    outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutUserInput;
-    interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutUserInput;
-    wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutUserInput;
+    avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput;
-    messages?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationUncheckedCreateNestedManyWithoutUserInput;
     inspirationItems?: Prisma.InspirationItemUncheckedCreateNestedManyWithoutUserInput;
-    shoppingSearches?: Prisma.ShoppingSearchUncheckedCreateNestedManyWithoutUserInput;
+    messages?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput;
+    outfits?: Prisma.OutfitUncheckedCreateNestedManyWithoutUserInput;
+    outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutUserInput;
+    preferenceEvents?: Prisma.PreferenceEventUncheckedCreateNestedManyWithoutUserInput;
     savedProducts?: Prisma.SavedProductUncheckedCreateNestedManyWithoutUserInput;
-    avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
+    shoppingSearches?: Prisma.ShoppingSearchUncheckedCreateNestedManyWithoutUserInput;
     subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput;
+    interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutUserInput;
+    personas?: Prisma.UserPersonaUncheckedCreateNestedManyWithoutUserInput;
+    wardrobeImages?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutUserInput;
+    wardrobeItems?: Prisma.WardrobeItemUncheckedCreateNestedManyWithoutUserInput;
+    wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutStyleProfileInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -806,23 +806,23 @@ export type UserUpdateWithoutStyleProfileInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    personas?: Prisma.UserPersonaUpdateManyWithoutUserNestedInput;
-    preferenceEvents?: Prisma.PreferenceEventUpdateManyWithoutUserNestedInput;
-    wardrobeItems?: Prisma.WardrobeItemUpdateManyWithoutUserNestedInput;
-    wardrobeImages?: Prisma.WardrobeImageUpdateManyWithoutUserNestedInput;
-    outfits?: Prisma.OutfitUpdateManyWithoutUserNestedInput;
-    outfitItems?: Prisma.OutfitItemUpdateManyWithoutUserNestedInput;
-    interactions?: Prisma.UserInteractionUpdateManyWithoutUserNestedInput;
-    wearEvents?: Prisma.WearEventUpdateManyWithoutUserNestedInput;
+    avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput;
-    messages?: Prisma.MessageUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUpdateManyWithoutUserNestedInput;
     inspirationItems?: Prisma.InspirationItemUpdateManyWithoutUserNestedInput;
-    shoppingSearches?: Prisma.ShoppingSearchUpdateManyWithoutUserNestedInput;
+    messages?: Prisma.MessageUpdateManyWithoutUserNestedInput;
+    outfits?: Prisma.OutfitUpdateManyWithoutUserNestedInput;
+    outfitItems?: Prisma.OutfitItemUpdateManyWithoutUserNestedInput;
+    preferenceEvents?: Prisma.PreferenceEventUpdateManyWithoutUserNestedInput;
     savedProducts?: Prisma.SavedProductUpdateManyWithoutUserNestedInput;
-    avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
+    shoppingSearches?: Prisma.ShoppingSearchUpdateManyWithoutUserNestedInput;
     subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput;
+    interactions?: Prisma.UserInteractionUpdateManyWithoutUserNestedInput;
+    personas?: Prisma.UserPersonaUpdateManyWithoutUserNestedInput;
+    wardrobeImages?: Prisma.WardrobeImageUpdateManyWithoutUserNestedInput;
+    wardrobeItems?: Prisma.WardrobeItemUpdateManyWithoutUserNestedInput;
+    wearEvents?: Prisma.WearEventUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutStyleProfileInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -831,23 +831,23 @@ export type UserUncheckedUpdateWithoutStyleProfileInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    personas?: Prisma.UserPersonaUncheckedUpdateManyWithoutUserNestedInput;
-    preferenceEvents?: Prisma.PreferenceEventUncheckedUpdateManyWithoutUserNestedInput;
-    wardrobeItems?: Prisma.WardrobeItemUncheckedUpdateManyWithoutUserNestedInput;
-    wardrobeImages?: Prisma.WardrobeImageUncheckedUpdateManyWithoutUserNestedInput;
-    outfits?: Prisma.OutfitUncheckedUpdateManyWithoutUserNestedInput;
-    outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutUserNestedInput;
-    interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutUserNestedInput;
-    wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutUserNestedInput;
+    avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput;
-    messages?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUncheckedUpdateManyWithoutUserNestedInput;
     inspirationItems?: Prisma.InspirationItemUncheckedUpdateManyWithoutUserNestedInput;
-    shoppingSearches?: Prisma.ShoppingSearchUncheckedUpdateManyWithoutUserNestedInput;
+    messages?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput;
+    outfits?: Prisma.OutfitUncheckedUpdateManyWithoutUserNestedInput;
+    outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutUserNestedInput;
+    preferenceEvents?: Prisma.PreferenceEventUncheckedUpdateManyWithoutUserNestedInput;
     savedProducts?: Prisma.SavedProductUncheckedUpdateManyWithoutUserNestedInput;
-    avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
+    shoppingSearches?: Prisma.ShoppingSearchUncheckedUpdateManyWithoutUserNestedInput;
     subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput;
+    interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutUserNestedInput;
+    personas?: Prisma.UserPersonaUncheckedUpdateManyWithoutUserNestedInput;
+    wardrobeImages?: Prisma.WardrobeImageUncheckedUpdateManyWithoutUserNestedInput;
+    wardrobeItems?: Prisma.WardrobeItemUncheckedUpdateManyWithoutUserNestedInput;
+    wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutWardrobeItemsInput = {
     id: string;
@@ -856,23 +856,23 @@ export type UserCreateWithoutWardrobeItemsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    personas?: Prisma.UserPersonaCreateNestedManyWithoutUserInput;
-    styleProfile?: Prisma.UserStyleProfileCreateNestedOneWithoutUserInput;
-    preferenceEvents?: Prisma.PreferenceEventCreateNestedManyWithoutUserInput;
-    wardrobeImages?: Prisma.WardrobeImageCreateNestedManyWithoutUserInput;
-    outfits?: Prisma.OutfitCreateNestedManyWithoutUserInput;
-    outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutUserInput;
-    interactions?: Prisma.UserInteractionCreateNestedManyWithoutUserInput;
-    wearEvents?: Prisma.WearEventCreateNestedManyWithoutUserInput;
+    avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput;
-    messages?: Prisma.MessageCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationCreateNestedManyWithoutUserInput;
     inspirationItems?: Prisma.InspirationItemCreateNestedManyWithoutUserInput;
-    shoppingSearches?: Prisma.ShoppingSearchCreateNestedManyWithoutUserInput;
+    messages?: Prisma.MessageCreateNestedManyWithoutUserInput;
+    outfits?: Prisma.OutfitCreateNestedManyWithoutUserInput;
+    outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutUserInput;
+    preferenceEvents?: Prisma.PreferenceEventCreateNestedManyWithoutUserInput;
     savedProducts?: Prisma.SavedProductCreateNestedManyWithoutUserInput;
-    avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
+    shoppingSearches?: Prisma.ShoppingSearchCreateNestedManyWithoutUserInput;
     subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput;
+    interactions?: Prisma.UserInteractionCreateNestedManyWithoutUserInput;
+    personas?: Prisma.UserPersonaCreateNestedManyWithoutUserInput;
+    styleProfile?: Prisma.UserStyleProfileCreateNestedOneWithoutUserInput;
+    wardrobeImages?: Prisma.WardrobeImageCreateNestedManyWithoutUserInput;
+    wearEvents?: Prisma.WearEventCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutWardrobeItemsInput = {
     id: string;
@@ -881,23 +881,23 @@ export type UserUncheckedCreateWithoutWardrobeItemsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    personas?: Prisma.UserPersonaUncheckedCreateNestedManyWithoutUserInput;
-    styleProfile?: Prisma.UserStyleProfileUncheckedCreateNestedOneWithoutUserInput;
-    preferenceEvents?: Prisma.PreferenceEventUncheckedCreateNestedManyWithoutUserInput;
-    wardrobeImages?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutUserInput;
-    outfits?: Prisma.OutfitUncheckedCreateNestedManyWithoutUserInput;
-    outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutUserInput;
-    interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutUserInput;
-    wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutUserInput;
+    avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput;
-    messages?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationUncheckedCreateNestedManyWithoutUserInput;
     inspirationItems?: Prisma.InspirationItemUncheckedCreateNestedManyWithoutUserInput;
-    shoppingSearches?: Prisma.ShoppingSearchUncheckedCreateNestedManyWithoutUserInput;
+    messages?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput;
+    outfits?: Prisma.OutfitUncheckedCreateNestedManyWithoutUserInput;
+    outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutUserInput;
+    preferenceEvents?: Prisma.PreferenceEventUncheckedCreateNestedManyWithoutUserInput;
     savedProducts?: Prisma.SavedProductUncheckedCreateNestedManyWithoutUserInput;
-    avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
+    shoppingSearches?: Prisma.ShoppingSearchUncheckedCreateNestedManyWithoutUserInput;
     subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput;
+    interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutUserInput;
+    personas?: Prisma.UserPersonaUncheckedCreateNestedManyWithoutUserInput;
+    styleProfile?: Prisma.UserStyleProfileUncheckedCreateNestedOneWithoutUserInput;
+    wardrobeImages?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutUserInput;
+    wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutWardrobeItemsInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -919,23 +919,23 @@ export type UserUpdateWithoutWardrobeItemsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    personas?: Prisma.UserPersonaUpdateManyWithoutUserNestedInput;
-    styleProfile?: Prisma.UserStyleProfileUpdateOneWithoutUserNestedInput;
-    preferenceEvents?: Prisma.PreferenceEventUpdateManyWithoutUserNestedInput;
-    wardrobeImages?: Prisma.WardrobeImageUpdateManyWithoutUserNestedInput;
-    outfits?: Prisma.OutfitUpdateManyWithoutUserNestedInput;
-    outfitItems?: Prisma.OutfitItemUpdateManyWithoutUserNestedInput;
-    interactions?: Prisma.UserInteractionUpdateManyWithoutUserNestedInput;
-    wearEvents?: Prisma.WearEventUpdateManyWithoutUserNestedInput;
+    avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput;
-    messages?: Prisma.MessageUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUpdateManyWithoutUserNestedInput;
     inspirationItems?: Prisma.InspirationItemUpdateManyWithoutUserNestedInput;
-    shoppingSearches?: Prisma.ShoppingSearchUpdateManyWithoutUserNestedInput;
+    messages?: Prisma.MessageUpdateManyWithoutUserNestedInput;
+    outfits?: Prisma.OutfitUpdateManyWithoutUserNestedInput;
+    outfitItems?: Prisma.OutfitItemUpdateManyWithoutUserNestedInput;
+    preferenceEvents?: Prisma.PreferenceEventUpdateManyWithoutUserNestedInput;
     savedProducts?: Prisma.SavedProductUpdateManyWithoutUserNestedInput;
-    avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
+    shoppingSearches?: Prisma.ShoppingSearchUpdateManyWithoutUserNestedInput;
     subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput;
+    interactions?: Prisma.UserInteractionUpdateManyWithoutUserNestedInput;
+    personas?: Prisma.UserPersonaUpdateManyWithoutUserNestedInput;
+    styleProfile?: Prisma.UserStyleProfileUpdateOneWithoutUserNestedInput;
+    wardrobeImages?: Prisma.WardrobeImageUpdateManyWithoutUserNestedInput;
+    wearEvents?: Prisma.WearEventUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutWardrobeItemsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -944,23 +944,23 @@ export type UserUncheckedUpdateWithoutWardrobeItemsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    personas?: Prisma.UserPersonaUncheckedUpdateManyWithoutUserNestedInput;
-    styleProfile?: Prisma.UserStyleProfileUncheckedUpdateOneWithoutUserNestedInput;
-    preferenceEvents?: Prisma.PreferenceEventUncheckedUpdateManyWithoutUserNestedInput;
-    wardrobeImages?: Prisma.WardrobeImageUncheckedUpdateManyWithoutUserNestedInput;
-    outfits?: Prisma.OutfitUncheckedUpdateManyWithoutUserNestedInput;
-    outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutUserNestedInput;
-    interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutUserNestedInput;
-    wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutUserNestedInput;
+    avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput;
-    messages?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUncheckedUpdateManyWithoutUserNestedInput;
     inspirationItems?: Prisma.InspirationItemUncheckedUpdateManyWithoutUserNestedInput;
-    shoppingSearches?: Prisma.ShoppingSearchUncheckedUpdateManyWithoutUserNestedInput;
+    messages?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput;
+    outfits?: Prisma.OutfitUncheckedUpdateManyWithoutUserNestedInput;
+    outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutUserNestedInput;
+    preferenceEvents?: Prisma.PreferenceEventUncheckedUpdateManyWithoutUserNestedInput;
     savedProducts?: Prisma.SavedProductUncheckedUpdateManyWithoutUserNestedInput;
-    avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
+    shoppingSearches?: Prisma.ShoppingSearchUncheckedUpdateManyWithoutUserNestedInput;
     subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput;
+    interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutUserNestedInput;
+    personas?: Prisma.UserPersonaUncheckedUpdateManyWithoutUserNestedInput;
+    styleProfile?: Prisma.UserStyleProfileUncheckedUpdateOneWithoutUserNestedInput;
+    wardrobeImages?: Prisma.WardrobeImageUncheckedUpdateManyWithoutUserNestedInput;
+    wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutWardrobeImagesInput = {
     id: string;
@@ -969,23 +969,23 @@ export type UserCreateWithoutWardrobeImagesInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    personas?: Prisma.UserPersonaCreateNestedManyWithoutUserInput;
-    styleProfile?: Prisma.UserStyleProfileCreateNestedOneWithoutUserInput;
-    preferenceEvents?: Prisma.PreferenceEventCreateNestedManyWithoutUserInput;
-    wardrobeItems?: Prisma.WardrobeItemCreateNestedManyWithoutUserInput;
-    outfits?: Prisma.OutfitCreateNestedManyWithoutUserInput;
-    outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutUserInput;
-    interactions?: Prisma.UserInteractionCreateNestedManyWithoutUserInput;
-    wearEvents?: Prisma.WearEventCreateNestedManyWithoutUserInput;
+    avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput;
-    messages?: Prisma.MessageCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationCreateNestedManyWithoutUserInput;
     inspirationItems?: Prisma.InspirationItemCreateNestedManyWithoutUserInput;
-    shoppingSearches?: Prisma.ShoppingSearchCreateNestedManyWithoutUserInput;
+    messages?: Prisma.MessageCreateNestedManyWithoutUserInput;
+    outfits?: Prisma.OutfitCreateNestedManyWithoutUserInput;
+    outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutUserInput;
+    preferenceEvents?: Prisma.PreferenceEventCreateNestedManyWithoutUserInput;
     savedProducts?: Prisma.SavedProductCreateNestedManyWithoutUserInput;
-    avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
+    shoppingSearches?: Prisma.ShoppingSearchCreateNestedManyWithoutUserInput;
     subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput;
+    interactions?: Prisma.UserInteractionCreateNestedManyWithoutUserInput;
+    personas?: Prisma.UserPersonaCreateNestedManyWithoutUserInput;
+    styleProfile?: Prisma.UserStyleProfileCreateNestedOneWithoutUserInput;
+    wardrobeItems?: Prisma.WardrobeItemCreateNestedManyWithoutUserInput;
+    wearEvents?: Prisma.WearEventCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutWardrobeImagesInput = {
     id: string;
@@ -994,23 +994,23 @@ export type UserUncheckedCreateWithoutWardrobeImagesInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    personas?: Prisma.UserPersonaUncheckedCreateNestedManyWithoutUserInput;
-    styleProfile?: Prisma.UserStyleProfileUncheckedCreateNestedOneWithoutUserInput;
-    preferenceEvents?: Prisma.PreferenceEventUncheckedCreateNestedManyWithoutUserInput;
-    wardrobeItems?: Prisma.WardrobeItemUncheckedCreateNestedManyWithoutUserInput;
-    outfits?: Prisma.OutfitUncheckedCreateNestedManyWithoutUserInput;
-    outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutUserInput;
-    interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutUserInput;
-    wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutUserInput;
+    avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput;
-    messages?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationUncheckedCreateNestedManyWithoutUserInput;
     inspirationItems?: Prisma.InspirationItemUncheckedCreateNestedManyWithoutUserInput;
-    shoppingSearches?: Prisma.ShoppingSearchUncheckedCreateNestedManyWithoutUserInput;
+    messages?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput;
+    outfits?: Prisma.OutfitUncheckedCreateNestedManyWithoutUserInput;
+    outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutUserInput;
+    preferenceEvents?: Prisma.PreferenceEventUncheckedCreateNestedManyWithoutUserInput;
     savedProducts?: Prisma.SavedProductUncheckedCreateNestedManyWithoutUserInput;
-    avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
+    shoppingSearches?: Prisma.ShoppingSearchUncheckedCreateNestedManyWithoutUserInput;
     subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput;
+    interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutUserInput;
+    personas?: Prisma.UserPersonaUncheckedCreateNestedManyWithoutUserInput;
+    styleProfile?: Prisma.UserStyleProfileUncheckedCreateNestedOneWithoutUserInput;
+    wardrobeItems?: Prisma.WardrobeItemUncheckedCreateNestedManyWithoutUserInput;
+    wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutWardrobeImagesInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -1032,23 +1032,23 @@ export type UserUpdateWithoutWardrobeImagesInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    personas?: Prisma.UserPersonaUpdateManyWithoutUserNestedInput;
-    styleProfile?: Prisma.UserStyleProfileUpdateOneWithoutUserNestedInput;
-    preferenceEvents?: Prisma.PreferenceEventUpdateManyWithoutUserNestedInput;
-    wardrobeItems?: Prisma.WardrobeItemUpdateManyWithoutUserNestedInput;
-    outfits?: Prisma.OutfitUpdateManyWithoutUserNestedInput;
-    outfitItems?: Prisma.OutfitItemUpdateManyWithoutUserNestedInput;
-    interactions?: Prisma.UserInteractionUpdateManyWithoutUserNestedInput;
-    wearEvents?: Prisma.WearEventUpdateManyWithoutUserNestedInput;
+    avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput;
-    messages?: Prisma.MessageUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUpdateManyWithoutUserNestedInput;
     inspirationItems?: Prisma.InspirationItemUpdateManyWithoutUserNestedInput;
-    shoppingSearches?: Prisma.ShoppingSearchUpdateManyWithoutUserNestedInput;
+    messages?: Prisma.MessageUpdateManyWithoutUserNestedInput;
+    outfits?: Prisma.OutfitUpdateManyWithoutUserNestedInput;
+    outfitItems?: Prisma.OutfitItemUpdateManyWithoutUserNestedInput;
+    preferenceEvents?: Prisma.PreferenceEventUpdateManyWithoutUserNestedInput;
     savedProducts?: Prisma.SavedProductUpdateManyWithoutUserNestedInput;
-    avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
+    shoppingSearches?: Prisma.ShoppingSearchUpdateManyWithoutUserNestedInput;
     subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput;
+    interactions?: Prisma.UserInteractionUpdateManyWithoutUserNestedInput;
+    personas?: Prisma.UserPersonaUpdateManyWithoutUserNestedInput;
+    styleProfile?: Prisma.UserStyleProfileUpdateOneWithoutUserNestedInput;
+    wardrobeItems?: Prisma.WardrobeItemUpdateManyWithoutUserNestedInput;
+    wearEvents?: Prisma.WearEventUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutWardrobeImagesInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1057,23 +1057,23 @@ export type UserUncheckedUpdateWithoutWardrobeImagesInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    personas?: Prisma.UserPersonaUncheckedUpdateManyWithoutUserNestedInput;
-    styleProfile?: Prisma.UserStyleProfileUncheckedUpdateOneWithoutUserNestedInput;
-    preferenceEvents?: Prisma.PreferenceEventUncheckedUpdateManyWithoutUserNestedInput;
-    wardrobeItems?: Prisma.WardrobeItemUncheckedUpdateManyWithoutUserNestedInput;
-    outfits?: Prisma.OutfitUncheckedUpdateManyWithoutUserNestedInput;
-    outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutUserNestedInput;
-    interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutUserNestedInput;
-    wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutUserNestedInput;
+    avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput;
-    messages?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUncheckedUpdateManyWithoutUserNestedInput;
     inspirationItems?: Prisma.InspirationItemUncheckedUpdateManyWithoutUserNestedInput;
-    shoppingSearches?: Prisma.ShoppingSearchUncheckedUpdateManyWithoutUserNestedInput;
+    messages?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput;
+    outfits?: Prisma.OutfitUncheckedUpdateManyWithoutUserNestedInput;
+    outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutUserNestedInput;
+    preferenceEvents?: Prisma.PreferenceEventUncheckedUpdateManyWithoutUserNestedInput;
     savedProducts?: Prisma.SavedProductUncheckedUpdateManyWithoutUserNestedInput;
-    avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
+    shoppingSearches?: Prisma.ShoppingSearchUncheckedUpdateManyWithoutUserNestedInput;
     subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput;
+    interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutUserNestedInput;
+    personas?: Prisma.UserPersonaUncheckedUpdateManyWithoutUserNestedInput;
+    styleProfile?: Prisma.UserStyleProfileUncheckedUpdateOneWithoutUserNestedInput;
+    wardrobeItems?: Prisma.WardrobeItemUncheckedUpdateManyWithoutUserNestedInput;
+    wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutOutfitsInput = {
     id: string;
@@ -1082,23 +1082,23 @@ export type UserCreateWithoutOutfitsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    personas?: Prisma.UserPersonaCreateNestedManyWithoutUserInput;
-    styleProfile?: Prisma.UserStyleProfileCreateNestedOneWithoutUserInput;
-    preferenceEvents?: Prisma.PreferenceEventCreateNestedManyWithoutUserInput;
-    wardrobeItems?: Prisma.WardrobeItemCreateNestedManyWithoutUserInput;
-    wardrobeImages?: Prisma.WardrobeImageCreateNestedManyWithoutUserInput;
-    outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutUserInput;
-    interactions?: Prisma.UserInteractionCreateNestedManyWithoutUserInput;
-    wearEvents?: Prisma.WearEventCreateNestedManyWithoutUserInput;
+    avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput;
-    messages?: Prisma.MessageCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationCreateNestedManyWithoutUserInput;
     inspirationItems?: Prisma.InspirationItemCreateNestedManyWithoutUserInput;
-    shoppingSearches?: Prisma.ShoppingSearchCreateNestedManyWithoutUserInput;
+    messages?: Prisma.MessageCreateNestedManyWithoutUserInput;
+    outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutUserInput;
+    preferenceEvents?: Prisma.PreferenceEventCreateNestedManyWithoutUserInput;
     savedProducts?: Prisma.SavedProductCreateNestedManyWithoutUserInput;
-    avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
+    shoppingSearches?: Prisma.ShoppingSearchCreateNestedManyWithoutUserInput;
     subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput;
+    interactions?: Prisma.UserInteractionCreateNestedManyWithoutUserInput;
+    personas?: Prisma.UserPersonaCreateNestedManyWithoutUserInput;
+    styleProfile?: Prisma.UserStyleProfileCreateNestedOneWithoutUserInput;
+    wardrobeImages?: Prisma.WardrobeImageCreateNestedManyWithoutUserInput;
+    wardrobeItems?: Prisma.WardrobeItemCreateNestedManyWithoutUserInput;
+    wearEvents?: Prisma.WearEventCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutOutfitsInput = {
     id: string;
@@ -1107,23 +1107,23 @@ export type UserUncheckedCreateWithoutOutfitsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    personas?: Prisma.UserPersonaUncheckedCreateNestedManyWithoutUserInput;
-    styleProfile?: Prisma.UserStyleProfileUncheckedCreateNestedOneWithoutUserInput;
-    preferenceEvents?: Prisma.PreferenceEventUncheckedCreateNestedManyWithoutUserInput;
-    wardrobeItems?: Prisma.WardrobeItemUncheckedCreateNestedManyWithoutUserInput;
-    wardrobeImages?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutUserInput;
-    outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutUserInput;
-    interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutUserInput;
-    wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutUserInput;
+    avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput;
-    messages?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationUncheckedCreateNestedManyWithoutUserInput;
     inspirationItems?: Prisma.InspirationItemUncheckedCreateNestedManyWithoutUserInput;
-    shoppingSearches?: Prisma.ShoppingSearchUncheckedCreateNestedManyWithoutUserInput;
+    messages?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput;
+    outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutUserInput;
+    preferenceEvents?: Prisma.PreferenceEventUncheckedCreateNestedManyWithoutUserInput;
     savedProducts?: Prisma.SavedProductUncheckedCreateNestedManyWithoutUserInput;
-    avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
+    shoppingSearches?: Prisma.ShoppingSearchUncheckedCreateNestedManyWithoutUserInput;
     subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput;
+    interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutUserInput;
+    personas?: Prisma.UserPersonaUncheckedCreateNestedManyWithoutUserInput;
+    styleProfile?: Prisma.UserStyleProfileUncheckedCreateNestedOneWithoutUserInput;
+    wardrobeImages?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutUserInput;
+    wardrobeItems?: Prisma.WardrobeItemUncheckedCreateNestedManyWithoutUserInput;
+    wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutOutfitsInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -1145,23 +1145,23 @@ export type UserUpdateWithoutOutfitsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    personas?: Prisma.UserPersonaUpdateManyWithoutUserNestedInput;
-    styleProfile?: Prisma.UserStyleProfileUpdateOneWithoutUserNestedInput;
-    preferenceEvents?: Prisma.PreferenceEventUpdateManyWithoutUserNestedInput;
-    wardrobeItems?: Prisma.WardrobeItemUpdateManyWithoutUserNestedInput;
-    wardrobeImages?: Prisma.WardrobeImageUpdateManyWithoutUserNestedInput;
-    outfitItems?: Prisma.OutfitItemUpdateManyWithoutUserNestedInput;
-    interactions?: Prisma.UserInteractionUpdateManyWithoutUserNestedInput;
-    wearEvents?: Prisma.WearEventUpdateManyWithoutUserNestedInput;
+    avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput;
-    messages?: Prisma.MessageUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUpdateManyWithoutUserNestedInput;
     inspirationItems?: Prisma.InspirationItemUpdateManyWithoutUserNestedInput;
-    shoppingSearches?: Prisma.ShoppingSearchUpdateManyWithoutUserNestedInput;
+    messages?: Prisma.MessageUpdateManyWithoutUserNestedInput;
+    outfitItems?: Prisma.OutfitItemUpdateManyWithoutUserNestedInput;
+    preferenceEvents?: Prisma.PreferenceEventUpdateManyWithoutUserNestedInput;
     savedProducts?: Prisma.SavedProductUpdateManyWithoutUserNestedInput;
-    avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
+    shoppingSearches?: Prisma.ShoppingSearchUpdateManyWithoutUserNestedInput;
     subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput;
+    interactions?: Prisma.UserInteractionUpdateManyWithoutUserNestedInput;
+    personas?: Prisma.UserPersonaUpdateManyWithoutUserNestedInput;
+    styleProfile?: Prisma.UserStyleProfileUpdateOneWithoutUserNestedInput;
+    wardrobeImages?: Prisma.WardrobeImageUpdateManyWithoutUserNestedInput;
+    wardrobeItems?: Prisma.WardrobeItemUpdateManyWithoutUserNestedInput;
+    wearEvents?: Prisma.WearEventUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutOutfitsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1170,23 +1170,23 @@ export type UserUncheckedUpdateWithoutOutfitsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    personas?: Prisma.UserPersonaUncheckedUpdateManyWithoutUserNestedInput;
-    styleProfile?: Prisma.UserStyleProfileUncheckedUpdateOneWithoutUserNestedInput;
-    preferenceEvents?: Prisma.PreferenceEventUncheckedUpdateManyWithoutUserNestedInput;
-    wardrobeItems?: Prisma.WardrobeItemUncheckedUpdateManyWithoutUserNestedInput;
-    wardrobeImages?: Prisma.WardrobeImageUncheckedUpdateManyWithoutUserNestedInput;
-    outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutUserNestedInput;
-    interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutUserNestedInput;
-    wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutUserNestedInput;
+    avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput;
-    messages?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUncheckedUpdateManyWithoutUserNestedInput;
     inspirationItems?: Prisma.InspirationItemUncheckedUpdateManyWithoutUserNestedInput;
-    shoppingSearches?: Prisma.ShoppingSearchUncheckedUpdateManyWithoutUserNestedInput;
+    messages?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput;
+    outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutUserNestedInput;
+    preferenceEvents?: Prisma.PreferenceEventUncheckedUpdateManyWithoutUserNestedInput;
     savedProducts?: Prisma.SavedProductUncheckedUpdateManyWithoutUserNestedInput;
-    avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
+    shoppingSearches?: Prisma.ShoppingSearchUncheckedUpdateManyWithoutUserNestedInput;
     subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput;
+    interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutUserNestedInput;
+    personas?: Prisma.UserPersonaUncheckedUpdateManyWithoutUserNestedInput;
+    styleProfile?: Prisma.UserStyleProfileUncheckedUpdateOneWithoutUserNestedInput;
+    wardrobeImages?: Prisma.WardrobeImageUncheckedUpdateManyWithoutUserNestedInput;
+    wardrobeItems?: Prisma.WardrobeItemUncheckedUpdateManyWithoutUserNestedInput;
+    wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutOutfitItemsInput = {
     id: string;
@@ -1195,23 +1195,23 @@ export type UserCreateWithoutOutfitItemsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    personas?: Prisma.UserPersonaCreateNestedManyWithoutUserInput;
-    styleProfile?: Prisma.UserStyleProfileCreateNestedOneWithoutUserInput;
-    preferenceEvents?: Prisma.PreferenceEventCreateNestedManyWithoutUserInput;
-    wardrobeItems?: Prisma.WardrobeItemCreateNestedManyWithoutUserInput;
-    wardrobeImages?: Prisma.WardrobeImageCreateNestedManyWithoutUserInput;
-    outfits?: Prisma.OutfitCreateNestedManyWithoutUserInput;
-    interactions?: Prisma.UserInteractionCreateNestedManyWithoutUserInput;
-    wearEvents?: Prisma.WearEventCreateNestedManyWithoutUserInput;
+    avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput;
-    messages?: Prisma.MessageCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationCreateNestedManyWithoutUserInput;
     inspirationItems?: Prisma.InspirationItemCreateNestedManyWithoutUserInput;
-    shoppingSearches?: Prisma.ShoppingSearchCreateNestedManyWithoutUserInput;
+    messages?: Prisma.MessageCreateNestedManyWithoutUserInput;
+    outfits?: Prisma.OutfitCreateNestedManyWithoutUserInput;
+    preferenceEvents?: Prisma.PreferenceEventCreateNestedManyWithoutUserInput;
     savedProducts?: Prisma.SavedProductCreateNestedManyWithoutUserInput;
-    avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
+    shoppingSearches?: Prisma.ShoppingSearchCreateNestedManyWithoutUserInput;
     subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput;
+    interactions?: Prisma.UserInteractionCreateNestedManyWithoutUserInput;
+    personas?: Prisma.UserPersonaCreateNestedManyWithoutUserInput;
+    styleProfile?: Prisma.UserStyleProfileCreateNestedOneWithoutUserInput;
+    wardrobeImages?: Prisma.WardrobeImageCreateNestedManyWithoutUserInput;
+    wardrobeItems?: Prisma.WardrobeItemCreateNestedManyWithoutUserInput;
+    wearEvents?: Prisma.WearEventCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutOutfitItemsInput = {
     id: string;
@@ -1220,23 +1220,23 @@ export type UserUncheckedCreateWithoutOutfitItemsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    personas?: Prisma.UserPersonaUncheckedCreateNestedManyWithoutUserInput;
-    styleProfile?: Prisma.UserStyleProfileUncheckedCreateNestedOneWithoutUserInput;
-    preferenceEvents?: Prisma.PreferenceEventUncheckedCreateNestedManyWithoutUserInput;
-    wardrobeItems?: Prisma.WardrobeItemUncheckedCreateNestedManyWithoutUserInput;
-    wardrobeImages?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutUserInput;
-    outfits?: Prisma.OutfitUncheckedCreateNestedManyWithoutUserInput;
-    interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutUserInput;
-    wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutUserInput;
+    avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput;
-    messages?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationUncheckedCreateNestedManyWithoutUserInput;
     inspirationItems?: Prisma.InspirationItemUncheckedCreateNestedManyWithoutUserInput;
-    shoppingSearches?: Prisma.ShoppingSearchUncheckedCreateNestedManyWithoutUserInput;
+    messages?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput;
+    outfits?: Prisma.OutfitUncheckedCreateNestedManyWithoutUserInput;
+    preferenceEvents?: Prisma.PreferenceEventUncheckedCreateNestedManyWithoutUserInput;
     savedProducts?: Prisma.SavedProductUncheckedCreateNestedManyWithoutUserInput;
-    avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
+    shoppingSearches?: Prisma.ShoppingSearchUncheckedCreateNestedManyWithoutUserInput;
     subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput;
+    interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutUserInput;
+    personas?: Prisma.UserPersonaUncheckedCreateNestedManyWithoutUserInput;
+    styleProfile?: Prisma.UserStyleProfileUncheckedCreateNestedOneWithoutUserInput;
+    wardrobeImages?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutUserInput;
+    wardrobeItems?: Prisma.WardrobeItemUncheckedCreateNestedManyWithoutUserInput;
+    wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutOutfitItemsInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -1258,23 +1258,23 @@ export type UserUpdateWithoutOutfitItemsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    personas?: Prisma.UserPersonaUpdateManyWithoutUserNestedInput;
-    styleProfile?: Prisma.UserStyleProfileUpdateOneWithoutUserNestedInput;
-    preferenceEvents?: Prisma.PreferenceEventUpdateManyWithoutUserNestedInput;
-    wardrobeItems?: Prisma.WardrobeItemUpdateManyWithoutUserNestedInput;
-    wardrobeImages?: Prisma.WardrobeImageUpdateManyWithoutUserNestedInput;
-    outfits?: Prisma.OutfitUpdateManyWithoutUserNestedInput;
-    interactions?: Prisma.UserInteractionUpdateManyWithoutUserNestedInput;
-    wearEvents?: Prisma.WearEventUpdateManyWithoutUserNestedInput;
+    avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput;
-    messages?: Prisma.MessageUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUpdateManyWithoutUserNestedInput;
     inspirationItems?: Prisma.InspirationItemUpdateManyWithoutUserNestedInput;
-    shoppingSearches?: Prisma.ShoppingSearchUpdateManyWithoutUserNestedInput;
+    messages?: Prisma.MessageUpdateManyWithoutUserNestedInput;
+    outfits?: Prisma.OutfitUpdateManyWithoutUserNestedInput;
+    preferenceEvents?: Prisma.PreferenceEventUpdateManyWithoutUserNestedInput;
     savedProducts?: Prisma.SavedProductUpdateManyWithoutUserNestedInput;
-    avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
+    shoppingSearches?: Prisma.ShoppingSearchUpdateManyWithoutUserNestedInput;
     subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput;
+    interactions?: Prisma.UserInteractionUpdateManyWithoutUserNestedInput;
+    personas?: Prisma.UserPersonaUpdateManyWithoutUserNestedInput;
+    styleProfile?: Prisma.UserStyleProfileUpdateOneWithoutUserNestedInput;
+    wardrobeImages?: Prisma.WardrobeImageUpdateManyWithoutUserNestedInput;
+    wardrobeItems?: Prisma.WardrobeItemUpdateManyWithoutUserNestedInput;
+    wearEvents?: Prisma.WearEventUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutOutfitItemsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1283,23 +1283,23 @@ export type UserUncheckedUpdateWithoutOutfitItemsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    personas?: Prisma.UserPersonaUncheckedUpdateManyWithoutUserNestedInput;
-    styleProfile?: Prisma.UserStyleProfileUncheckedUpdateOneWithoutUserNestedInput;
-    preferenceEvents?: Prisma.PreferenceEventUncheckedUpdateManyWithoutUserNestedInput;
-    wardrobeItems?: Prisma.WardrobeItemUncheckedUpdateManyWithoutUserNestedInput;
-    wardrobeImages?: Prisma.WardrobeImageUncheckedUpdateManyWithoutUserNestedInput;
-    outfits?: Prisma.OutfitUncheckedUpdateManyWithoutUserNestedInput;
-    interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutUserNestedInput;
-    wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutUserNestedInput;
+    avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput;
-    messages?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUncheckedUpdateManyWithoutUserNestedInput;
     inspirationItems?: Prisma.InspirationItemUncheckedUpdateManyWithoutUserNestedInput;
-    shoppingSearches?: Prisma.ShoppingSearchUncheckedUpdateManyWithoutUserNestedInput;
+    messages?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput;
+    outfits?: Prisma.OutfitUncheckedUpdateManyWithoutUserNestedInput;
+    preferenceEvents?: Prisma.PreferenceEventUncheckedUpdateManyWithoutUserNestedInput;
     savedProducts?: Prisma.SavedProductUncheckedUpdateManyWithoutUserNestedInput;
-    avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
+    shoppingSearches?: Prisma.ShoppingSearchUncheckedUpdateManyWithoutUserNestedInput;
     subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput;
+    interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutUserNestedInput;
+    personas?: Prisma.UserPersonaUncheckedUpdateManyWithoutUserNestedInput;
+    styleProfile?: Prisma.UserStyleProfileUncheckedUpdateOneWithoutUserNestedInput;
+    wardrobeImages?: Prisma.WardrobeImageUncheckedUpdateManyWithoutUserNestedInput;
+    wardrobeItems?: Prisma.WardrobeItemUncheckedUpdateManyWithoutUserNestedInput;
+    wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutInteractionsInput = {
     id: string;
@@ -1308,23 +1308,23 @@ export type UserCreateWithoutInteractionsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    personas?: Prisma.UserPersonaCreateNestedManyWithoutUserInput;
-    styleProfile?: Prisma.UserStyleProfileCreateNestedOneWithoutUserInput;
-    preferenceEvents?: Prisma.PreferenceEventCreateNestedManyWithoutUserInput;
-    wardrobeItems?: Prisma.WardrobeItemCreateNestedManyWithoutUserInput;
-    wardrobeImages?: Prisma.WardrobeImageCreateNestedManyWithoutUserInput;
-    outfits?: Prisma.OutfitCreateNestedManyWithoutUserInput;
-    outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutUserInput;
-    wearEvents?: Prisma.WearEventCreateNestedManyWithoutUserInput;
+    avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput;
-    messages?: Prisma.MessageCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationCreateNestedManyWithoutUserInput;
     inspirationItems?: Prisma.InspirationItemCreateNestedManyWithoutUserInput;
-    shoppingSearches?: Prisma.ShoppingSearchCreateNestedManyWithoutUserInput;
+    messages?: Prisma.MessageCreateNestedManyWithoutUserInput;
+    outfits?: Prisma.OutfitCreateNestedManyWithoutUserInput;
+    outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutUserInput;
+    preferenceEvents?: Prisma.PreferenceEventCreateNestedManyWithoutUserInput;
     savedProducts?: Prisma.SavedProductCreateNestedManyWithoutUserInput;
-    avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
+    shoppingSearches?: Prisma.ShoppingSearchCreateNestedManyWithoutUserInput;
     subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput;
+    personas?: Prisma.UserPersonaCreateNestedManyWithoutUserInput;
+    styleProfile?: Prisma.UserStyleProfileCreateNestedOneWithoutUserInput;
+    wardrobeImages?: Prisma.WardrobeImageCreateNestedManyWithoutUserInput;
+    wardrobeItems?: Prisma.WardrobeItemCreateNestedManyWithoutUserInput;
+    wearEvents?: Prisma.WearEventCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutInteractionsInput = {
     id: string;
@@ -1333,23 +1333,23 @@ export type UserUncheckedCreateWithoutInteractionsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    personas?: Prisma.UserPersonaUncheckedCreateNestedManyWithoutUserInput;
-    styleProfile?: Prisma.UserStyleProfileUncheckedCreateNestedOneWithoutUserInput;
-    preferenceEvents?: Prisma.PreferenceEventUncheckedCreateNestedManyWithoutUserInput;
-    wardrobeItems?: Prisma.WardrobeItemUncheckedCreateNestedManyWithoutUserInput;
-    wardrobeImages?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutUserInput;
-    outfits?: Prisma.OutfitUncheckedCreateNestedManyWithoutUserInput;
-    outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutUserInput;
-    wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutUserInput;
+    avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput;
-    messages?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationUncheckedCreateNestedManyWithoutUserInput;
     inspirationItems?: Prisma.InspirationItemUncheckedCreateNestedManyWithoutUserInput;
-    shoppingSearches?: Prisma.ShoppingSearchUncheckedCreateNestedManyWithoutUserInput;
+    messages?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput;
+    outfits?: Prisma.OutfitUncheckedCreateNestedManyWithoutUserInput;
+    outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutUserInput;
+    preferenceEvents?: Prisma.PreferenceEventUncheckedCreateNestedManyWithoutUserInput;
     savedProducts?: Prisma.SavedProductUncheckedCreateNestedManyWithoutUserInput;
-    avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
+    shoppingSearches?: Prisma.ShoppingSearchUncheckedCreateNestedManyWithoutUserInput;
     subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput;
+    personas?: Prisma.UserPersonaUncheckedCreateNestedManyWithoutUserInput;
+    styleProfile?: Prisma.UserStyleProfileUncheckedCreateNestedOneWithoutUserInput;
+    wardrobeImages?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutUserInput;
+    wardrobeItems?: Prisma.WardrobeItemUncheckedCreateNestedManyWithoutUserInput;
+    wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutInteractionsInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -1371,23 +1371,23 @@ export type UserUpdateWithoutInteractionsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    personas?: Prisma.UserPersonaUpdateManyWithoutUserNestedInput;
-    styleProfile?: Prisma.UserStyleProfileUpdateOneWithoutUserNestedInput;
-    preferenceEvents?: Prisma.PreferenceEventUpdateManyWithoutUserNestedInput;
-    wardrobeItems?: Prisma.WardrobeItemUpdateManyWithoutUserNestedInput;
-    wardrobeImages?: Prisma.WardrobeImageUpdateManyWithoutUserNestedInput;
-    outfits?: Prisma.OutfitUpdateManyWithoutUserNestedInput;
-    outfitItems?: Prisma.OutfitItemUpdateManyWithoutUserNestedInput;
-    wearEvents?: Prisma.WearEventUpdateManyWithoutUserNestedInput;
+    avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput;
-    messages?: Prisma.MessageUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUpdateManyWithoutUserNestedInput;
     inspirationItems?: Prisma.InspirationItemUpdateManyWithoutUserNestedInput;
-    shoppingSearches?: Prisma.ShoppingSearchUpdateManyWithoutUserNestedInput;
+    messages?: Prisma.MessageUpdateManyWithoutUserNestedInput;
+    outfits?: Prisma.OutfitUpdateManyWithoutUserNestedInput;
+    outfitItems?: Prisma.OutfitItemUpdateManyWithoutUserNestedInput;
+    preferenceEvents?: Prisma.PreferenceEventUpdateManyWithoutUserNestedInput;
     savedProducts?: Prisma.SavedProductUpdateManyWithoutUserNestedInput;
-    avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
+    shoppingSearches?: Prisma.ShoppingSearchUpdateManyWithoutUserNestedInput;
     subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput;
+    personas?: Prisma.UserPersonaUpdateManyWithoutUserNestedInput;
+    styleProfile?: Prisma.UserStyleProfileUpdateOneWithoutUserNestedInput;
+    wardrobeImages?: Prisma.WardrobeImageUpdateManyWithoutUserNestedInput;
+    wardrobeItems?: Prisma.WardrobeItemUpdateManyWithoutUserNestedInput;
+    wearEvents?: Prisma.WearEventUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutInteractionsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1396,23 +1396,23 @@ export type UserUncheckedUpdateWithoutInteractionsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    personas?: Prisma.UserPersonaUncheckedUpdateManyWithoutUserNestedInput;
-    styleProfile?: Prisma.UserStyleProfileUncheckedUpdateOneWithoutUserNestedInput;
-    preferenceEvents?: Prisma.PreferenceEventUncheckedUpdateManyWithoutUserNestedInput;
-    wardrobeItems?: Prisma.WardrobeItemUncheckedUpdateManyWithoutUserNestedInput;
-    wardrobeImages?: Prisma.WardrobeImageUncheckedUpdateManyWithoutUserNestedInput;
-    outfits?: Prisma.OutfitUncheckedUpdateManyWithoutUserNestedInput;
-    outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutUserNestedInput;
-    wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutUserNestedInput;
+    avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput;
-    messages?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUncheckedUpdateManyWithoutUserNestedInput;
     inspirationItems?: Prisma.InspirationItemUncheckedUpdateManyWithoutUserNestedInput;
-    shoppingSearches?: Prisma.ShoppingSearchUncheckedUpdateManyWithoutUserNestedInput;
+    messages?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput;
+    outfits?: Prisma.OutfitUncheckedUpdateManyWithoutUserNestedInput;
+    outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutUserNestedInput;
+    preferenceEvents?: Prisma.PreferenceEventUncheckedUpdateManyWithoutUserNestedInput;
     savedProducts?: Prisma.SavedProductUncheckedUpdateManyWithoutUserNestedInput;
-    avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
+    shoppingSearches?: Prisma.ShoppingSearchUncheckedUpdateManyWithoutUserNestedInput;
     subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput;
+    personas?: Prisma.UserPersonaUncheckedUpdateManyWithoutUserNestedInput;
+    styleProfile?: Prisma.UserStyleProfileUncheckedUpdateOneWithoutUserNestedInput;
+    wardrobeImages?: Prisma.WardrobeImageUncheckedUpdateManyWithoutUserNestedInput;
+    wardrobeItems?: Prisma.WardrobeItemUncheckedUpdateManyWithoutUserNestedInput;
+    wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutWearEventsInput = {
     id: string;
@@ -1421,23 +1421,23 @@ export type UserCreateWithoutWearEventsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    personas?: Prisma.UserPersonaCreateNestedManyWithoutUserInput;
-    styleProfile?: Prisma.UserStyleProfileCreateNestedOneWithoutUserInput;
-    preferenceEvents?: Prisma.PreferenceEventCreateNestedManyWithoutUserInput;
-    wardrobeItems?: Prisma.WardrobeItemCreateNestedManyWithoutUserInput;
-    wardrobeImages?: Prisma.WardrobeImageCreateNestedManyWithoutUserInput;
-    outfits?: Prisma.OutfitCreateNestedManyWithoutUserInput;
-    outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutUserInput;
-    interactions?: Prisma.UserInteractionCreateNestedManyWithoutUserInput;
+    avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput;
-    messages?: Prisma.MessageCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationCreateNestedManyWithoutUserInput;
     inspirationItems?: Prisma.InspirationItemCreateNestedManyWithoutUserInput;
-    shoppingSearches?: Prisma.ShoppingSearchCreateNestedManyWithoutUserInput;
+    messages?: Prisma.MessageCreateNestedManyWithoutUserInput;
+    outfits?: Prisma.OutfitCreateNestedManyWithoutUserInput;
+    outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutUserInput;
+    preferenceEvents?: Prisma.PreferenceEventCreateNestedManyWithoutUserInput;
     savedProducts?: Prisma.SavedProductCreateNestedManyWithoutUserInput;
-    avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
+    shoppingSearches?: Prisma.ShoppingSearchCreateNestedManyWithoutUserInput;
     subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput;
+    interactions?: Prisma.UserInteractionCreateNestedManyWithoutUserInput;
+    personas?: Prisma.UserPersonaCreateNestedManyWithoutUserInput;
+    styleProfile?: Prisma.UserStyleProfileCreateNestedOneWithoutUserInput;
+    wardrobeImages?: Prisma.WardrobeImageCreateNestedManyWithoutUserInput;
+    wardrobeItems?: Prisma.WardrobeItemCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutWearEventsInput = {
     id: string;
@@ -1446,23 +1446,23 @@ export type UserUncheckedCreateWithoutWearEventsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    personas?: Prisma.UserPersonaUncheckedCreateNestedManyWithoutUserInput;
-    styleProfile?: Prisma.UserStyleProfileUncheckedCreateNestedOneWithoutUserInput;
-    preferenceEvents?: Prisma.PreferenceEventUncheckedCreateNestedManyWithoutUserInput;
-    wardrobeItems?: Prisma.WardrobeItemUncheckedCreateNestedManyWithoutUserInput;
-    wardrobeImages?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutUserInput;
-    outfits?: Prisma.OutfitUncheckedCreateNestedManyWithoutUserInput;
-    outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutUserInput;
-    interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutUserInput;
+    avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput;
-    messages?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationUncheckedCreateNestedManyWithoutUserInput;
     inspirationItems?: Prisma.InspirationItemUncheckedCreateNestedManyWithoutUserInput;
-    shoppingSearches?: Prisma.ShoppingSearchUncheckedCreateNestedManyWithoutUserInput;
+    messages?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput;
+    outfits?: Prisma.OutfitUncheckedCreateNestedManyWithoutUserInput;
+    outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutUserInput;
+    preferenceEvents?: Prisma.PreferenceEventUncheckedCreateNestedManyWithoutUserInput;
     savedProducts?: Prisma.SavedProductUncheckedCreateNestedManyWithoutUserInput;
-    avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
+    shoppingSearches?: Prisma.ShoppingSearchUncheckedCreateNestedManyWithoutUserInput;
     subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput;
+    interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutUserInput;
+    personas?: Prisma.UserPersonaUncheckedCreateNestedManyWithoutUserInput;
+    styleProfile?: Prisma.UserStyleProfileUncheckedCreateNestedOneWithoutUserInput;
+    wardrobeImages?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutUserInput;
+    wardrobeItems?: Prisma.WardrobeItemUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutWearEventsInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -1484,23 +1484,23 @@ export type UserUpdateWithoutWearEventsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    personas?: Prisma.UserPersonaUpdateManyWithoutUserNestedInput;
-    styleProfile?: Prisma.UserStyleProfileUpdateOneWithoutUserNestedInput;
-    preferenceEvents?: Prisma.PreferenceEventUpdateManyWithoutUserNestedInput;
-    wardrobeItems?: Prisma.WardrobeItemUpdateManyWithoutUserNestedInput;
-    wardrobeImages?: Prisma.WardrobeImageUpdateManyWithoutUserNestedInput;
-    outfits?: Prisma.OutfitUpdateManyWithoutUserNestedInput;
-    outfitItems?: Prisma.OutfitItemUpdateManyWithoutUserNestedInput;
-    interactions?: Prisma.UserInteractionUpdateManyWithoutUserNestedInput;
+    avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput;
-    messages?: Prisma.MessageUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUpdateManyWithoutUserNestedInput;
     inspirationItems?: Prisma.InspirationItemUpdateManyWithoutUserNestedInput;
-    shoppingSearches?: Prisma.ShoppingSearchUpdateManyWithoutUserNestedInput;
+    messages?: Prisma.MessageUpdateManyWithoutUserNestedInput;
+    outfits?: Prisma.OutfitUpdateManyWithoutUserNestedInput;
+    outfitItems?: Prisma.OutfitItemUpdateManyWithoutUserNestedInput;
+    preferenceEvents?: Prisma.PreferenceEventUpdateManyWithoutUserNestedInput;
     savedProducts?: Prisma.SavedProductUpdateManyWithoutUserNestedInput;
-    avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
+    shoppingSearches?: Prisma.ShoppingSearchUpdateManyWithoutUserNestedInput;
     subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput;
+    interactions?: Prisma.UserInteractionUpdateManyWithoutUserNestedInput;
+    personas?: Prisma.UserPersonaUpdateManyWithoutUserNestedInput;
+    styleProfile?: Prisma.UserStyleProfileUpdateOneWithoutUserNestedInput;
+    wardrobeImages?: Prisma.WardrobeImageUpdateManyWithoutUserNestedInput;
+    wardrobeItems?: Prisma.WardrobeItemUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutWearEventsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1509,23 +1509,23 @@ export type UserUncheckedUpdateWithoutWearEventsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    personas?: Prisma.UserPersonaUncheckedUpdateManyWithoutUserNestedInput;
-    styleProfile?: Prisma.UserStyleProfileUncheckedUpdateOneWithoutUserNestedInput;
-    preferenceEvents?: Prisma.PreferenceEventUncheckedUpdateManyWithoutUserNestedInput;
-    wardrobeItems?: Prisma.WardrobeItemUncheckedUpdateManyWithoutUserNestedInput;
-    wardrobeImages?: Prisma.WardrobeImageUncheckedUpdateManyWithoutUserNestedInput;
-    outfits?: Prisma.OutfitUncheckedUpdateManyWithoutUserNestedInput;
-    outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutUserNestedInput;
-    interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutUserNestedInput;
+    avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput;
-    messages?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUncheckedUpdateManyWithoutUserNestedInput;
     inspirationItems?: Prisma.InspirationItemUncheckedUpdateManyWithoutUserNestedInput;
-    shoppingSearches?: Prisma.ShoppingSearchUncheckedUpdateManyWithoutUserNestedInput;
+    messages?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput;
+    outfits?: Prisma.OutfitUncheckedUpdateManyWithoutUserNestedInput;
+    outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutUserNestedInput;
+    preferenceEvents?: Prisma.PreferenceEventUncheckedUpdateManyWithoutUserNestedInput;
     savedProducts?: Prisma.SavedProductUncheckedUpdateManyWithoutUserNestedInput;
-    avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
+    shoppingSearches?: Prisma.ShoppingSearchUncheckedUpdateManyWithoutUserNestedInput;
     subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput;
+    interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutUserNestedInput;
+    personas?: Prisma.UserPersonaUncheckedUpdateManyWithoutUserNestedInput;
+    styleProfile?: Prisma.UserStyleProfileUncheckedUpdateOneWithoutUserNestedInput;
+    wardrobeImages?: Prisma.WardrobeImageUncheckedUpdateManyWithoutUserNestedInput;
+    wardrobeItems?: Prisma.WardrobeItemUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutConversationsInput = {
     id: string;
@@ -1534,23 +1534,23 @@ export type UserCreateWithoutConversationsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    personas?: Prisma.UserPersonaCreateNestedManyWithoutUserInput;
-    styleProfile?: Prisma.UserStyleProfileCreateNestedOneWithoutUserInput;
-    preferenceEvents?: Prisma.PreferenceEventCreateNestedManyWithoutUserInput;
-    wardrobeItems?: Prisma.WardrobeItemCreateNestedManyWithoutUserInput;
-    wardrobeImages?: Prisma.WardrobeImageCreateNestedManyWithoutUserInput;
-    outfits?: Prisma.OutfitCreateNestedManyWithoutUserInput;
-    outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutUserInput;
-    interactions?: Prisma.UserInteractionCreateNestedManyWithoutUserInput;
-    wearEvents?: Prisma.WearEventCreateNestedManyWithoutUserInput;
-    messages?: Prisma.MessageCreateNestedManyWithoutUserInput;
+    avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationCreateNestedManyWithoutUserInput;
     inspirationItems?: Prisma.InspirationItemCreateNestedManyWithoutUserInput;
-    shoppingSearches?: Prisma.ShoppingSearchCreateNestedManyWithoutUserInput;
+    messages?: Prisma.MessageCreateNestedManyWithoutUserInput;
+    outfits?: Prisma.OutfitCreateNestedManyWithoutUserInput;
+    outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutUserInput;
+    preferenceEvents?: Prisma.PreferenceEventCreateNestedManyWithoutUserInput;
     savedProducts?: Prisma.SavedProductCreateNestedManyWithoutUserInput;
-    avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
+    shoppingSearches?: Prisma.ShoppingSearchCreateNestedManyWithoutUserInput;
     subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput;
+    interactions?: Prisma.UserInteractionCreateNestedManyWithoutUserInput;
+    personas?: Prisma.UserPersonaCreateNestedManyWithoutUserInput;
+    styleProfile?: Prisma.UserStyleProfileCreateNestedOneWithoutUserInput;
+    wardrobeImages?: Prisma.WardrobeImageCreateNestedManyWithoutUserInput;
+    wardrobeItems?: Prisma.WardrobeItemCreateNestedManyWithoutUserInput;
+    wearEvents?: Prisma.WearEventCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutConversationsInput = {
     id: string;
@@ -1559,23 +1559,23 @@ export type UserUncheckedCreateWithoutConversationsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    personas?: Prisma.UserPersonaUncheckedCreateNestedManyWithoutUserInput;
-    styleProfile?: Prisma.UserStyleProfileUncheckedCreateNestedOneWithoutUserInput;
-    preferenceEvents?: Prisma.PreferenceEventUncheckedCreateNestedManyWithoutUserInput;
-    wardrobeItems?: Prisma.WardrobeItemUncheckedCreateNestedManyWithoutUserInput;
-    wardrobeImages?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutUserInput;
-    outfits?: Prisma.OutfitUncheckedCreateNestedManyWithoutUserInput;
-    outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutUserInput;
-    interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutUserInput;
-    wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutUserInput;
-    messages?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput;
+    avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationUncheckedCreateNestedManyWithoutUserInput;
     inspirationItems?: Prisma.InspirationItemUncheckedCreateNestedManyWithoutUserInput;
-    shoppingSearches?: Prisma.ShoppingSearchUncheckedCreateNestedManyWithoutUserInput;
+    messages?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput;
+    outfits?: Prisma.OutfitUncheckedCreateNestedManyWithoutUserInput;
+    outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutUserInput;
+    preferenceEvents?: Prisma.PreferenceEventUncheckedCreateNestedManyWithoutUserInput;
     savedProducts?: Prisma.SavedProductUncheckedCreateNestedManyWithoutUserInput;
-    avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
+    shoppingSearches?: Prisma.ShoppingSearchUncheckedCreateNestedManyWithoutUserInput;
     subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput;
+    interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutUserInput;
+    personas?: Prisma.UserPersonaUncheckedCreateNestedManyWithoutUserInput;
+    styleProfile?: Prisma.UserStyleProfileUncheckedCreateNestedOneWithoutUserInput;
+    wardrobeImages?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutUserInput;
+    wardrobeItems?: Prisma.WardrobeItemUncheckedCreateNestedManyWithoutUserInput;
+    wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutConversationsInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -1597,23 +1597,23 @@ export type UserUpdateWithoutConversationsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    personas?: Prisma.UserPersonaUpdateManyWithoutUserNestedInput;
-    styleProfile?: Prisma.UserStyleProfileUpdateOneWithoutUserNestedInput;
-    preferenceEvents?: Prisma.PreferenceEventUpdateManyWithoutUserNestedInput;
-    wardrobeItems?: Prisma.WardrobeItemUpdateManyWithoutUserNestedInput;
-    wardrobeImages?: Prisma.WardrobeImageUpdateManyWithoutUserNestedInput;
-    outfits?: Prisma.OutfitUpdateManyWithoutUserNestedInput;
-    outfitItems?: Prisma.OutfitItemUpdateManyWithoutUserNestedInput;
-    interactions?: Prisma.UserInteractionUpdateManyWithoutUserNestedInput;
-    wearEvents?: Prisma.WearEventUpdateManyWithoutUserNestedInput;
-    messages?: Prisma.MessageUpdateManyWithoutUserNestedInput;
+    avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUpdateManyWithoutUserNestedInput;
     inspirationItems?: Prisma.InspirationItemUpdateManyWithoutUserNestedInput;
-    shoppingSearches?: Prisma.ShoppingSearchUpdateManyWithoutUserNestedInput;
+    messages?: Prisma.MessageUpdateManyWithoutUserNestedInput;
+    outfits?: Prisma.OutfitUpdateManyWithoutUserNestedInput;
+    outfitItems?: Prisma.OutfitItemUpdateManyWithoutUserNestedInput;
+    preferenceEvents?: Prisma.PreferenceEventUpdateManyWithoutUserNestedInput;
     savedProducts?: Prisma.SavedProductUpdateManyWithoutUserNestedInput;
-    avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
+    shoppingSearches?: Prisma.ShoppingSearchUpdateManyWithoutUserNestedInput;
     subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput;
+    interactions?: Prisma.UserInteractionUpdateManyWithoutUserNestedInput;
+    personas?: Prisma.UserPersonaUpdateManyWithoutUserNestedInput;
+    styleProfile?: Prisma.UserStyleProfileUpdateOneWithoutUserNestedInput;
+    wardrobeImages?: Prisma.WardrobeImageUpdateManyWithoutUserNestedInput;
+    wardrobeItems?: Prisma.WardrobeItemUpdateManyWithoutUserNestedInput;
+    wearEvents?: Prisma.WearEventUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutConversationsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1622,23 +1622,23 @@ export type UserUncheckedUpdateWithoutConversationsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    personas?: Prisma.UserPersonaUncheckedUpdateManyWithoutUserNestedInput;
-    styleProfile?: Prisma.UserStyleProfileUncheckedUpdateOneWithoutUserNestedInput;
-    preferenceEvents?: Prisma.PreferenceEventUncheckedUpdateManyWithoutUserNestedInput;
-    wardrobeItems?: Prisma.WardrobeItemUncheckedUpdateManyWithoutUserNestedInput;
-    wardrobeImages?: Prisma.WardrobeImageUncheckedUpdateManyWithoutUserNestedInput;
-    outfits?: Prisma.OutfitUncheckedUpdateManyWithoutUserNestedInput;
-    outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutUserNestedInput;
-    interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutUserNestedInput;
-    wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutUserNestedInput;
-    messages?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput;
+    avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUncheckedUpdateManyWithoutUserNestedInput;
     inspirationItems?: Prisma.InspirationItemUncheckedUpdateManyWithoutUserNestedInput;
-    shoppingSearches?: Prisma.ShoppingSearchUncheckedUpdateManyWithoutUserNestedInput;
+    messages?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput;
+    outfits?: Prisma.OutfitUncheckedUpdateManyWithoutUserNestedInput;
+    outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutUserNestedInput;
+    preferenceEvents?: Prisma.PreferenceEventUncheckedUpdateManyWithoutUserNestedInput;
     savedProducts?: Prisma.SavedProductUncheckedUpdateManyWithoutUserNestedInput;
-    avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
+    shoppingSearches?: Prisma.ShoppingSearchUncheckedUpdateManyWithoutUserNestedInput;
     subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput;
+    interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutUserNestedInput;
+    personas?: Prisma.UserPersonaUncheckedUpdateManyWithoutUserNestedInput;
+    styleProfile?: Prisma.UserStyleProfileUncheckedUpdateOneWithoutUserNestedInput;
+    wardrobeImages?: Prisma.WardrobeImageUncheckedUpdateManyWithoutUserNestedInput;
+    wardrobeItems?: Prisma.WardrobeItemUncheckedUpdateManyWithoutUserNestedInput;
+    wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutMessagesInput = {
     id: string;
@@ -1647,23 +1647,23 @@ export type UserCreateWithoutMessagesInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    personas?: Prisma.UserPersonaCreateNestedManyWithoutUserInput;
-    styleProfile?: Prisma.UserStyleProfileCreateNestedOneWithoutUserInput;
-    preferenceEvents?: Prisma.PreferenceEventCreateNestedManyWithoutUserInput;
-    wardrobeItems?: Prisma.WardrobeItemCreateNestedManyWithoutUserInput;
-    wardrobeImages?: Prisma.WardrobeImageCreateNestedManyWithoutUserInput;
-    outfits?: Prisma.OutfitCreateNestedManyWithoutUserInput;
-    outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutUserInput;
-    interactions?: Prisma.UserInteractionCreateNestedManyWithoutUserInput;
-    wearEvents?: Prisma.WearEventCreateNestedManyWithoutUserInput;
+    avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationCreateNestedManyWithoutUserInput;
     inspirationItems?: Prisma.InspirationItemCreateNestedManyWithoutUserInput;
-    shoppingSearches?: Prisma.ShoppingSearchCreateNestedManyWithoutUserInput;
+    outfits?: Prisma.OutfitCreateNestedManyWithoutUserInput;
+    outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutUserInput;
+    preferenceEvents?: Prisma.PreferenceEventCreateNestedManyWithoutUserInput;
     savedProducts?: Prisma.SavedProductCreateNestedManyWithoutUserInput;
-    avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
+    shoppingSearches?: Prisma.ShoppingSearchCreateNestedManyWithoutUserInput;
     subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput;
+    interactions?: Prisma.UserInteractionCreateNestedManyWithoutUserInput;
+    personas?: Prisma.UserPersonaCreateNestedManyWithoutUserInput;
+    styleProfile?: Prisma.UserStyleProfileCreateNestedOneWithoutUserInput;
+    wardrobeImages?: Prisma.WardrobeImageCreateNestedManyWithoutUserInput;
+    wardrobeItems?: Prisma.WardrobeItemCreateNestedManyWithoutUserInput;
+    wearEvents?: Prisma.WearEventCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutMessagesInput = {
     id: string;
@@ -1672,23 +1672,23 @@ export type UserUncheckedCreateWithoutMessagesInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    personas?: Prisma.UserPersonaUncheckedCreateNestedManyWithoutUserInput;
-    styleProfile?: Prisma.UserStyleProfileUncheckedCreateNestedOneWithoutUserInput;
-    preferenceEvents?: Prisma.PreferenceEventUncheckedCreateNestedManyWithoutUserInput;
-    wardrobeItems?: Prisma.WardrobeItemUncheckedCreateNestedManyWithoutUserInput;
-    wardrobeImages?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutUserInput;
-    outfits?: Prisma.OutfitUncheckedCreateNestedManyWithoutUserInput;
-    outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutUserInput;
-    interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutUserInput;
-    wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutUserInput;
+    avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationUncheckedCreateNestedManyWithoutUserInput;
     inspirationItems?: Prisma.InspirationItemUncheckedCreateNestedManyWithoutUserInput;
-    shoppingSearches?: Prisma.ShoppingSearchUncheckedCreateNestedManyWithoutUserInput;
+    outfits?: Prisma.OutfitUncheckedCreateNestedManyWithoutUserInput;
+    outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutUserInput;
+    preferenceEvents?: Prisma.PreferenceEventUncheckedCreateNestedManyWithoutUserInput;
     savedProducts?: Prisma.SavedProductUncheckedCreateNestedManyWithoutUserInput;
-    avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
+    shoppingSearches?: Prisma.ShoppingSearchUncheckedCreateNestedManyWithoutUserInput;
     subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput;
+    interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutUserInput;
+    personas?: Prisma.UserPersonaUncheckedCreateNestedManyWithoutUserInput;
+    styleProfile?: Prisma.UserStyleProfileUncheckedCreateNestedOneWithoutUserInput;
+    wardrobeImages?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutUserInput;
+    wardrobeItems?: Prisma.WardrobeItemUncheckedCreateNestedManyWithoutUserInput;
+    wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutMessagesInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -1710,23 +1710,23 @@ export type UserUpdateWithoutMessagesInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    personas?: Prisma.UserPersonaUpdateManyWithoutUserNestedInput;
-    styleProfile?: Prisma.UserStyleProfileUpdateOneWithoutUserNestedInput;
-    preferenceEvents?: Prisma.PreferenceEventUpdateManyWithoutUserNestedInput;
-    wardrobeItems?: Prisma.WardrobeItemUpdateManyWithoutUserNestedInput;
-    wardrobeImages?: Prisma.WardrobeImageUpdateManyWithoutUserNestedInput;
-    outfits?: Prisma.OutfitUpdateManyWithoutUserNestedInput;
-    outfitItems?: Prisma.OutfitItemUpdateManyWithoutUserNestedInput;
-    interactions?: Prisma.UserInteractionUpdateManyWithoutUserNestedInput;
-    wearEvents?: Prisma.WearEventUpdateManyWithoutUserNestedInput;
+    avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUpdateManyWithoutUserNestedInput;
     inspirationItems?: Prisma.InspirationItemUpdateManyWithoutUserNestedInput;
-    shoppingSearches?: Prisma.ShoppingSearchUpdateManyWithoutUserNestedInput;
+    outfits?: Prisma.OutfitUpdateManyWithoutUserNestedInput;
+    outfitItems?: Prisma.OutfitItemUpdateManyWithoutUserNestedInput;
+    preferenceEvents?: Prisma.PreferenceEventUpdateManyWithoutUserNestedInput;
     savedProducts?: Prisma.SavedProductUpdateManyWithoutUserNestedInput;
-    avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
+    shoppingSearches?: Prisma.ShoppingSearchUpdateManyWithoutUserNestedInput;
     subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput;
+    interactions?: Prisma.UserInteractionUpdateManyWithoutUserNestedInput;
+    personas?: Prisma.UserPersonaUpdateManyWithoutUserNestedInput;
+    styleProfile?: Prisma.UserStyleProfileUpdateOneWithoutUserNestedInput;
+    wardrobeImages?: Prisma.WardrobeImageUpdateManyWithoutUserNestedInput;
+    wardrobeItems?: Prisma.WardrobeItemUpdateManyWithoutUserNestedInput;
+    wearEvents?: Prisma.WearEventUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutMessagesInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1735,23 +1735,23 @@ export type UserUncheckedUpdateWithoutMessagesInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    personas?: Prisma.UserPersonaUncheckedUpdateManyWithoutUserNestedInput;
-    styleProfile?: Prisma.UserStyleProfileUncheckedUpdateOneWithoutUserNestedInput;
-    preferenceEvents?: Prisma.PreferenceEventUncheckedUpdateManyWithoutUserNestedInput;
-    wardrobeItems?: Prisma.WardrobeItemUncheckedUpdateManyWithoutUserNestedInput;
-    wardrobeImages?: Prisma.WardrobeImageUncheckedUpdateManyWithoutUserNestedInput;
-    outfits?: Prisma.OutfitUncheckedUpdateManyWithoutUserNestedInput;
-    outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutUserNestedInput;
-    interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutUserNestedInput;
-    wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutUserNestedInput;
+    avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUncheckedUpdateManyWithoutUserNestedInput;
     inspirationItems?: Prisma.InspirationItemUncheckedUpdateManyWithoutUserNestedInput;
-    shoppingSearches?: Prisma.ShoppingSearchUncheckedUpdateManyWithoutUserNestedInput;
+    outfits?: Prisma.OutfitUncheckedUpdateManyWithoutUserNestedInput;
+    outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutUserNestedInput;
+    preferenceEvents?: Prisma.PreferenceEventUncheckedUpdateManyWithoutUserNestedInput;
     savedProducts?: Prisma.SavedProductUncheckedUpdateManyWithoutUserNestedInput;
-    avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
+    shoppingSearches?: Prisma.ShoppingSearchUncheckedUpdateManyWithoutUserNestedInput;
     subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput;
+    interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutUserNestedInput;
+    personas?: Prisma.UserPersonaUncheckedUpdateManyWithoutUserNestedInput;
+    styleProfile?: Prisma.UserStyleProfileUncheckedUpdateOneWithoutUserNestedInput;
+    wardrobeImages?: Prisma.WardrobeImageUncheckedUpdateManyWithoutUserNestedInput;
+    wardrobeItems?: Prisma.WardrobeItemUncheckedUpdateManyWithoutUserNestedInput;
+    wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutConversationMemoriesInput = {
     id: string;
@@ -1760,23 +1760,23 @@ export type UserCreateWithoutConversationMemoriesInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    personas?: Prisma.UserPersonaCreateNestedManyWithoutUserInput;
-    styleProfile?: Prisma.UserStyleProfileCreateNestedOneWithoutUserInput;
-    preferenceEvents?: Prisma.PreferenceEventCreateNestedManyWithoutUserInput;
-    wardrobeItems?: Prisma.WardrobeItemCreateNestedManyWithoutUserInput;
-    wardrobeImages?: Prisma.WardrobeImageCreateNestedManyWithoutUserInput;
-    outfits?: Prisma.OutfitCreateNestedManyWithoutUserInput;
-    outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutUserInput;
-    interactions?: Prisma.UserInteractionCreateNestedManyWithoutUserInput;
-    wearEvents?: Prisma.WearEventCreateNestedManyWithoutUserInput;
+    avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput;
-    messages?: Prisma.MessageCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationCreateNestedManyWithoutUserInput;
     inspirationItems?: Prisma.InspirationItemCreateNestedManyWithoutUserInput;
-    shoppingSearches?: Prisma.ShoppingSearchCreateNestedManyWithoutUserInput;
+    messages?: Prisma.MessageCreateNestedManyWithoutUserInput;
+    outfits?: Prisma.OutfitCreateNestedManyWithoutUserInput;
+    outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutUserInput;
+    preferenceEvents?: Prisma.PreferenceEventCreateNestedManyWithoutUserInput;
     savedProducts?: Prisma.SavedProductCreateNestedManyWithoutUserInput;
-    avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
+    shoppingSearches?: Prisma.ShoppingSearchCreateNestedManyWithoutUserInput;
     subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput;
+    interactions?: Prisma.UserInteractionCreateNestedManyWithoutUserInput;
+    personas?: Prisma.UserPersonaCreateNestedManyWithoutUserInput;
+    styleProfile?: Prisma.UserStyleProfileCreateNestedOneWithoutUserInput;
+    wardrobeImages?: Prisma.WardrobeImageCreateNestedManyWithoutUserInput;
+    wardrobeItems?: Prisma.WardrobeItemCreateNestedManyWithoutUserInput;
+    wearEvents?: Prisma.WearEventCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutConversationMemoriesInput = {
     id: string;
@@ -1785,23 +1785,23 @@ export type UserUncheckedCreateWithoutConversationMemoriesInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    personas?: Prisma.UserPersonaUncheckedCreateNestedManyWithoutUserInput;
-    styleProfile?: Prisma.UserStyleProfileUncheckedCreateNestedOneWithoutUserInput;
-    preferenceEvents?: Prisma.PreferenceEventUncheckedCreateNestedManyWithoutUserInput;
-    wardrobeItems?: Prisma.WardrobeItemUncheckedCreateNestedManyWithoutUserInput;
-    wardrobeImages?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutUserInput;
-    outfits?: Prisma.OutfitUncheckedCreateNestedManyWithoutUserInput;
-    outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutUserInput;
-    interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutUserInput;
-    wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutUserInput;
+    avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput;
-    messages?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationUncheckedCreateNestedManyWithoutUserInput;
     inspirationItems?: Prisma.InspirationItemUncheckedCreateNestedManyWithoutUserInput;
-    shoppingSearches?: Prisma.ShoppingSearchUncheckedCreateNestedManyWithoutUserInput;
+    messages?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput;
+    outfits?: Prisma.OutfitUncheckedCreateNestedManyWithoutUserInput;
+    outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutUserInput;
+    preferenceEvents?: Prisma.PreferenceEventUncheckedCreateNestedManyWithoutUserInput;
     savedProducts?: Prisma.SavedProductUncheckedCreateNestedManyWithoutUserInput;
-    avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
+    shoppingSearches?: Prisma.ShoppingSearchUncheckedCreateNestedManyWithoutUserInput;
     subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput;
+    interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutUserInput;
+    personas?: Prisma.UserPersonaUncheckedCreateNestedManyWithoutUserInput;
+    styleProfile?: Prisma.UserStyleProfileUncheckedCreateNestedOneWithoutUserInput;
+    wardrobeImages?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutUserInput;
+    wardrobeItems?: Prisma.WardrobeItemUncheckedCreateNestedManyWithoutUserInput;
+    wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutConversationMemoriesInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -1823,23 +1823,23 @@ export type UserUpdateWithoutConversationMemoriesInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    personas?: Prisma.UserPersonaUpdateManyWithoutUserNestedInput;
-    styleProfile?: Prisma.UserStyleProfileUpdateOneWithoutUserNestedInput;
-    preferenceEvents?: Prisma.PreferenceEventUpdateManyWithoutUserNestedInput;
-    wardrobeItems?: Prisma.WardrobeItemUpdateManyWithoutUserNestedInput;
-    wardrobeImages?: Prisma.WardrobeImageUpdateManyWithoutUserNestedInput;
-    outfits?: Prisma.OutfitUpdateManyWithoutUserNestedInput;
-    outfitItems?: Prisma.OutfitItemUpdateManyWithoutUserNestedInput;
-    interactions?: Prisma.UserInteractionUpdateManyWithoutUserNestedInput;
-    wearEvents?: Prisma.WearEventUpdateManyWithoutUserNestedInput;
+    avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput;
-    messages?: Prisma.MessageUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUpdateManyWithoutUserNestedInput;
     inspirationItems?: Prisma.InspirationItemUpdateManyWithoutUserNestedInput;
-    shoppingSearches?: Prisma.ShoppingSearchUpdateManyWithoutUserNestedInput;
+    messages?: Prisma.MessageUpdateManyWithoutUserNestedInput;
+    outfits?: Prisma.OutfitUpdateManyWithoutUserNestedInput;
+    outfitItems?: Prisma.OutfitItemUpdateManyWithoutUserNestedInput;
+    preferenceEvents?: Prisma.PreferenceEventUpdateManyWithoutUserNestedInput;
     savedProducts?: Prisma.SavedProductUpdateManyWithoutUserNestedInput;
-    avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
+    shoppingSearches?: Prisma.ShoppingSearchUpdateManyWithoutUserNestedInput;
     subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput;
+    interactions?: Prisma.UserInteractionUpdateManyWithoutUserNestedInput;
+    personas?: Prisma.UserPersonaUpdateManyWithoutUserNestedInput;
+    styleProfile?: Prisma.UserStyleProfileUpdateOneWithoutUserNestedInput;
+    wardrobeImages?: Prisma.WardrobeImageUpdateManyWithoutUserNestedInput;
+    wardrobeItems?: Prisma.WardrobeItemUpdateManyWithoutUserNestedInput;
+    wearEvents?: Prisma.WearEventUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutConversationMemoriesInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1848,23 +1848,23 @@ export type UserUncheckedUpdateWithoutConversationMemoriesInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    personas?: Prisma.UserPersonaUncheckedUpdateManyWithoutUserNestedInput;
-    styleProfile?: Prisma.UserStyleProfileUncheckedUpdateOneWithoutUserNestedInput;
-    preferenceEvents?: Prisma.PreferenceEventUncheckedUpdateManyWithoutUserNestedInput;
-    wardrobeItems?: Prisma.WardrobeItemUncheckedUpdateManyWithoutUserNestedInput;
-    wardrobeImages?: Prisma.WardrobeImageUncheckedUpdateManyWithoutUserNestedInput;
-    outfits?: Prisma.OutfitUncheckedUpdateManyWithoutUserNestedInput;
-    outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutUserNestedInput;
-    interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutUserNestedInput;
-    wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutUserNestedInput;
+    avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput;
-    messages?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUncheckedUpdateManyWithoutUserNestedInput;
     inspirationItems?: Prisma.InspirationItemUncheckedUpdateManyWithoutUserNestedInput;
-    shoppingSearches?: Prisma.ShoppingSearchUncheckedUpdateManyWithoutUserNestedInput;
+    messages?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput;
+    outfits?: Prisma.OutfitUncheckedUpdateManyWithoutUserNestedInput;
+    outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutUserNestedInput;
+    preferenceEvents?: Prisma.PreferenceEventUncheckedUpdateManyWithoutUserNestedInput;
     savedProducts?: Prisma.SavedProductUncheckedUpdateManyWithoutUserNestedInput;
-    avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
+    shoppingSearches?: Prisma.ShoppingSearchUncheckedUpdateManyWithoutUserNestedInput;
     subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput;
+    interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutUserNestedInput;
+    personas?: Prisma.UserPersonaUncheckedUpdateManyWithoutUserNestedInput;
+    styleProfile?: Prisma.UserStyleProfileUncheckedUpdateOneWithoutUserNestedInput;
+    wardrobeImages?: Prisma.WardrobeImageUncheckedUpdateManyWithoutUserNestedInput;
+    wardrobeItems?: Prisma.WardrobeItemUncheckedUpdateManyWithoutUserNestedInput;
+    wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutPreferenceEventsInput = {
     id: string;
@@ -1873,23 +1873,23 @@ export type UserCreateWithoutPreferenceEventsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    personas?: Prisma.UserPersonaCreateNestedManyWithoutUserInput;
-    styleProfile?: Prisma.UserStyleProfileCreateNestedOneWithoutUserInput;
-    wardrobeItems?: Prisma.WardrobeItemCreateNestedManyWithoutUserInput;
-    wardrobeImages?: Prisma.WardrobeImageCreateNestedManyWithoutUserInput;
-    outfits?: Prisma.OutfitCreateNestedManyWithoutUserInput;
-    outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutUserInput;
-    interactions?: Prisma.UserInteractionCreateNestedManyWithoutUserInput;
-    wearEvents?: Prisma.WearEventCreateNestedManyWithoutUserInput;
+    avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput;
-    messages?: Prisma.MessageCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationCreateNestedManyWithoutUserInput;
     inspirationItems?: Prisma.InspirationItemCreateNestedManyWithoutUserInput;
-    shoppingSearches?: Prisma.ShoppingSearchCreateNestedManyWithoutUserInput;
+    messages?: Prisma.MessageCreateNestedManyWithoutUserInput;
+    outfits?: Prisma.OutfitCreateNestedManyWithoutUserInput;
+    outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutUserInput;
     savedProducts?: Prisma.SavedProductCreateNestedManyWithoutUserInput;
-    avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
+    shoppingSearches?: Prisma.ShoppingSearchCreateNestedManyWithoutUserInput;
     subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput;
+    interactions?: Prisma.UserInteractionCreateNestedManyWithoutUserInput;
+    personas?: Prisma.UserPersonaCreateNestedManyWithoutUserInput;
+    styleProfile?: Prisma.UserStyleProfileCreateNestedOneWithoutUserInput;
+    wardrobeImages?: Prisma.WardrobeImageCreateNestedManyWithoutUserInput;
+    wardrobeItems?: Prisma.WardrobeItemCreateNestedManyWithoutUserInput;
+    wearEvents?: Prisma.WearEventCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutPreferenceEventsInput = {
     id: string;
@@ -1898,23 +1898,23 @@ export type UserUncheckedCreateWithoutPreferenceEventsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    personas?: Prisma.UserPersonaUncheckedCreateNestedManyWithoutUserInput;
-    styleProfile?: Prisma.UserStyleProfileUncheckedCreateNestedOneWithoutUserInput;
-    wardrobeItems?: Prisma.WardrobeItemUncheckedCreateNestedManyWithoutUserInput;
-    wardrobeImages?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutUserInput;
-    outfits?: Prisma.OutfitUncheckedCreateNestedManyWithoutUserInput;
-    outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutUserInput;
-    interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutUserInput;
-    wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutUserInput;
+    avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput;
-    messages?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationUncheckedCreateNestedManyWithoutUserInput;
     inspirationItems?: Prisma.InspirationItemUncheckedCreateNestedManyWithoutUserInput;
-    shoppingSearches?: Prisma.ShoppingSearchUncheckedCreateNestedManyWithoutUserInput;
+    messages?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput;
+    outfits?: Prisma.OutfitUncheckedCreateNestedManyWithoutUserInput;
+    outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutUserInput;
     savedProducts?: Prisma.SavedProductUncheckedCreateNestedManyWithoutUserInput;
-    avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
+    shoppingSearches?: Prisma.ShoppingSearchUncheckedCreateNestedManyWithoutUserInput;
     subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput;
+    interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutUserInput;
+    personas?: Prisma.UserPersonaUncheckedCreateNestedManyWithoutUserInput;
+    styleProfile?: Prisma.UserStyleProfileUncheckedCreateNestedOneWithoutUserInput;
+    wardrobeImages?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutUserInput;
+    wardrobeItems?: Prisma.WardrobeItemUncheckedCreateNestedManyWithoutUserInput;
+    wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutPreferenceEventsInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -1936,23 +1936,23 @@ export type UserUpdateWithoutPreferenceEventsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    personas?: Prisma.UserPersonaUpdateManyWithoutUserNestedInput;
-    styleProfile?: Prisma.UserStyleProfileUpdateOneWithoutUserNestedInput;
-    wardrobeItems?: Prisma.WardrobeItemUpdateManyWithoutUserNestedInput;
-    wardrobeImages?: Prisma.WardrobeImageUpdateManyWithoutUserNestedInput;
-    outfits?: Prisma.OutfitUpdateManyWithoutUserNestedInput;
-    outfitItems?: Prisma.OutfitItemUpdateManyWithoutUserNestedInput;
-    interactions?: Prisma.UserInteractionUpdateManyWithoutUserNestedInput;
-    wearEvents?: Prisma.WearEventUpdateManyWithoutUserNestedInput;
+    avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput;
-    messages?: Prisma.MessageUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUpdateManyWithoutUserNestedInput;
     inspirationItems?: Prisma.InspirationItemUpdateManyWithoutUserNestedInput;
-    shoppingSearches?: Prisma.ShoppingSearchUpdateManyWithoutUserNestedInput;
+    messages?: Prisma.MessageUpdateManyWithoutUserNestedInput;
+    outfits?: Prisma.OutfitUpdateManyWithoutUserNestedInput;
+    outfitItems?: Prisma.OutfitItemUpdateManyWithoutUserNestedInput;
     savedProducts?: Prisma.SavedProductUpdateManyWithoutUserNestedInput;
-    avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
+    shoppingSearches?: Prisma.ShoppingSearchUpdateManyWithoutUserNestedInput;
     subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput;
+    interactions?: Prisma.UserInteractionUpdateManyWithoutUserNestedInput;
+    personas?: Prisma.UserPersonaUpdateManyWithoutUserNestedInput;
+    styleProfile?: Prisma.UserStyleProfileUpdateOneWithoutUserNestedInput;
+    wardrobeImages?: Prisma.WardrobeImageUpdateManyWithoutUserNestedInput;
+    wardrobeItems?: Prisma.WardrobeItemUpdateManyWithoutUserNestedInput;
+    wearEvents?: Prisma.WearEventUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutPreferenceEventsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1961,23 +1961,23 @@ export type UserUncheckedUpdateWithoutPreferenceEventsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    personas?: Prisma.UserPersonaUncheckedUpdateManyWithoutUserNestedInput;
-    styleProfile?: Prisma.UserStyleProfileUncheckedUpdateOneWithoutUserNestedInput;
-    wardrobeItems?: Prisma.WardrobeItemUncheckedUpdateManyWithoutUserNestedInput;
-    wardrobeImages?: Prisma.WardrobeImageUncheckedUpdateManyWithoutUserNestedInput;
-    outfits?: Prisma.OutfitUncheckedUpdateManyWithoutUserNestedInput;
-    outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutUserNestedInput;
-    interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutUserNestedInput;
-    wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutUserNestedInput;
+    avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput;
-    messages?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUncheckedUpdateManyWithoutUserNestedInput;
     inspirationItems?: Prisma.InspirationItemUncheckedUpdateManyWithoutUserNestedInput;
-    shoppingSearches?: Prisma.ShoppingSearchUncheckedUpdateManyWithoutUserNestedInput;
+    messages?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput;
+    outfits?: Prisma.OutfitUncheckedUpdateManyWithoutUserNestedInput;
+    outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutUserNestedInput;
     savedProducts?: Prisma.SavedProductUncheckedUpdateManyWithoutUserNestedInput;
-    avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
+    shoppingSearches?: Prisma.ShoppingSearchUncheckedUpdateManyWithoutUserNestedInput;
     subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput;
+    interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutUserNestedInput;
+    personas?: Prisma.UserPersonaUncheckedUpdateManyWithoutUserNestedInput;
+    styleProfile?: Prisma.UserStyleProfileUncheckedUpdateOneWithoutUserNestedInput;
+    wardrobeImages?: Prisma.WardrobeImageUncheckedUpdateManyWithoutUserNestedInput;
+    wardrobeItems?: Prisma.WardrobeItemUncheckedUpdateManyWithoutUserNestedInput;
+    wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutInspirationsInput = {
     id: string;
@@ -1986,23 +1986,23 @@ export type UserCreateWithoutInspirationsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    personas?: Prisma.UserPersonaCreateNestedManyWithoutUserInput;
-    styleProfile?: Prisma.UserStyleProfileCreateNestedOneWithoutUserInput;
-    preferenceEvents?: Prisma.PreferenceEventCreateNestedManyWithoutUserInput;
-    wardrobeItems?: Prisma.WardrobeItemCreateNestedManyWithoutUserInput;
-    wardrobeImages?: Prisma.WardrobeImageCreateNestedManyWithoutUserInput;
-    outfits?: Prisma.OutfitCreateNestedManyWithoutUserInput;
-    outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutUserInput;
-    interactions?: Prisma.UserInteractionCreateNestedManyWithoutUserInput;
-    wearEvents?: Prisma.WearEventCreateNestedManyWithoutUserInput;
+    avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput;
-    messages?: Prisma.MessageCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryCreateNestedManyWithoutUserInput;
     inspirationItems?: Prisma.InspirationItemCreateNestedManyWithoutUserInput;
-    shoppingSearches?: Prisma.ShoppingSearchCreateNestedManyWithoutUserInput;
+    messages?: Prisma.MessageCreateNestedManyWithoutUserInput;
+    outfits?: Prisma.OutfitCreateNestedManyWithoutUserInput;
+    outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutUserInput;
+    preferenceEvents?: Prisma.PreferenceEventCreateNestedManyWithoutUserInput;
     savedProducts?: Prisma.SavedProductCreateNestedManyWithoutUserInput;
-    avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
+    shoppingSearches?: Prisma.ShoppingSearchCreateNestedManyWithoutUserInput;
     subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput;
+    interactions?: Prisma.UserInteractionCreateNestedManyWithoutUserInput;
+    personas?: Prisma.UserPersonaCreateNestedManyWithoutUserInput;
+    styleProfile?: Prisma.UserStyleProfileCreateNestedOneWithoutUserInput;
+    wardrobeImages?: Prisma.WardrobeImageCreateNestedManyWithoutUserInput;
+    wardrobeItems?: Prisma.WardrobeItemCreateNestedManyWithoutUserInput;
+    wearEvents?: Prisma.WearEventCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutInspirationsInput = {
     id: string;
@@ -2011,23 +2011,23 @@ export type UserUncheckedCreateWithoutInspirationsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    personas?: Prisma.UserPersonaUncheckedCreateNestedManyWithoutUserInput;
-    styleProfile?: Prisma.UserStyleProfileUncheckedCreateNestedOneWithoutUserInput;
-    preferenceEvents?: Prisma.PreferenceEventUncheckedCreateNestedManyWithoutUserInput;
-    wardrobeItems?: Prisma.WardrobeItemUncheckedCreateNestedManyWithoutUserInput;
-    wardrobeImages?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutUserInput;
-    outfits?: Prisma.OutfitUncheckedCreateNestedManyWithoutUserInput;
-    outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutUserInput;
-    interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutUserInput;
-    wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutUserInput;
+    avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput;
-    messages?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedCreateNestedManyWithoutUserInput;
     inspirationItems?: Prisma.InspirationItemUncheckedCreateNestedManyWithoutUserInput;
-    shoppingSearches?: Prisma.ShoppingSearchUncheckedCreateNestedManyWithoutUserInput;
+    messages?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput;
+    outfits?: Prisma.OutfitUncheckedCreateNestedManyWithoutUserInput;
+    outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutUserInput;
+    preferenceEvents?: Prisma.PreferenceEventUncheckedCreateNestedManyWithoutUserInput;
     savedProducts?: Prisma.SavedProductUncheckedCreateNestedManyWithoutUserInput;
-    avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
+    shoppingSearches?: Prisma.ShoppingSearchUncheckedCreateNestedManyWithoutUserInput;
     subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput;
+    interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutUserInput;
+    personas?: Prisma.UserPersonaUncheckedCreateNestedManyWithoutUserInput;
+    styleProfile?: Prisma.UserStyleProfileUncheckedCreateNestedOneWithoutUserInput;
+    wardrobeImages?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutUserInput;
+    wardrobeItems?: Prisma.WardrobeItemUncheckedCreateNestedManyWithoutUserInput;
+    wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutInspirationsInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -2049,23 +2049,23 @@ export type UserUpdateWithoutInspirationsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    personas?: Prisma.UserPersonaUpdateManyWithoutUserNestedInput;
-    styleProfile?: Prisma.UserStyleProfileUpdateOneWithoutUserNestedInput;
-    preferenceEvents?: Prisma.PreferenceEventUpdateManyWithoutUserNestedInput;
-    wardrobeItems?: Prisma.WardrobeItemUpdateManyWithoutUserNestedInput;
-    wardrobeImages?: Prisma.WardrobeImageUpdateManyWithoutUserNestedInput;
-    outfits?: Prisma.OutfitUpdateManyWithoutUserNestedInput;
-    outfitItems?: Prisma.OutfitItemUpdateManyWithoutUserNestedInput;
-    interactions?: Prisma.UserInteractionUpdateManyWithoutUserNestedInput;
-    wearEvents?: Prisma.WearEventUpdateManyWithoutUserNestedInput;
+    avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput;
-    messages?: Prisma.MessageUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUpdateManyWithoutUserNestedInput;
     inspirationItems?: Prisma.InspirationItemUpdateManyWithoutUserNestedInput;
-    shoppingSearches?: Prisma.ShoppingSearchUpdateManyWithoutUserNestedInput;
+    messages?: Prisma.MessageUpdateManyWithoutUserNestedInput;
+    outfits?: Prisma.OutfitUpdateManyWithoutUserNestedInput;
+    outfitItems?: Prisma.OutfitItemUpdateManyWithoutUserNestedInput;
+    preferenceEvents?: Prisma.PreferenceEventUpdateManyWithoutUserNestedInput;
     savedProducts?: Prisma.SavedProductUpdateManyWithoutUserNestedInput;
-    avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
+    shoppingSearches?: Prisma.ShoppingSearchUpdateManyWithoutUserNestedInput;
     subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput;
+    interactions?: Prisma.UserInteractionUpdateManyWithoutUserNestedInput;
+    personas?: Prisma.UserPersonaUpdateManyWithoutUserNestedInput;
+    styleProfile?: Prisma.UserStyleProfileUpdateOneWithoutUserNestedInput;
+    wardrobeImages?: Prisma.WardrobeImageUpdateManyWithoutUserNestedInput;
+    wardrobeItems?: Prisma.WardrobeItemUpdateManyWithoutUserNestedInput;
+    wearEvents?: Prisma.WearEventUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutInspirationsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -2074,23 +2074,23 @@ export type UserUncheckedUpdateWithoutInspirationsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    personas?: Prisma.UserPersonaUncheckedUpdateManyWithoutUserNestedInput;
-    styleProfile?: Prisma.UserStyleProfileUncheckedUpdateOneWithoutUserNestedInput;
-    preferenceEvents?: Prisma.PreferenceEventUncheckedUpdateManyWithoutUserNestedInput;
-    wardrobeItems?: Prisma.WardrobeItemUncheckedUpdateManyWithoutUserNestedInput;
-    wardrobeImages?: Prisma.WardrobeImageUncheckedUpdateManyWithoutUserNestedInput;
-    outfits?: Prisma.OutfitUncheckedUpdateManyWithoutUserNestedInput;
-    outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutUserNestedInput;
-    interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutUserNestedInput;
-    wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutUserNestedInput;
+    avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput;
-    messages?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedUpdateManyWithoutUserNestedInput;
     inspirationItems?: Prisma.InspirationItemUncheckedUpdateManyWithoutUserNestedInput;
-    shoppingSearches?: Prisma.ShoppingSearchUncheckedUpdateManyWithoutUserNestedInput;
+    messages?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput;
+    outfits?: Prisma.OutfitUncheckedUpdateManyWithoutUserNestedInput;
+    outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutUserNestedInput;
+    preferenceEvents?: Prisma.PreferenceEventUncheckedUpdateManyWithoutUserNestedInput;
     savedProducts?: Prisma.SavedProductUncheckedUpdateManyWithoutUserNestedInput;
-    avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
+    shoppingSearches?: Prisma.ShoppingSearchUncheckedUpdateManyWithoutUserNestedInput;
     subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput;
+    interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutUserNestedInput;
+    personas?: Prisma.UserPersonaUncheckedUpdateManyWithoutUserNestedInput;
+    styleProfile?: Prisma.UserStyleProfileUncheckedUpdateOneWithoutUserNestedInput;
+    wardrobeImages?: Prisma.WardrobeImageUncheckedUpdateManyWithoutUserNestedInput;
+    wardrobeItems?: Prisma.WardrobeItemUncheckedUpdateManyWithoutUserNestedInput;
+    wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutInspirationItemsInput = {
     id: string;
@@ -2099,23 +2099,23 @@ export type UserCreateWithoutInspirationItemsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    personas?: Prisma.UserPersonaCreateNestedManyWithoutUserInput;
-    styleProfile?: Prisma.UserStyleProfileCreateNestedOneWithoutUserInput;
-    preferenceEvents?: Prisma.PreferenceEventCreateNestedManyWithoutUserInput;
-    wardrobeItems?: Prisma.WardrobeItemCreateNestedManyWithoutUserInput;
-    wardrobeImages?: Prisma.WardrobeImageCreateNestedManyWithoutUserInput;
-    outfits?: Prisma.OutfitCreateNestedManyWithoutUserInput;
-    outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutUserInput;
-    interactions?: Prisma.UserInteractionCreateNestedManyWithoutUserInput;
-    wearEvents?: Prisma.WearEventCreateNestedManyWithoutUserInput;
+    avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput;
-    messages?: Prisma.MessageCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationCreateNestedManyWithoutUserInput;
-    shoppingSearches?: Prisma.ShoppingSearchCreateNestedManyWithoutUserInput;
+    messages?: Prisma.MessageCreateNestedManyWithoutUserInput;
+    outfits?: Prisma.OutfitCreateNestedManyWithoutUserInput;
+    outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutUserInput;
+    preferenceEvents?: Prisma.PreferenceEventCreateNestedManyWithoutUserInput;
     savedProducts?: Prisma.SavedProductCreateNestedManyWithoutUserInput;
-    avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
+    shoppingSearches?: Prisma.ShoppingSearchCreateNestedManyWithoutUserInput;
     subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput;
+    interactions?: Prisma.UserInteractionCreateNestedManyWithoutUserInput;
+    personas?: Prisma.UserPersonaCreateNestedManyWithoutUserInput;
+    styleProfile?: Prisma.UserStyleProfileCreateNestedOneWithoutUserInput;
+    wardrobeImages?: Prisma.WardrobeImageCreateNestedManyWithoutUserInput;
+    wardrobeItems?: Prisma.WardrobeItemCreateNestedManyWithoutUserInput;
+    wearEvents?: Prisma.WearEventCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutInspirationItemsInput = {
     id: string;
@@ -2124,23 +2124,23 @@ export type UserUncheckedCreateWithoutInspirationItemsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    personas?: Prisma.UserPersonaUncheckedCreateNestedManyWithoutUserInput;
-    styleProfile?: Prisma.UserStyleProfileUncheckedCreateNestedOneWithoutUserInput;
-    preferenceEvents?: Prisma.PreferenceEventUncheckedCreateNestedManyWithoutUserInput;
-    wardrobeItems?: Prisma.WardrobeItemUncheckedCreateNestedManyWithoutUserInput;
-    wardrobeImages?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutUserInput;
-    outfits?: Prisma.OutfitUncheckedCreateNestedManyWithoutUserInput;
-    outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutUserInput;
-    interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutUserInput;
-    wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutUserInput;
+    avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput;
-    messages?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationUncheckedCreateNestedManyWithoutUserInput;
-    shoppingSearches?: Prisma.ShoppingSearchUncheckedCreateNestedManyWithoutUserInput;
+    messages?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput;
+    outfits?: Prisma.OutfitUncheckedCreateNestedManyWithoutUserInput;
+    outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutUserInput;
+    preferenceEvents?: Prisma.PreferenceEventUncheckedCreateNestedManyWithoutUserInput;
     savedProducts?: Prisma.SavedProductUncheckedCreateNestedManyWithoutUserInput;
-    avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
+    shoppingSearches?: Prisma.ShoppingSearchUncheckedCreateNestedManyWithoutUserInput;
     subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput;
+    interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutUserInput;
+    personas?: Prisma.UserPersonaUncheckedCreateNestedManyWithoutUserInput;
+    styleProfile?: Prisma.UserStyleProfileUncheckedCreateNestedOneWithoutUserInput;
+    wardrobeImages?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutUserInput;
+    wardrobeItems?: Prisma.WardrobeItemUncheckedCreateNestedManyWithoutUserInput;
+    wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutInspirationItemsInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -2162,23 +2162,23 @@ export type UserUpdateWithoutInspirationItemsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    personas?: Prisma.UserPersonaUpdateManyWithoutUserNestedInput;
-    styleProfile?: Prisma.UserStyleProfileUpdateOneWithoutUserNestedInput;
-    preferenceEvents?: Prisma.PreferenceEventUpdateManyWithoutUserNestedInput;
-    wardrobeItems?: Prisma.WardrobeItemUpdateManyWithoutUserNestedInput;
-    wardrobeImages?: Prisma.WardrobeImageUpdateManyWithoutUserNestedInput;
-    outfits?: Prisma.OutfitUpdateManyWithoutUserNestedInput;
-    outfitItems?: Prisma.OutfitItemUpdateManyWithoutUserNestedInput;
-    interactions?: Prisma.UserInteractionUpdateManyWithoutUserNestedInput;
-    wearEvents?: Prisma.WearEventUpdateManyWithoutUserNestedInput;
+    avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput;
-    messages?: Prisma.MessageUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUpdateManyWithoutUserNestedInput;
-    shoppingSearches?: Prisma.ShoppingSearchUpdateManyWithoutUserNestedInput;
+    messages?: Prisma.MessageUpdateManyWithoutUserNestedInput;
+    outfits?: Prisma.OutfitUpdateManyWithoutUserNestedInput;
+    outfitItems?: Prisma.OutfitItemUpdateManyWithoutUserNestedInput;
+    preferenceEvents?: Prisma.PreferenceEventUpdateManyWithoutUserNestedInput;
     savedProducts?: Prisma.SavedProductUpdateManyWithoutUserNestedInput;
-    avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
+    shoppingSearches?: Prisma.ShoppingSearchUpdateManyWithoutUserNestedInput;
     subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput;
+    interactions?: Prisma.UserInteractionUpdateManyWithoutUserNestedInput;
+    personas?: Prisma.UserPersonaUpdateManyWithoutUserNestedInput;
+    styleProfile?: Prisma.UserStyleProfileUpdateOneWithoutUserNestedInput;
+    wardrobeImages?: Prisma.WardrobeImageUpdateManyWithoutUserNestedInput;
+    wardrobeItems?: Prisma.WardrobeItemUpdateManyWithoutUserNestedInput;
+    wearEvents?: Prisma.WearEventUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutInspirationItemsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -2187,23 +2187,23 @@ export type UserUncheckedUpdateWithoutInspirationItemsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    personas?: Prisma.UserPersonaUncheckedUpdateManyWithoutUserNestedInput;
-    styleProfile?: Prisma.UserStyleProfileUncheckedUpdateOneWithoutUserNestedInput;
-    preferenceEvents?: Prisma.PreferenceEventUncheckedUpdateManyWithoutUserNestedInput;
-    wardrobeItems?: Prisma.WardrobeItemUncheckedUpdateManyWithoutUserNestedInput;
-    wardrobeImages?: Prisma.WardrobeImageUncheckedUpdateManyWithoutUserNestedInput;
-    outfits?: Prisma.OutfitUncheckedUpdateManyWithoutUserNestedInput;
-    outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutUserNestedInput;
-    interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutUserNestedInput;
-    wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutUserNestedInput;
+    avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput;
-    messages?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUncheckedUpdateManyWithoutUserNestedInput;
-    shoppingSearches?: Prisma.ShoppingSearchUncheckedUpdateManyWithoutUserNestedInput;
+    messages?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput;
+    outfits?: Prisma.OutfitUncheckedUpdateManyWithoutUserNestedInput;
+    outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutUserNestedInput;
+    preferenceEvents?: Prisma.PreferenceEventUncheckedUpdateManyWithoutUserNestedInput;
     savedProducts?: Prisma.SavedProductUncheckedUpdateManyWithoutUserNestedInput;
-    avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
+    shoppingSearches?: Prisma.ShoppingSearchUncheckedUpdateManyWithoutUserNestedInput;
     subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput;
+    interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutUserNestedInput;
+    personas?: Prisma.UserPersonaUncheckedUpdateManyWithoutUserNestedInput;
+    styleProfile?: Prisma.UserStyleProfileUncheckedUpdateOneWithoutUserNestedInput;
+    wardrobeImages?: Prisma.WardrobeImageUncheckedUpdateManyWithoutUserNestedInput;
+    wardrobeItems?: Prisma.WardrobeItemUncheckedUpdateManyWithoutUserNestedInput;
+    wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutShoppingSearchesInput = {
     id: string;
@@ -2212,23 +2212,23 @@ export type UserCreateWithoutShoppingSearchesInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    personas?: Prisma.UserPersonaCreateNestedManyWithoutUserInput;
-    styleProfile?: Prisma.UserStyleProfileCreateNestedOneWithoutUserInput;
-    preferenceEvents?: Prisma.PreferenceEventCreateNestedManyWithoutUserInput;
-    wardrobeItems?: Prisma.WardrobeItemCreateNestedManyWithoutUserInput;
-    wardrobeImages?: Prisma.WardrobeImageCreateNestedManyWithoutUserInput;
-    outfits?: Prisma.OutfitCreateNestedManyWithoutUserInput;
-    outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutUserInput;
-    interactions?: Prisma.UserInteractionCreateNestedManyWithoutUserInput;
-    wearEvents?: Prisma.WearEventCreateNestedManyWithoutUserInput;
+    avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput;
-    messages?: Prisma.MessageCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationCreateNestedManyWithoutUserInput;
     inspirationItems?: Prisma.InspirationItemCreateNestedManyWithoutUserInput;
+    messages?: Prisma.MessageCreateNestedManyWithoutUserInput;
+    outfits?: Prisma.OutfitCreateNestedManyWithoutUserInput;
+    outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutUserInput;
+    preferenceEvents?: Prisma.PreferenceEventCreateNestedManyWithoutUserInput;
     savedProducts?: Prisma.SavedProductCreateNestedManyWithoutUserInput;
-    avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
     subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput;
+    interactions?: Prisma.UserInteractionCreateNestedManyWithoutUserInput;
+    personas?: Prisma.UserPersonaCreateNestedManyWithoutUserInput;
+    styleProfile?: Prisma.UserStyleProfileCreateNestedOneWithoutUserInput;
+    wardrobeImages?: Prisma.WardrobeImageCreateNestedManyWithoutUserInput;
+    wardrobeItems?: Prisma.WardrobeItemCreateNestedManyWithoutUserInput;
+    wearEvents?: Prisma.WearEventCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutShoppingSearchesInput = {
     id: string;
@@ -2237,23 +2237,23 @@ export type UserUncheckedCreateWithoutShoppingSearchesInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    personas?: Prisma.UserPersonaUncheckedCreateNestedManyWithoutUserInput;
-    styleProfile?: Prisma.UserStyleProfileUncheckedCreateNestedOneWithoutUserInput;
-    preferenceEvents?: Prisma.PreferenceEventUncheckedCreateNestedManyWithoutUserInput;
-    wardrobeItems?: Prisma.WardrobeItemUncheckedCreateNestedManyWithoutUserInput;
-    wardrobeImages?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutUserInput;
-    outfits?: Prisma.OutfitUncheckedCreateNestedManyWithoutUserInput;
-    outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutUserInput;
-    interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutUserInput;
-    wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutUserInput;
+    avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput;
-    messages?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationUncheckedCreateNestedManyWithoutUserInput;
     inspirationItems?: Prisma.InspirationItemUncheckedCreateNestedManyWithoutUserInput;
+    messages?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput;
+    outfits?: Prisma.OutfitUncheckedCreateNestedManyWithoutUserInput;
+    outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutUserInput;
+    preferenceEvents?: Prisma.PreferenceEventUncheckedCreateNestedManyWithoutUserInput;
     savedProducts?: Prisma.SavedProductUncheckedCreateNestedManyWithoutUserInput;
-    avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
     subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput;
+    interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutUserInput;
+    personas?: Prisma.UserPersonaUncheckedCreateNestedManyWithoutUserInput;
+    styleProfile?: Prisma.UserStyleProfileUncheckedCreateNestedOneWithoutUserInput;
+    wardrobeImages?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutUserInput;
+    wardrobeItems?: Prisma.WardrobeItemUncheckedCreateNestedManyWithoutUserInput;
+    wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutShoppingSearchesInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -2275,23 +2275,23 @@ export type UserUpdateWithoutShoppingSearchesInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    personas?: Prisma.UserPersonaUpdateManyWithoutUserNestedInput;
-    styleProfile?: Prisma.UserStyleProfileUpdateOneWithoutUserNestedInput;
-    preferenceEvents?: Prisma.PreferenceEventUpdateManyWithoutUserNestedInput;
-    wardrobeItems?: Prisma.WardrobeItemUpdateManyWithoutUserNestedInput;
-    wardrobeImages?: Prisma.WardrobeImageUpdateManyWithoutUserNestedInput;
-    outfits?: Prisma.OutfitUpdateManyWithoutUserNestedInput;
-    outfitItems?: Prisma.OutfitItemUpdateManyWithoutUserNestedInput;
-    interactions?: Prisma.UserInteractionUpdateManyWithoutUserNestedInput;
-    wearEvents?: Prisma.WearEventUpdateManyWithoutUserNestedInput;
+    avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput;
-    messages?: Prisma.MessageUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUpdateManyWithoutUserNestedInput;
     inspirationItems?: Prisma.InspirationItemUpdateManyWithoutUserNestedInput;
+    messages?: Prisma.MessageUpdateManyWithoutUserNestedInput;
+    outfits?: Prisma.OutfitUpdateManyWithoutUserNestedInput;
+    outfitItems?: Prisma.OutfitItemUpdateManyWithoutUserNestedInput;
+    preferenceEvents?: Prisma.PreferenceEventUpdateManyWithoutUserNestedInput;
     savedProducts?: Prisma.SavedProductUpdateManyWithoutUserNestedInput;
-    avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
     subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput;
+    interactions?: Prisma.UserInteractionUpdateManyWithoutUserNestedInput;
+    personas?: Prisma.UserPersonaUpdateManyWithoutUserNestedInput;
+    styleProfile?: Prisma.UserStyleProfileUpdateOneWithoutUserNestedInput;
+    wardrobeImages?: Prisma.WardrobeImageUpdateManyWithoutUserNestedInput;
+    wardrobeItems?: Prisma.WardrobeItemUpdateManyWithoutUserNestedInput;
+    wearEvents?: Prisma.WearEventUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutShoppingSearchesInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -2300,23 +2300,23 @@ export type UserUncheckedUpdateWithoutShoppingSearchesInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    personas?: Prisma.UserPersonaUncheckedUpdateManyWithoutUserNestedInput;
-    styleProfile?: Prisma.UserStyleProfileUncheckedUpdateOneWithoutUserNestedInput;
-    preferenceEvents?: Prisma.PreferenceEventUncheckedUpdateManyWithoutUserNestedInput;
-    wardrobeItems?: Prisma.WardrobeItemUncheckedUpdateManyWithoutUserNestedInput;
-    wardrobeImages?: Prisma.WardrobeImageUncheckedUpdateManyWithoutUserNestedInput;
-    outfits?: Prisma.OutfitUncheckedUpdateManyWithoutUserNestedInput;
-    outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutUserNestedInput;
-    interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutUserNestedInput;
-    wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutUserNestedInput;
+    avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput;
-    messages?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUncheckedUpdateManyWithoutUserNestedInput;
     inspirationItems?: Prisma.InspirationItemUncheckedUpdateManyWithoutUserNestedInput;
+    messages?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput;
+    outfits?: Prisma.OutfitUncheckedUpdateManyWithoutUserNestedInput;
+    outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutUserNestedInput;
+    preferenceEvents?: Prisma.PreferenceEventUncheckedUpdateManyWithoutUserNestedInput;
     savedProducts?: Prisma.SavedProductUncheckedUpdateManyWithoutUserNestedInput;
-    avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
     subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput;
+    interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutUserNestedInput;
+    personas?: Prisma.UserPersonaUncheckedUpdateManyWithoutUserNestedInput;
+    styleProfile?: Prisma.UserStyleProfileUncheckedUpdateOneWithoutUserNestedInput;
+    wardrobeImages?: Prisma.WardrobeImageUncheckedUpdateManyWithoutUserNestedInput;
+    wardrobeItems?: Prisma.WardrobeItemUncheckedUpdateManyWithoutUserNestedInput;
+    wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutSavedProductsInput = {
     id: string;
@@ -2325,23 +2325,23 @@ export type UserCreateWithoutSavedProductsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    personas?: Prisma.UserPersonaCreateNestedManyWithoutUserInput;
-    styleProfile?: Prisma.UserStyleProfileCreateNestedOneWithoutUserInput;
-    preferenceEvents?: Prisma.PreferenceEventCreateNestedManyWithoutUserInput;
-    wardrobeItems?: Prisma.WardrobeItemCreateNestedManyWithoutUserInput;
-    wardrobeImages?: Prisma.WardrobeImageCreateNestedManyWithoutUserInput;
-    outfits?: Prisma.OutfitCreateNestedManyWithoutUserInput;
-    outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutUserInput;
-    interactions?: Prisma.UserInteractionCreateNestedManyWithoutUserInput;
-    wearEvents?: Prisma.WearEventCreateNestedManyWithoutUserInput;
+    avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput;
-    messages?: Prisma.MessageCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationCreateNestedManyWithoutUserInput;
     inspirationItems?: Prisma.InspirationItemCreateNestedManyWithoutUserInput;
+    messages?: Prisma.MessageCreateNestedManyWithoutUserInput;
+    outfits?: Prisma.OutfitCreateNestedManyWithoutUserInput;
+    outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutUserInput;
+    preferenceEvents?: Prisma.PreferenceEventCreateNestedManyWithoutUserInput;
     shoppingSearches?: Prisma.ShoppingSearchCreateNestedManyWithoutUserInput;
-    avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
     subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput;
+    interactions?: Prisma.UserInteractionCreateNestedManyWithoutUserInput;
+    personas?: Prisma.UserPersonaCreateNestedManyWithoutUserInput;
+    styleProfile?: Prisma.UserStyleProfileCreateNestedOneWithoutUserInput;
+    wardrobeImages?: Prisma.WardrobeImageCreateNestedManyWithoutUserInput;
+    wardrobeItems?: Prisma.WardrobeItemCreateNestedManyWithoutUserInput;
+    wearEvents?: Prisma.WearEventCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutSavedProductsInput = {
     id: string;
@@ -2350,23 +2350,23 @@ export type UserUncheckedCreateWithoutSavedProductsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    personas?: Prisma.UserPersonaUncheckedCreateNestedManyWithoutUserInput;
-    styleProfile?: Prisma.UserStyleProfileUncheckedCreateNestedOneWithoutUserInput;
-    preferenceEvents?: Prisma.PreferenceEventUncheckedCreateNestedManyWithoutUserInput;
-    wardrobeItems?: Prisma.WardrobeItemUncheckedCreateNestedManyWithoutUserInput;
-    wardrobeImages?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutUserInput;
-    outfits?: Prisma.OutfitUncheckedCreateNestedManyWithoutUserInput;
-    outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutUserInput;
-    interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutUserInput;
-    wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutUserInput;
+    avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput;
-    messages?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationUncheckedCreateNestedManyWithoutUserInput;
     inspirationItems?: Prisma.InspirationItemUncheckedCreateNestedManyWithoutUserInput;
+    messages?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput;
+    outfits?: Prisma.OutfitUncheckedCreateNestedManyWithoutUserInput;
+    outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutUserInput;
+    preferenceEvents?: Prisma.PreferenceEventUncheckedCreateNestedManyWithoutUserInput;
     shoppingSearches?: Prisma.ShoppingSearchUncheckedCreateNestedManyWithoutUserInput;
-    avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
     subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput;
+    interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutUserInput;
+    personas?: Prisma.UserPersonaUncheckedCreateNestedManyWithoutUserInput;
+    styleProfile?: Prisma.UserStyleProfileUncheckedCreateNestedOneWithoutUserInput;
+    wardrobeImages?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutUserInput;
+    wardrobeItems?: Prisma.WardrobeItemUncheckedCreateNestedManyWithoutUserInput;
+    wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutSavedProductsInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -2388,23 +2388,23 @@ export type UserUpdateWithoutSavedProductsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    personas?: Prisma.UserPersonaUpdateManyWithoutUserNestedInput;
-    styleProfile?: Prisma.UserStyleProfileUpdateOneWithoutUserNestedInput;
-    preferenceEvents?: Prisma.PreferenceEventUpdateManyWithoutUserNestedInput;
-    wardrobeItems?: Prisma.WardrobeItemUpdateManyWithoutUserNestedInput;
-    wardrobeImages?: Prisma.WardrobeImageUpdateManyWithoutUserNestedInput;
-    outfits?: Prisma.OutfitUpdateManyWithoutUserNestedInput;
-    outfitItems?: Prisma.OutfitItemUpdateManyWithoutUserNestedInput;
-    interactions?: Prisma.UserInteractionUpdateManyWithoutUserNestedInput;
-    wearEvents?: Prisma.WearEventUpdateManyWithoutUserNestedInput;
+    avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput;
-    messages?: Prisma.MessageUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUpdateManyWithoutUserNestedInput;
     inspirationItems?: Prisma.InspirationItemUpdateManyWithoutUserNestedInput;
+    messages?: Prisma.MessageUpdateManyWithoutUserNestedInput;
+    outfits?: Prisma.OutfitUpdateManyWithoutUserNestedInput;
+    outfitItems?: Prisma.OutfitItemUpdateManyWithoutUserNestedInput;
+    preferenceEvents?: Prisma.PreferenceEventUpdateManyWithoutUserNestedInput;
     shoppingSearches?: Prisma.ShoppingSearchUpdateManyWithoutUserNestedInput;
-    avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
     subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput;
+    interactions?: Prisma.UserInteractionUpdateManyWithoutUserNestedInput;
+    personas?: Prisma.UserPersonaUpdateManyWithoutUserNestedInput;
+    styleProfile?: Prisma.UserStyleProfileUpdateOneWithoutUserNestedInput;
+    wardrobeImages?: Prisma.WardrobeImageUpdateManyWithoutUserNestedInput;
+    wardrobeItems?: Prisma.WardrobeItemUpdateManyWithoutUserNestedInput;
+    wearEvents?: Prisma.WearEventUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutSavedProductsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -2413,23 +2413,23 @@ export type UserUncheckedUpdateWithoutSavedProductsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    personas?: Prisma.UserPersonaUncheckedUpdateManyWithoutUserNestedInput;
-    styleProfile?: Prisma.UserStyleProfileUncheckedUpdateOneWithoutUserNestedInput;
-    preferenceEvents?: Prisma.PreferenceEventUncheckedUpdateManyWithoutUserNestedInput;
-    wardrobeItems?: Prisma.WardrobeItemUncheckedUpdateManyWithoutUserNestedInput;
-    wardrobeImages?: Prisma.WardrobeImageUncheckedUpdateManyWithoutUserNestedInput;
-    outfits?: Prisma.OutfitUncheckedUpdateManyWithoutUserNestedInput;
-    outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutUserNestedInput;
-    interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutUserNestedInput;
-    wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutUserNestedInput;
+    avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput;
-    messages?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUncheckedUpdateManyWithoutUserNestedInput;
     inspirationItems?: Prisma.InspirationItemUncheckedUpdateManyWithoutUserNestedInput;
+    messages?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput;
+    outfits?: Prisma.OutfitUncheckedUpdateManyWithoutUserNestedInput;
+    outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutUserNestedInput;
+    preferenceEvents?: Prisma.PreferenceEventUncheckedUpdateManyWithoutUserNestedInput;
     shoppingSearches?: Prisma.ShoppingSearchUncheckedUpdateManyWithoutUserNestedInput;
-    avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
     subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput;
+    interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutUserNestedInput;
+    personas?: Prisma.UserPersonaUncheckedUpdateManyWithoutUserNestedInput;
+    styleProfile?: Prisma.UserStyleProfileUncheckedUpdateOneWithoutUserNestedInput;
+    wardrobeImages?: Prisma.WardrobeImageUncheckedUpdateManyWithoutUserNestedInput;
+    wardrobeItems?: Prisma.WardrobeItemUncheckedUpdateManyWithoutUserNestedInput;
+    wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutAvatarInput = {
     id: string;
@@ -2438,23 +2438,23 @@ export type UserCreateWithoutAvatarInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    personas?: Prisma.UserPersonaCreateNestedManyWithoutUserInput;
-    styleProfile?: Prisma.UserStyleProfileCreateNestedOneWithoutUserInput;
-    preferenceEvents?: Prisma.PreferenceEventCreateNestedManyWithoutUserInput;
-    wardrobeItems?: Prisma.WardrobeItemCreateNestedManyWithoutUserInput;
-    wardrobeImages?: Prisma.WardrobeImageCreateNestedManyWithoutUserInput;
-    outfits?: Prisma.OutfitCreateNestedManyWithoutUserInput;
-    outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutUserInput;
-    interactions?: Prisma.UserInteractionCreateNestedManyWithoutUserInput;
-    wearEvents?: Prisma.WearEventCreateNestedManyWithoutUserInput;
     conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput;
-    messages?: Prisma.MessageCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationCreateNestedManyWithoutUserInput;
     inspirationItems?: Prisma.InspirationItemCreateNestedManyWithoutUserInput;
-    shoppingSearches?: Prisma.ShoppingSearchCreateNestedManyWithoutUserInput;
+    messages?: Prisma.MessageCreateNestedManyWithoutUserInput;
+    outfits?: Prisma.OutfitCreateNestedManyWithoutUserInput;
+    outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutUserInput;
+    preferenceEvents?: Prisma.PreferenceEventCreateNestedManyWithoutUserInput;
     savedProducts?: Prisma.SavedProductCreateNestedManyWithoutUserInput;
+    shoppingSearches?: Prisma.ShoppingSearchCreateNestedManyWithoutUserInput;
     subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput;
+    interactions?: Prisma.UserInteractionCreateNestedManyWithoutUserInput;
+    personas?: Prisma.UserPersonaCreateNestedManyWithoutUserInput;
+    styleProfile?: Prisma.UserStyleProfileCreateNestedOneWithoutUserInput;
+    wardrobeImages?: Prisma.WardrobeImageCreateNestedManyWithoutUserInput;
+    wardrobeItems?: Prisma.WardrobeItemCreateNestedManyWithoutUserInput;
+    wearEvents?: Prisma.WearEventCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutAvatarInput = {
     id: string;
@@ -2463,23 +2463,23 @@ export type UserUncheckedCreateWithoutAvatarInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    personas?: Prisma.UserPersonaUncheckedCreateNestedManyWithoutUserInput;
-    styleProfile?: Prisma.UserStyleProfileUncheckedCreateNestedOneWithoutUserInput;
-    preferenceEvents?: Prisma.PreferenceEventUncheckedCreateNestedManyWithoutUserInput;
-    wardrobeItems?: Prisma.WardrobeItemUncheckedCreateNestedManyWithoutUserInput;
-    wardrobeImages?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutUserInput;
-    outfits?: Prisma.OutfitUncheckedCreateNestedManyWithoutUserInput;
-    outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutUserInput;
-    interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutUserInput;
-    wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutUserInput;
     conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput;
-    messages?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationUncheckedCreateNestedManyWithoutUserInput;
     inspirationItems?: Prisma.InspirationItemUncheckedCreateNestedManyWithoutUserInput;
-    shoppingSearches?: Prisma.ShoppingSearchUncheckedCreateNestedManyWithoutUserInput;
+    messages?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput;
+    outfits?: Prisma.OutfitUncheckedCreateNestedManyWithoutUserInput;
+    outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutUserInput;
+    preferenceEvents?: Prisma.PreferenceEventUncheckedCreateNestedManyWithoutUserInput;
     savedProducts?: Prisma.SavedProductUncheckedCreateNestedManyWithoutUserInput;
+    shoppingSearches?: Prisma.ShoppingSearchUncheckedCreateNestedManyWithoutUserInput;
     subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput;
+    interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutUserInput;
+    personas?: Prisma.UserPersonaUncheckedCreateNestedManyWithoutUserInput;
+    styleProfile?: Prisma.UserStyleProfileUncheckedCreateNestedOneWithoutUserInput;
+    wardrobeImages?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutUserInput;
+    wardrobeItems?: Prisma.WardrobeItemUncheckedCreateNestedManyWithoutUserInput;
+    wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutAvatarInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -2501,23 +2501,23 @@ export type UserUpdateWithoutAvatarInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    personas?: Prisma.UserPersonaUpdateManyWithoutUserNestedInput;
-    styleProfile?: Prisma.UserStyleProfileUpdateOneWithoutUserNestedInput;
-    preferenceEvents?: Prisma.PreferenceEventUpdateManyWithoutUserNestedInput;
-    wardrobeItems?: Prisma.WardrobeItemUpdateManyWithoutUserNestedInput;
-    wardrobeImages?: Prisma.WardrobeImageUpdateManyWithoutUserNestedInput;
-    outfits?: Prisma.OutfitUpdateManyWithoutUserNestedInput;
-    outfitItems?: Prisma.OutfitItemUpdateManyWithoutUserNestedInput;
-    interactions?: Prisma.UserInteractionUpdateManyWithoutUserNestedInput;
-    wearEvents?: Prisma.WearEventUpdateManyWithoutUserNestedInput;
     conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput;
-    messages?: Prisma.MessageUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUpdateManyWithoutUserNestedInput;
     inspirationItems?: Prisma.InspirationItemUpdateManyWithoutUserNestedInput;
-    shoppingSearches?: Prisma.ShoppingSearchUpdateManyWithoutUserNestedInput;
+    messages?: Prisma.MessageUpdateManyWithoutUserNestedInput;
+    outfits?: Prisma.OutfitUpdateManyWithoutUserNestedInput;
+    outfitItems?: Prisma.OutfitItemUpdateManyWithoutUserNestedInput;
+    preferenceEvents?: Prisma.PreferenceEventUpdateManyWithoutUserNestedInput;
     savedProducts?: Prisma.SavedProductUpdateManyWithoutUserNestedInput;
+    shoppingSearches?: Prisma.ShoppingSearchUpdateManyWithoutUserNestedInput;
     subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput;
+    interactions?: Prisma.UserInteractionUpdateManyWithoutUserNestedInput;
+    personas?: Prisma.UserPersonaUpdateManyWithoutUserNestedInput;
+    styleProfile?: Prisma.UserStyleProfileUpdateOneWithoutUserNestedInput;
+    wardrobeImages?: Prisma.WardrobeImageUpdateManyWithoutUserNestedInput;
+    wardrobeItems?: Prisma.WardrobeItemUpdateManyWithoutUserNestedInput;
+    wearEvents?: Prisma.WearEventUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutAvatarInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -2526,23 +2526,23 @@ export type UserUncheckedUpdateWithoutAvatarInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    personas?: Prisma.UserPersonaUncheckedUpdateManyWithoutUserNestedInput;
-    styleProfile?: Prisma.UserStyleProfileUncheckedUpdateOneWithoutUserNestedInput;
-    preferenceEvents?: Prisma.PreferenceEventUncheckedUpdateManyWithoutUserNestedInput;
-    wardrobeItems?: Prisma.WardrobeItemUncheckedUpdateManyWithoutUserNestedInput;
-    wardrobeImages?: Prisma.WardrobeImageUncheckedUpdateManyWithoutUserNestedInput;
-    outfits?: Prisma.OutfitUncheckedUpdateManyWithoutUserNestedInput;
-    outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutUserNestedInput;
-    interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutUserNestedInput;
-    wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutUserNestedInput;
     conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput;
-    messages?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUncheckedUpdateManyWithoutUserNestedInput;
     inspirationItems?: Prisma.InspirationItemUncheckedUpdateManyWithoutUserNestedInput;
-    shoppingSearches?: Prisma.ShoppingSearchUncheckedUpdateManyWithoutUserNestedInput;
+    messages?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput;
+    outfits?: Prisma.OutfitUncheckedUpdateManyWithoutUserNestedInput;
+    outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutUserNestedInput;
+    preferenceEvents?: Prisma.PreferenceEventUncheckedUpdateManyWithoutUserNestedInput;
     savedProducts?: Prisma.SavedProductUncheckedUpdateManyWithoutUserNestedInput;
+    shoppingSearches?: Prisma.ShoppingSearchUncheckedUpdateManyWithoutUserNestedInput;
     subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput;
+    interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutUserNestedInput;
+    personas?: Prisma.UserPersonaUncheckedUpdateManyWithoutUserNestedInput;
+    styleProfile?: Prisma.UserStyleProfileUncheckedUpdateOneWithoutUserNestedInput;
+    wardrobeImages?: Prisma.WardrobeImageUncheckedUpdateManyWithoutUserNestedInput;
+    wardrobeItems?: Prisma.WardrobeItemUncheckedUpdateManyWithoutUserNestedInput;
+    wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutSubscriptionsInput = {
     id: string;
@@ -2551,23 +2551,23 @@ export type UserCreateWithoutSubscriptionsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    personas?: Prisma.UserPersonaCreateNestedManyWithoutUserInput;
-    styleProfile?: Prisma.UserStyleProfileCreateNestedOneWithoutUserInput;
-    preferenceEvents?: Prisma.PreferenceEventCreateNestedManyWithoutUserInput;
-    wardrobeItems?: Prisma.WardrobeItemCreateNestedManyWithoutUserInput;
-    wardrobeImages?: Prisma.WardrobeImageCreateNestedManyWithoutUserInput;
-    outfits?: Prisma.OutfitCreateNestedManyWithoutUserInput;
-    outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutUserInput;
-    interactions?: Prisma.UserInteractionCreateNestedManyWithoutUserInput;
-    wearEvents?: Prisma.WearEventCreateNestedManyWithoutUserInput;
+    avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput;
-    messages?: Prisma.MessageCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationCreateNestedManyWithoutUserInput;
     inspirationItems?: Prisma.InspirationItemCreateNestedManyWithoutUserInput;
-    shoppingSearches?: Prisma.ShoppingSearchCreateNestedManyWithoutUserInput;
+    messages?: Prisma.MessageCreateNestedManyWithoutUserInput;
+    outfits?: Prisma.OutfitCreateNestedManyWithoutUserInput;
+    outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutUserInput;
+    preferenceEvents?: Prisma.PreferenceEventCreateNestedManyWithoutUserInput;
     savedProducts?: Prisma.SavedProductCreateNestedManyWithoutUserInput;
-    avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
+    shoppingSearches?: Prisma.ShoppingSearchCreateNestedManyWithoutUserInput;
+    interactions?: Prisma.UserInteractionCreateNestedManyWithoutUserInput;
+    personas?: Prisma.UserPersonaCreateNestedManyWithoutUserInput;
+    styleProfile?: Prisma.UserStyleProfileCreateNestedOneWithoutUserInput;
+    wardrobeImages?: Prisma.WardrobeImageCreateNestedManyWithoutUserInput;
+    wardrobeItems?: Prisma.WardrobeItemCreateNestedManyWithoutUserInput;
+    wearEvents?: Prisma.WearEventCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutSubscriptionsInput = {
     id: string;
@@ -2576,23 +2576,23 @@ export type UserUncheckedCreateWithoutSubscriptionsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    personas?: Prisma.UserPersonaUncheckedCreateNestedManyWithoutUserInput;
-    styleProfile?: Prisma.UserStyleProfileUncheckedCreateNestedOneWithoutUserInput;
-    preferenceEvents?: Prisma.PreferenceEventUncheckedCreateNestedManyWithoutUserInput;
-    wardrobeItems?: Prisma.WardrobeItemUncheckedCreateNestedManyWithoutUserInput;
-    wardrobeImages?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutUserInput;
-    outfits?: Prisma.OutfitUncheckedCreateNestedManyWithoutUserInput;
-    outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutUserInput;
-    interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutUserInput;
-    wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutUserInput;
+    avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput;
-    messages?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationUncheckedCreateNestedManyWithoutUserInput;
     inspirationItems?: Prisma.InspirationItemUncheckedCreateNestedManyWithoutUserInput;
-    shoppingSearches?: Prisma.ShoppingSearchUncheckedCreateNestedManyWithoutUserInput;
+    messages?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput;
+    outfits?: Prisma.OutfitUncheckedCreateNestedManyWithoutUserInput;
+    outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutUserInput;
+    preferenceEvents?: Prisma.PreferenceEventUncheckedCreateNestedManyWithoutUserInput;
     savedProducts?: Prisma.SavedProductUncheckedCreateNestedManyWithoutUserInput;
-    avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
+    shoppingSearches?: Prisma.ShoppingSearchUncheckedCreateNestedManyWithoutUserInput;
+    interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutUserInput;
+    personas?: Prisma.UserPersonaUncheckedCreateNestedManyWithoutUserInput;
+    styleProfile?: Prisma.UserStyleProfileUncheckedCreateNestedOneWithoutUserInput;
+    wardrobeImages?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutUserInput;
+    wardrobeItems?: Prisma.WardrobeItemUncheckedCreateNestedManyWithoutUserInput;
+    wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutSubscriptionsInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -2614,23 +2614,23 @@ export type UserUpdateWithoutSubscriptionsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    personas?: Prisma.UserPersonaUpdateManyWithoutUserNestedInput;
-    styleProfile?: Prisma.UserStyleProfileUpdateOneWithoutUserNestedInput;
-    preferenceEvents?: Prisma.PreferenceEventUpdateManyWithoutUserNestedInput;
-    wardrobeItems?: Prisma.WardrobeItemUpdateManyWithoutUserNestedInput;
-    wardrobeImages?: Prisma.WardrobeImageUpdateManyWithoutUserNestedInput;
-    outfits?: Prisma.OutfitUpdateManyWithoutUserNestedInput;
-    outfitItems?: Prisma.OutfitItemUpdateManyWithoutUserNestedInput;
-    interactions?: Prisma.UserInteractionUpdateManyWithoutUserNestedInput;
-    wearEvents?: Prisma.WearEventUpdateManyWithoutUserNestedInput;
+    avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput;
-    messages?: Prisma.MessageUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUpdateManyWithoutUserNestedInput;
     inspirationItems?: Prisma.InspirationItemUpdateManyWithoutUserNestedInput;
-    shoppingSearches?: Prisma.ShoppingSearchUpdateManyWithoutUserNestedInput;
+    messages?: Prisma.MessageUpdateManyWithoutUserNestedInput;
+    outfits?: Prisma.OutfitUpdateManyWithoutUserNestedInput;
+    outfitItems?: Prisma.OutfitItemUpdateManyWithoutUserNestedInput;
+    preferenceEvents?: Prisma.PreferenceEventUpdateManyWithoutUserNestedInput;
     savedProducts?: Prisma.SavedProductUpdateManyWithoutUserNestedInput;
-    avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
+    shoppingSearches?: Prisma.ShoppingSearchUpdateManyWithoutUserNestedInput;
+    interactions?: Prisma.UserInteractionUpdateManyWithoutUserNestedInput;
+    personas?: Prisma.UserPersonaUpdateManyWithoutUserNestedInput;
+    styleProfile?: Prisma.UserStyleProfileUpdateOneWithoutUserNestedInput;
+    wardrobeImages?: Prisma.WardrobeImageUpdateManyWithoutUserNestedInput;
+    wardrobeItems?: Prisma.WardrobeItemUpdateManyWithoutUserNestedInput;
+    wearEvents?: Prisma.WearEventUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutSubscriptionsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -2639,62 +2639,62 @@ export type UserUncheckedUpdateWithoutSubscriptionsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    personas?: Prisma.UserPersonaUncheckedUpdateManyWithoutUserNestedInput;
-    styleProfile?: Prisma.UserStyleProfileUncheckedUpdateOneWithoutUserNestedInput;
-    preferenceEvents?: Prisma.PreferenceEventUncheckedUpdateManyWithoutUserNestedInput;
-    wardrobeItems?: Prisma.WardrobeItemUncheckedUpdateManyWithoutUserNestedInput;
-    wardrobeImages?: Prisma.WardrobeImageUncheckedUpdateManyWithoutUserNestedInput;
-    outfits?: Prisma.OutfitUncheckedUpdateManyWithoutUserNestedInput;
-    outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutUserNestedInput;
-    interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutUserNestedInput;
-    wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutUserNestedInput;
+    avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput;
-    messages?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUncheckedUpdateManyWithoutUserNestedInput;
     inspirationItems?: Prisma.InspirationItemUncheckedUpdateManyWithoutUserNestedInput;
-    shoppingSearches?: Prisma.ShoppingSearchUncheckedUpdateManyWithoutUserNestedInput;
+    messages?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput;
+    outfits?: Prisma.OutfitUncheckedUpdateManyWithoutUserNestedInput;
+    outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutUserNestedInput;
+    preferenceEvents?: Prisma.PreferenceEventUncheckedUpdateManyWithoutUserNestedInput;
     savedProducts?: Prisma.SavedProductUncheckedUpdateManyWithoutUserNestedInput;
-    avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
+    shoppingSearches?: Prisma.ShoppingSearchUncheckedUpdateManyWithoutUserNestedInput;
+    interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutUserNestedInput;
+    personas?: Prisma.UserPersonaUncheckedUpdateManyWithoutUserNestedInput;
+    styleProfile?: Prisma.UserStyleProfileUncheckedUpdateOneWithoutUserNestedInput;
+    wardrobeImages?: Prisma.WardrobeImageUncheckedUpdateManyWithoutUserNestedInput;
+    wardrobeItems?: Prisma.WardrobeItemUncheckedUpdateManyWithoutUserNestedInput;
+    wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutUserNestedInput;
 };
 /**
  * Count Type UserCountOutputType
  */
 export type UserCountOutputType = {
-    personas: number;
-    preferenceEvents: number;
-    wardrobeItems: number;
-    wardrobeImages: number;
-    outfits: number;
-    outfitItems: number;
-    interactions: number;
-    wearEvents: number;
     conversations: number;
-    messages: number;
     conversationMemories: number;
     inspirations: number;
     inspirationItems: number;
-    shoppingSearches: number;
+    messages: number;
+    outfits: number;
+    outfitItems: number;
+    preferenceEvents: number;
     savedProducts: number;
+    shoppingSearches: number;
     subscriptions: number;
+    interactions: number;
+    personas: number;
+    wardrobeImages: number;
+    wardrobeItems: number;
+    wearEvents: number;
 };
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    personas?: boolean | UserCountOutputTypeCountPersonasArgs;
-    preferenceEvents?: boolean | UserCountOutputTypeCountPreferenceEventsArgs;
-    wardrobeItems?: boolean | UserCountOutputTypeCountWardrobeItemsArgs;
-    wardrobeImages?: boolean | UserCountOutputTypeCountWardrobeImagesArgs;
-    outfits?: boolean | UserCountOutputTypeCountOutfitsArgs;
-    outfitItems?: boolean | UserCountOutputTypeCountOutfitItemsArgs;
-    interactions?: boolean | UserCountOutputTypeCountInteractionsArgs;
-    wearEvents?: boolean | UserCountOutputTypeCountWearEventsArgs;
     conversations?: boolean | UserCountOutputTypeCountConversationsArgs;
-    messages?: boolean | UserCountOutputTypeCountMessagesArgs;
     conversationMemories?: boolean | UserCountOutputTypeCountConversationMemoriesArgs;
     inspirations?: boolean | UserCountOutputTypeCountInspirationsArgs;
     inspirationItems?: boolean | UserCountOutputTypeCountInspirationItemsArgs;
-    shoppingSearches?: boolean | UserCountOutputTypeCountShoppingSearchesArgs;
+    messages?: boolean | UserCountOutputTypeCountMessagesArgs;
+    outfits?: boolean | UserCountOutputTypeCountOutfitsArgs;
+    outfitItems?: boolean | UserCountOutputTypeCountOutfitItemsArgs;
+    preferenceEvents?: boolean | UserCountOutputTypeCountPreferenceEventsArgs;
     savedProducts?: boolean | UserCountOutputTypeCountSavedProductsArgs;
+    shoppingSearches?: boolean | UserCountOutputTypeCountShoppingSearchesArgs;
     subscriptions?: boolean | UserCountOutputTypeCountSubscriptionsArgs;
+    interactions?: boolean | UserCountOutputTypeCountInteractionsArgs;
+    personas?: boolean | UserCountOutputTypeCountPersonasArgs;
+    wardrobeImages?: boolean | UserCountOutputTypeCountWardrobeImagesArgs;
+    wardrobeItems?: boolean | UserCountOutputTypeCountWardrobeItemsArgs;
+    wearEvents?: boolean | UserCountOutputTypeCountWearEventsArgs;
 };
 /**
  * UserCountOutputType without action
@@ -2708,62 +2708,8 @@ export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountPersonasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    where?: Prisma.UserPersonaWhereInput;
-};
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountPreferenceEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    where?: Prisma.PreferenceEventWhereInput;
-};
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountWardrobeItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    where?: Prisma.WardrobeItemWhereInput;
-};
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountWardrobeImagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    where?: Prisma.WardrobeImageWhereInput;
-};
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountOutfitsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    where?: Prisma.OutfitWhereInput;
-};
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountOutfitItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    where?: Prisma.OutfitItemWhereInput;
-};
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountInteractionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    where?: Prisma.UserInteractionWhereInput;
-};
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountWearEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    where?: Prisma.WearEventWhereInput;
-};
-/**
- * UserCountOutputType without action
- */
 export type UserCountOutputTypeCountConversationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.ConversationWhereInput;
-};
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountMessagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    where?: Prisma.MessageWhereInput;
 };
 /**
  * UserCountOutputType without action
@@ -2786,8 +2732,26 @@ export type UserCountOutputTypeCountInspirationItemsArgs<ExtArgs extends runtime
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountShoppingSearchesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    where?: Prisma.ShoppingSearchWhereInput;
+export type UserCountOutputTypeCountMessagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.MessageWhereInput;
+};
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountOutfitsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.OutfitWhereInput;
+};
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountOutfitItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.OutfitItemWhereInput;
+};
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPreferenceEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.PreferenceEventWhereInput;
 };
 /**
  * UserCountOutputType without action
@@ -2798,8 +2762,44 @@ export type UserCountOutputTypeCountSavedProductsArgs<ExtArgs extends runtime.Ty
 /**
  * UserCountOutputType without action
  */
+export type UserCountOutputTypeCountShoppingSearchesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.ShoppingSearchWhereInput;
+};
+/**
+ * UserCountOutputType without action
+ */
 export type UserCountOutputTypeCountSubscriptionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.SubscriptionWhereInput;
+};
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountInteractionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.UserInteractionWhereInput;
+};
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPersonasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.UserPersonaWhereInput;
+};
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountWardrobeImagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.WardrobeImageWhereInput;
+};
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountWardrobeItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.WardrobeItemWhereInput;
+};
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountWearEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.WearEventWhereInput;
 };
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -2808,24 +2808,24 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
     avatarUrl?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
-    personas?: boolean | Prisma.User$personasArgs<ExtArgs>;
-    styleProfile?: boolean | Prisma.User$styleProfileArgs<ExtArgs>;
-    preferenceEvents?: boolean | Prisma.User$preferenceEventsArgs<ExtArgs>;
-    wardrobeItems?: boolean | Prisma.User$wardrobeItemsArgs<ExtArgs>;
-    wardrobeImages?: boolean | Prisma.User$wardrobeImagesArgs<ExtArgs>;
-    outfits?: boolean | Prisma.User$outfitsArgs<ExtArgs>;
-    outfitItems?: boolean | Prisma.User$outfitItemsArgs<ExtArgs>;
-    interactions?: boolean | Prisma.User$interactionsArgs<ExtArgs>;
-    wearEvents?: boolean | Prisma.User$wearEventsArgs<ExtArgs>;
+    avatar?: boolean | Prisma.User$avatarArgs<ExtArgs>;
     conversations?: boolean | Prisma.User$conversationsArgs<ExtArgs>;
-    messages?: boolean | Prisma.User$messagesArgs<ExtArgs>;
     conversationMemories?: boolean | Prisma.User$conversationMemoriesArgs<ExtArgs>;
     inspirations?: boolean | Prisma.User$inspirationsArgs<ExtArgs>;
     inspirationItems?: boolean | Prisma.User$inspirationItemsArgs<ExtArgs>;
-    shoppingSearches?: boolean | Prisma.User$shoppingSearchesArgs<ExtArgs>;
+    messages?: boolean | Prisma.User$messagesArgs<ExtArgs>;
+    outfits?: boolean | Prisma.User$outfitsArgs<ExtArgs>;
+    outfitItems?: boolean | Prisma.User$outfitItemsArgs<ExtArgs>;
+    preferenceEvents?: boolean | Prisma.User$preferenceEventsArgs<ExtArgs>;
     savedProducts?: boolean | Prisma.User$savedProductsArgs<ExtArgs>;
-    avatar?: boolean | Prisma.User$avatarArgs<ExtArgs>;
+    shoppingSearches?: boolean | Prisma.User$shoppingSearchesArgs<ExtArgs>;
     subscriptions?: boolean | Prisma.User$subscriptionsArgs<ExtArgs>;
+    interactions?: boolean | Prisma.User$interactionsArgs<ExtArgs>;
+    personas?: boolean | Prisma.User$personasArgs<ExtArgs>;
+    styleProfile?: boolean | Prisma.User$styleProfileArgs<ExtArgs>;
+    wardrobeImages?: boolean | Prisma.User$wardrobeImagesArgs<ExtArgs>;
+    wardrobeItems?: boolean | Prisma.User$wardrobeItemsArgs<ExtArgs>;
+    wearEvents?: boolean | Prisma.User$wearEventsArgs<ExtArgs>;
     _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["user"]>;
 export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -2854,24 +2854,24 @@ export type UserSelectScalar = {
 };
 export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "name" | "avatarUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>;
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    personas?: boolean | Prisma.User$personasArgs<ExtArgs>;
-    styleProfile?: boolean | Prisma.User$styleProfileArgs<ExtArgs>;
-    preferenceEvents?: boolean | Prisma.User$preferenceEventsArgs<ExtArgs>;
-    wardrobeItems?: boolean | Prisma.User$wardrobeItemsArgs<ExtArgs>;
-    wardrobeImages?: boolean | Prisma.User$wardrobeImagesArgs<ExtArgs>;
-    outfits?: boolean | Prisma.User$outfitsArgs<ExtArgs>;
-    outfitItems?: boolean | Prisma.User$outfitItemsArgs<ExtArgs>;
-    interactions?: boolean | Prisma.User$interactionsArgs<ExtArgs>;
-    wearEvents?: boolean | Prisma.User$wearEventsArgs<ExtArgs>;
+    avatar?: boolean | Prisma.User$avatarArgs<ExtArgs>;
     conversations?: boolean | Prisma.User$conversationsArgs<ExtArgs>;
-    messages?: boolean | Prisma.User$messagesArgs<ExtArgs>;
     conversationMemories?: boolean | Prisma.User$conversationMemoriesArgs<ExtArgs>;
     inspirations?: boolean | Prisma.User$inspirationsArgs<ExtArgs>;
     inspirationItems?: boolean | Prisma.User$inspirationItemsArgs<ExtArgs>;
-    shoppingSearches?: boolean | Prisma.User$shoppingSearchesArgs<ExtArgs>;
+    messages?: boolean | Prisma.User$messagesArgs<ExtArgs>;
+    outfits?: boolean | Prisma.User$outfitsArgs<ExtArgs>;
+    outfitItems?: boolean | Prisma.User$outfitItemsArgs<ExtArgs>;
+    preferenceEvents?: boolean | Prisma.User$preferenceEventsArgs<ExtArgs>;
     savedProducts?: boolean | Prisma.User$savedProductsArgs<ExtArgs>;
-    avatar?: boolean | Prisma.User$avatarArgs<ExtArgs>;
+    shoppingSearches?: boolean | Prisma.User$shoppingSearchesArgs<ExtArgs>;
     subscriptions?: boolean | Prisma.User$subscriptionsArgs<ExtArgs>;
+    interactions?: boolean | Prisma.User$interactionsArgs<ExtArgs>;
+    personas?: boolean | Prisma.User$personasArgs<ExtArgs>;
+    styleProfile?: boolean | Prisma.User$styleProfileArgs<ExtArgs>;
+    wardrobeImages?: boolean | Prisma.User$wardrobeImagesArgs<ExtArgs>;
+    wardrobeItems?: boolean | Prisma.User$wardrobeItemsArgs<ExtArgs>;
+    wearEvents?: boolean | Prisma.User$wearEventsArgs<ExtArgs>;
     _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {};
@@ -2879,24 +2879,24 @@ export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "User";
     objects: {
-        personas: Prisma.$UserPersonaPayload<ExtArgs>[];
-        styleProfile: Prisma.$UserStyleProfilePayload<ExtArgs> | null;
-        preferenceEvents: Prisma.$PreferenceEventPayload<ExtArgs>[];
-        wardrobeItems: Prisma.$WardrobeItemPayload<ExtArgs>[];
-        wardrobeImages: Prisma.$WardrobeImagePayload<ExtArgs>[];
-        outfits: Prisma.$OutfitPayload<ExtArgs>[];
-        outfitItems: Prisma.$OutfitItemPayload<ExtArgs>[];
-        interactions: Prisma.$UserInteractionPayload<ExtArgs>[];
-        wearEvents: Prisma.$WearEventPayload<ExtArgs>[];
+        avatar: Prisma.$AvatarPayload<ExtArgs> | null;
         conversations: Prisma.$ConversationPayload<ExtArgs>[];
-        messages: Prisma.$MessagePayload<ExtArgs>[];
         conversationMemories: Prisma.$ConversationMemoryPayload<ExtArgs>[];
         inspirations: Prisma.$InspirationPayload<ExtArgs>[];
         inspirationItems: Prisma.$InspirationItemPayload<ExtArgs>[];
-        shoppingSearches: Prisma.$ShoppingSearchPayload<ExtArgs>[];
+        messages: Prisma.$MessagePayload<ExtArgs>[];
+        outfits: Prisma.$OutfitPayload<ExtArgs>[];
+        outfitItems: Prisma.$OutfitItemPayload<ExtArgs>[];
+        preferenceEvents: Prisma.$PreferenceEventPayload<ExtArgs>[];
         savedProducts: Prisma.$SavedProductPayload<ExtArgs>[];
-        avatar: Prisma.$AvatarPayload<ExtArgs> | null;
+        shoppingSearches: Prisma.$ShoppingSearchPayload<ExtArgs>[];
         subscriptions: Prisma.$SubscriptionPayload<ExtArgs>[];
+        interactions: Prisma.$UserInteractionPayload<ExtArgs>[];
+        personas: Prisma.$UserPersonaPayload<ExtArgs>[];
+        styleProfile: Prisma.$UserStyleProfilePayload<ExtArgs> | null;
+        wardrobeImages: Prisma.$WardrobeImagePayload<ExtArgs>[];
+        wardrobeItems: Prisma.$WardrobeItemPayload<ExtArgs>[];
+        wearEvents: Prisma.$WearEventPayload<ExtArgs>[];
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -3234,24 +3234,24 @@ export interface UserDelegate<ExtArgs extends runtime.Types.Extensions.InternalA
  */
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
-    personas<T extends Prisma.User$personasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$personasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserPersonaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
-    styleProfile<T extends Prisma.User$styleProfileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$styleProfileArgs<ExtArgs>>): Prisma.Prisma__UserStyleProfileClient<runtime.Types.Result.GetResult<Prisma.$UserStyleProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
-    preferenceEvents<T extends Prisma.User$preferenceEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$preferenceEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PreferenceEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
-    wardrobeItems<T extends Prisma.User$wardrobeItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$wardrobeItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WardrobeItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
-    wardrobeImages<T extends Prisma.User$wardrobeImagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$wardrobeImagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WardrobeImagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
-    outfits<T extends Prisma.User$outfitsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$outfitsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OutfitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
-    outfitItems<T extends Prisma.User$outfitItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$outfitItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OutfitItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
-    interactions<T extends Prisma.User$interactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$interactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserInteractionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
-    wearEvents<T extends Prisma.User$wearEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$wearEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WearEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    avatar<T extends Prisma.User$avatarArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$avatarArgs<ExtArgs>>): Prisma.Prisma__AvatarClient<runtime.Types.Result.GetResult<Prisma.$AvatarPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
     conversations<T extends Prisma.User$conversationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$conversationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConversationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
-    messages<T extends Prisma.User$messagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$messagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     conversationMemories<T extends Prisma.User$conversationMemoriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$conversationMemoriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConversationMemoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     inspirations<T extends Prisma.User$inspirationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$inspirationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InspirationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     inspirationItems<T extends Prisma.User$inspirationItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$inspirationItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InspirationItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
-    shoppingSearches<T extends Prisma.User$shoppingSearchesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$shoppingSearchesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ShoppingSearchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    messages<T extends Prisma.User$messagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$messagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    outfits<T extends Prisma.User$outfitsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$outfitsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OutfitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    outfitItems<T extends Prisma.User$outfitItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$outfitItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OutfitItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    preferenceEvents<T extends Prisma.User$preferenceEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$preferenceEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PreferenceEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     savedProducts<T extends Prisma.User$savedProductsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$savedProductsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SavedProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
-    avatar<T extends Prisma.User$avatarArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$avatarArgs<ExtArgs>>): Prisma.Prisma__AvatarClient<runtime.Types.Result.GetResult<Prisma.$AvatarPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    shoppingSearches<T extends Prisma.User$shoppingSearchesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$shoppingSearchesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ShoppingSearchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     subscriptions<T extends Prisma.User$subscriptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$subscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    interactions<T extends Prisma.User$interactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$interactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserInteractionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    personas<T extends Prisma.User$personasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$personasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserPersonaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    styleProfile<T extends Prisma.User$styleProfileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$styleProfileArgs<ExtArgs>>): Prisma.Prisma__UserStyleProfileClient<runtime.Types.Result.GetResult<Prisma.$UserStyleProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    wardrobeImages<T extends Prisma.User$wardrobeImagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$wardrobeImagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WardrobeImagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    wardrobeItems<T extends Prisma.User$wardrobeItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$wardrobeItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WardrobeItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    wearEvents<T extends Prisma.User$wearEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$wearEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WearEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3659,206 +3659,22 @@ export type UserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
     limit?: number;
 };
 /**
- * User.personas
+ * User.avatar
  */
-export type User$personasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$avatarArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UserPersona
+     * Select specific fields to fetch from the Avatar
      */
-    select?: Prisma.UserPersonaSelect<ExtArgs> | null;
+    select?: Prisma.AvatarSelect<ExtArgs> | null;
     /**
-     * Omit specific fields from the UserPersona
+     * Omit specific fields from the Avatar
      */
-    omit?: Prisma.UserPersonaOmit<ExtArgs> | null;
+    omit?: Prisma.AvatarOmit<ExtArgs> | null;
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: Prisma.UserPersonaInclude<ExtArgs> | null;
-    where?: Prisma.UserPersonaWhereInput;
-    orderBy?: Prisma.UserPersonaOrderByWithRelationInput | Prisma.UserPersonaOrderByWithRelationInput[];
-    cursor?: Prisma.UserPersonaWhereUniqueInput;
-    take?: number;
-    skip?: number;
-    distinct?: Prisma.UserPersonaScalarFieldEnum | Prisma.UserPersonaScalarFieldEnum[];
-};
-/**
- * User.styleProfile
- */
-export type User$styleProfileArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserStyleProfile
-     */
-    select?: Prisma.UserStyleProfileSelect<ExtArgs> | null;
-    /**
-     * Omit specific fields from the UserStyleProfile
-     */
-    omit?: Prisma.UserStyleProfileOmit<ExtArgs> | null;
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: Prisma.UserStyleProfileInclude<ExtArgs> | null;
-    where?: Prisma.UserStyleProfileWhereInput;
-};
-/**
- * User.preferenceEvents
- */
-export type User$preferenceEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the PreferenceEvent
-     */
-    select?: Prisma.PreferenceEventSelect<ExtArgs> | null;
-    /**
-     * Omit specific fields from the PreferenceEvent
-     */
-    omit?: Prisma.PreferenceEventOmit<ExtArgs> | null;
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: Prisma.PreferenceEventInclude<ExtArgs> | null;
-    where?: Prisma.PreferenceEventWhereInput;
-    orderBy?: Prisma.PreferenceEventOrderByWithRelationInput | Prisma.PreferenceEventOrderByWithRelationInput[];
-    cursor?: Prisma.PreferenceEventWhereUniqueInput;
-    take?: number;
-    skip?: number;
-    distinct?: Prisma.PreferenceEventScalarFieldEnum | Prisma.PreferenceEventScalarFieldEnum[];
-};
-/**
- * User.wardrobeItems
- */
-export type User$wardrobeItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the WardrobeItem
-     */
-    select?: Prisma.WardrobeItemSelect<ExtArgs> | null;
-    /**
-     * Omit specific fields from the WardrobeItem
-     */
-    omit?: Prisma.WardrobeItemOmit<ExtArgs> | null;
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: Prisma.WardrobeItemInclude<ExtArgs> | null;
-    where?: Prisma.WardrobeItemWhereInput;
-    orderBy?: Prisma.WardrobeItemOrderByWithRelationInput | Prisma.WardrobeItemOrderByWithRelationInput[];
-    cursor?: Prisma.WardrobeItemWhereUniqueInput;
-    take?: number;
-    skip?: number;
-    distinct?: Prisma.WardrobeItemScalarFieldEnum | Prisma.WardrobeItemScalarFieldEnum[];
-};
-/**
- * User.wardrobeImages
- */
-export type User$wardrobeImagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the WardrobeImage
-     */
-    select?: Prisma.WardrobeImageSelect<ExtArgs> | null;
-    /**
-     * Omit specific fields from the WardrobeImage
-     */
-    omit?: Prisma.WardrobeImageOmit<ExtArgs> | null;
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: Prisma.WardrobeImageInclude<ExtArgs> | null;
-    where?: Prisma.WardrobeImageWhereInput;
-    orderBy?: Prisma.WardrobeImageOrderByWithRelationInput | Prisma.WardrobeImageOrderByWithRelationInput[];
-    cursor?: Prisma.WardrobeImageWhereUniqueInput;
-    take?: number;
-    skip?: number;
-    distinct?: Prisma.WardrobeImageScalarFieldEnum | Prisma.WardrobeImageScalarFieldEnum[];
-};
-/**
- * User.outfits
- */
-export type User$outfitsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Outfit
-     */
-    select?: Prisma.OutfitSelect<ExtArgs> | null;
-    /**
-     * Omit specific fields from the Outfit
-     */
-    omit?: Prisma.OutfitOmit<ExtArgs> | null;
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: Prisma.OutfitInclude<ExtArgs> | null;
-    where?: Prisma.OutfitWhereInput;
-    orderBy?: Prisma.OutfitOrderByWithRelationInput | Prisma.OutfitOrderByWithRelationInput[];
-    cursor?: Prisma.OutfitWhereUniqueInput;
-    take?: number;
-    skip?: number;
-    distinct?: Prisma.OutfitScalarFieldEnum | Prisma.OutfitScalarFieldEnum[];
-};
-/**
- * User.outfitItems
- */
-export type User$outfitItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the OutfitItem
-     */
-    select?: Prisma.OutfitItemSelect<ExtArgs> | null;
-    /**
-     * Omit specific fields from the OutfitItem
-     */
-    omit?: Prisma.OutfitItemOmit<ExtArgs> | null;
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: Prisma.OutfitItemInclude<ExtArgs> | null;
-    where?: Prisma.OutfitItemWhereInput;
-    orderBy?: Prisma.OutfitItemOrderByWithRelationInput | Prisma.OutfitItemOrderByWithRelationInput[];
-    cursor?: Prisma.OutfitItemWhereUniqueInput;
-    take?: number;
-    skip?: number;
-    distinct?: Prisma.OutfitItemScalarFieldEnum | Prisma.OutfitItemScalarFieldEnum[];
-};
-/**
- * User.interactions
- */
-export type User$interactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserInteraction
-     */
-    select?: Prisma.UserInteractionSelect<ExtArgs> | null;
-    /**
-     * Omit specific fields from the UserInteraction
-     */
-    omit?: Prisma.UserInteractionOmit<ExtArgs> | null;
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: Prisma.UserInteractionInclude<ExtArgs> | null;
-    where?: Prisma.UserInteractionWhereInput;
-    orderBy?: Prisma.UserInteractionOrderByWithRelationInput | Prisma.UserInteractionOrderByWithRelationInput[];
-    cursor?: Prisma.UserInteractionWhereUniqueInput;
-    take?: number;
-    skip?: number;
-    distinct?: Prisma.UserInteractionScalarFieldEnum | Prisma.UserInteractionScalarFieldEnum[];
-};
-/**
- * User.wearEvents
- */
-export type User$wearEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the WearEvent
-     */
-    select?: Prisma.WearEventSelect<ExtArgs> | null;
-    /**
-     * Omit specific fields from the WearEvent
-     */
-    omit?: Prisma.WearEventOmit<ExtArgs> | null;
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: Prisma.WearEventInclude<ExtArgs> | null;
-    where?: Prisma.WearEventWhereInput;
-    orderBy?: Prisma.WearEventOrderByWithRelationInput | Prisma.WearEventOrderByWithRelationInput[];
-    cursor?: Prisma.WearEventWhereUniqueInput;
-    take?: number;
-    skip?: number;
-    distinct?: Prisma.WearEventScalarFieldEnum | Prisma.WearEventScalarFieldEnum[];
+    include?: Prisma.AvatarInclude<ExtArgs> | null;
+    where?: Prisma.AvatarWhereInput;
 };
 /**
  * User.conversations
@@ -3882,29 +3698,6 @@ export type User$conversationsArgs<ExtArgs extends runtime.Types.Extensions.Inte
     take?: number;
     skip?: number;
     distinct?: Prisma.ConversationScalarFieldEnum | Prisma.ConversationScalarFieldEnum[];
-};
-/**
- * User.messages
- */
-export type User$messagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Message
-     */
-    select?: Prisma.MessageSelect<ExtArgs> | null;
-    /**
-     * Omit specific fields from the Message
-     */
-    omit?: Prisma.MessageOmit<ExtArgs> | null;
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: Prisma.MessageInclude<ExtArgs> | null;
-    where?: Prisma.MessageWhereInput;
-    orderBy?: Prisma.MessageOrderByWithRelationInput | Prisma.MessageOrderByWithRelationInput[];
-    cursor?: Prisma.MessageWhereUniqueInput;
-    take?: number;
-    skip?: number;
-    distinct?: Prisma.MessageScalarFieldEnum | Prisma.MessageScalarFieldEnum[];
 };
 /**
  * User.conversationMemories
@@ -3976,27 +3769,96 @@ export type User$inspirationItemsArgs<ExtArgs extends runtime.Types.Extensions.I
     distinct?: Prisma.InspirationItemScalarFieldEnum | Prisma.InspirationItemScalarFieldEnum[];
 };
 /**
- * User.shoppingSearches
+ * User.messages
  */
-export type User$shoppingSearchesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$messagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ShoppingSearch
+     * Select specific fields to fetch from the Message
      */
-    select?: Prisma.ShoppingSearchSelect<ExtArgs> | null;
+    select?: Prisma.MessageSelect<ExtArgs> | null;
     /**
-     * Omit specific fields from the ShoppingSearch
+     * Omit specific fields from the Message
      */
-    omit?: Prisma.ShoppingSearchOmit<ExtArgs> | null;
+    omit?: Prisma.MessageOmit<ExtArgs> | null;
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: Prisma.ShoppingSearchInclude<ExtArgs> | null;
-    where?: Prisma.ShoppingSearchWhereInput;
-    orderBy?: Prisma.ShoppingSearchOrderByWithRelationInput | Prisma.ShoppingSearchOrderByWithRelationInput[];
-    cursor?: Prisma.ShoppingSearchWhereUniqueInput;
+    include?: Prisma.MessageInclude<ExtArgs> | null;
+    where?: Prisma.MessageWhereInput;
+    orderBy?: Prisma.MessageOrderByWithRelationInput | Prisma.MessageOrderByWithRelationInput[];
+    cursor?: Prisma.MessageWhereUniqueInput;
     take?: number;
     skip?: number;
-    distinct?: Prisma.ShoppingSearchScalarFieldEnum | Prisma.ShoppingSearchScalarFieldEnum[];
+    distinct?: Prisma.MessageScalarFieldEnum | Prisma.MessageScalarFieldEnum[];
+};
+/**
+ * User.outfits
+ */
+export type User$outfitsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Outfit
+     */
+    select?: Prisma.OutfitSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Outfit
+     */
+    omit?: Prisma.OutfitOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.OutfitInclude<ExtArgs> | null;
+    where?: Prisma.OutfitWhereInput;
+    orderBy?: Prisma.OutfitOrderByWithRelationInput | Prisma.OutfitOrderByWithRelationInput[];
+    cursor?: Prisma.OutfitWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.OutfitScalarFieldEnum | Prisma.OutfitScalarFieldEnum[];
+};
+/**
+ * User.outfitItems
+ */
+export type User$outfitItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OutfitItem
+     */
+    select?: Prisma.OutfitItemSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the OutfitItem
+     */
+    omit?: Prisma.OutfitItemOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.OutfitItemInclude<ExtArgs> | null;
+    where?: Prisma.OutfitItemWhereInput;
+    orderBy?: Prisma.OutfitItemOrderByWithRelationInput | Prisma.OutfitItemOrderByWithRelationInput[];
+    cursor?: Prisma.OutfitItemWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.OutfitItemScalarFieldEnum | Prisma.OutfitItemScalarFieldEnum[];
+};
+/**
+ * User.preferenceEvents
+ */
+export type User$preferenceEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PreferenceEvent
+     */
+    select?: Prisma.PreferenceEventSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the PreferenceEvent
+     */
+    omit?: Prisma.PreferenceEventOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.PreferenceEventInclude<ExtArgs> | null;
+    where?: Prisma.PreferenceEventWhereInput;
+    orderBy?: Prisma.PreferenceEventOrderByWithRelationInput | Prisma.PreferenceEventOrderByWithRelationInput[];
+    cursor?: Prisma.PreferenceEventWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.PreferenceEventScalarFieldEnum | Prisma.PreferenceEventScalarFieldEnum[];
 };
 /**
  * User.savedProducts
@@ -4022,22 +3884,27 @@ export type User$savedProductsArgs<ExtArgs extends runtime.Types.Extensions.Inte
     distinct?: Prisma.SavedProductScalarFieldEnum | Prisma.SavedProductScalarFieldEnum[];
 };
 /**
- * User.avatar
+ * User.shoppingSearches
  */
-export type User$avatarArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$shoppingSearchesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Avatar
+     * Select specific fields to fetch from the ShoppingSearch
      */
-    select?: Prisma.AvatarSelect<ExtArgs> | null;
+    select?: Prisma.ShoppingSearchSelect<ExtArgs> | null;
     /**
-     * Omit specific fields from the Avatar
+     * Omit specific fields from the ShoppingSearch
      */
-    omit?: Prisma.AvatarOmit<ExtArgs> | null;
+    omit?: Prisma.ShoppingSearchOmit<ExtArgs> | null;
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: Prisma.AvatarInclude<ExtArgs> | null;
-    where?: Prisma.AvatarWhereInput;
+    include?: Prisma.ShoppingSearchInclude<ExtArgs> | null;
+    where?: Prisma.ShoppingSearchWhereInput;
+    orderBy?: Prisma.ShoppingSearchOrderByWithRelationInput | Prisma.ShoppingSearchOrderByWithRelationInput[];
+    cursor?: Prisma.ShoppingSearchWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.ShoppingSearchScalarFieldEnum | Prisma.ShoppingSearchScalarFieldEnum[];
 };
 /**
  * User.subscriptions
@@ -4061,6 +3928,139 @@ export type User$subscriptionsArgs<ExtArgs extends runtime.Types.Extensions.Inte
     take?: number;
     skip?: number;
     distinct?: Prisma.SubscriptionScalarFieldEnum | Prisma.SubscriptionScalarFieldEnum[];
+};
+/**
+ * User.interactions
+ */
+export type User$interactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserInteraction
+     */
+    select?: Prisma.UserInteractionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the UserInteraction
+     */
+    omit?: Prisma.UserInteractionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.UserInteractionInclude<ExtArgs> | null;
+    where?: Prisma.UserInteractionWhereInput;
+    orderBy?: Prisma.UserInteractionOrderByWithRelationInput | Prisma.UserInteractionOrderByWithRelationInput[];
+    cursor?: Prisma.UserInteractionWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.UserInteractionScalarFieldEnum | Prisma.UserInteractionScalarFieldEnum[];
+};
+/**
+ * User.personas
+ */
+export type User$personasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserPersona
+     */
+    select?: Prisma.UserPersonaSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the UserPersona
+     */
+    omit?: Prisma.UserPersonaOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.UserPersonaInclude<ExtArgs> | null;
+    where?: Prisma.UserPersonaWhereInput;
+    orderBy?: Prisma.UserPersonaOrderByWithRelationInput | Prisma.UserPersonaOrderByWithRelationInput[];
+    cursor?: Prisma.UserPersonaWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.UserPersonaScalarFieldEnum | Prisma.UserPersonaScalarFieldEnum[];
+};
+/**
+ * User.styleProfile
+ */
+export type User$styleProfileArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserStyleProfile
+     */
+    select?: Prisma.UserStyleProfileSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the UserStyleProfile
+     */
+    omit?: Prisma.UserStyleProfileOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.UserStyleProfileInclude<ExtArgs> | null;
+    where?: Prisma.UserStyleProfileWhereInput;
+};
+/**
+ * User.wardrobeImages
+ */
+export type User$wardrobeImagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WardrobeImage
+     */
+    select?: Prisma.WardrobeImageSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the WardrobeImage
+     */
+    omit?: Prisma.WardrobeImageOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.WardrobeImageInclude<ExtArgs> | null;
+    where?: Prisma.WardrobeImageWhereInput;
+    orderBy?: Prisma.WardrobeImageOrderByWithRelationInput | Prisma.WardrobeImageOrderByWithRelationInput[];
+    cursor?: Prisma.WardrobeImageWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.WardrobeImageScalarFieldEnum | Prisma.WardrobeImageScalarFieldEnum[];
+};
+/**
+ * User.wardrobeItems
+ */
+export type User$wardrobeItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WardrobeItem
+     */
+    select?: Prisma.WardrobeItemSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the WardrobeItem
+     */
+    omit?: Prisma.WardrobeItemOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.WardrobeItemInclude<ExtArgs> | null;
+    where?: Prisma.WardrobeItemWhereInput;
+    orderBy?: Prisma.WardrobeItemOrderByWithRelationInput | Prisma.WardrobeItemOrderByWithRelationInput[];
+    cursor?: Prisma.WardrobeItemWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.WardrobeItemScalarFieldEnum | Prisma.WardrobeItemScalarFieldEnum[];
+};
+/**
+ * User.wearEvents
+ */
+export type User$wearEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WearEvent
+     */
+    select?: Prisma.WearEventSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the WearEvent
+     */
+    omit?: Prisma.WearEventOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.WearEventInclude<ExtArgs> | null;
+    where?: Prisma.WearEventWhereInput;
+    orderBy?: Prisma.WearEventOrderByWithRelationInput | Prisma.WearEventOrderByWithRelationInput[];
+    cursor?: Prisma.WearEventWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.WearEventScalarFieldEnum | Prisma.WearEventScalarFieldEnum[];
 };
 /**
  * User without action

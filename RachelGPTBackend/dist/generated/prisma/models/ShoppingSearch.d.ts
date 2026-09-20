@@ -142,8 +142,8 @@ export type ShoppingSearchWhereInput = {
     reason?: Prisma.StringNullableFilter<"ShoppingSearch"> | string | null;
     filters?: Prisma.JsonNullableFilter<"ShoppingSearch">;
     createdAt?: Prisma.DateTimeFilter<"ShoppingSearch"> | Date | string;
-    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
     savedProducts?: Prisma.SavedProductListRelationFilter;
+    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
 };
 export type ShoppingSearchOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -152,8 +152,8 @@ export type ShoppingSearchOrderByWithRelationInput = {
     reason?: Prisma.SortOrderInput | Prisma.SortOrder;
     filters?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
-    user?: Prisma.UserOrderByWithRelationInput;
     savedProducts?: Prisma.SavedProductOrderByRelationAggregateInput;
+    user?: Prisma.UserOrderByWithRelationInput;
 };
 export type ShoppingSearchWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -165,8 +165,8 @@ export type ShoppingSearchWhereUniqueInput = Prisma.AtLeast<{
     reason?: Prisma.StringNullableFilter<"ShoppingSearch"> | string | null;
     filters?: Prisma.JsonNullableFilter<"ShoppingSearch">;
     createdAt?: Prisma.DateTimeFilter<"ShoppingSearch"> | Date | string;
-    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
     savedProducts?: Prisma.SavedProductListRelationFilter;
+    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
 }, "id">;
 export type ShoppingSearchOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -196,8 +196,8 @@ export type ShoppingSearchCreateInput = {
     reason?: string | null;
     filters?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Date | string;
-    user: Prisma.UserCreateNestedOneWithoutShoppingSearchesInput;
     savedProducts?: Prisma.SavedProductCreateNestedManyWithoutShoppingSearchInput;
+    user: Prisma.UserCreateNestedOneWithoutShoppingSearchesInput;
 };
 export type ShoppingSearchUncheckedCreateInput = {
     id?: string;
@@ -214,8 +214,8 @@ export type ShoppingSearchUpdateInput = {
     reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     filters?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    user?: Prisma.UserUpdateOneRequiredWithoutShoppingSearchesNestedInput;
     savedProducts?: Prisma.SavedProductUpdateManyWithoutShoppingSearchNestedInput;
+    user?: Prisma.UserUpdateOneRequiredWithoutShoppingSearchesNestedInput;
 };
 export type ShoppingSearchUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -489,8 +489,8 @@ export type ShoppingSearchSelect<ExtArgs extends runtime.Types.Extensions.Intern
     reason?: boolean;
     filters?: boolean;
     createdAt?: boolean;
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     savedProducts?: boolean | Prisma.ShoppingSearch$savedProductsArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     _count?: boolean | Prisma.ShoppingSearchCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["shoppingSearch"]>;
 export type ShoppingSearchSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -521,8 +521,8 @@ export type ShoppingSearchSelectScalar = {
 };
 export type ShoppingSearchOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "query" | "reason" | "filters" | "createdAt", ExtArgs["result"]["shoppingSearch"]>;
 export type ShoppingSearchInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     savedProducts?: boolean | Prisma.ShoppingSearch$savedProductsArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     _count?: boolean | Prisma.ShoppingSearchCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type ShoppingSearchIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -534,8 +534,8 @@ export type ShoppingSearchIncludeUpdateManyAndReturn<ExtArgs extends runtime.Typ
 export type $ShoppingSearchPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "ShoppingSearch";
     objects: {
-        user: Prisma.$UserPayload<ExtArgs>;
         savedProducts: Prisma.$SavedProductPayload<ExtArgs>[];
+        user: Prisma.$UserPayload<ExtArgs>;
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -543,19 +543,19 @@ export type $ShoppingSearchPayload<ExtArgs extends runtime.Types.Extensions.Inte
         query: string;
         /**
          * * Why Rachel recommended searching:
-         *    *
-         *    * WARDROBE_GAP
-         *    * USER_REQUEST
-         *    * INSPIRATION_MISSING_ITEM
+         * *
+         * * WARDROBE_GAP
+         * * USER_REQUEST
+         * * INSPIRATION_MISSING_ITEM
          */
         reason: string | null;
         /**
          * * Search parameters:
-         *    * {
-         *    *   "category": "black midi skirt",
-         *    *   "budget": 5000,
-         *    *   "colors": ["black"]
-         *    * }
+         * * {
+         * *   "category": "black midi skirt",
+         * *   "budget": 5000,
+         * *   "colors": ["black"]
+         * * }
          */
         filters: runtime.JsonValue | null;
         createdAt: Date;
@@ -888,8 +888,8 @@ export interface ShoppingSearchDelegate<ExtArgs extends runtime.Types.Extensions
  */
 export interface Prisma__ShoppingSearchClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
-    user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     savedProducts<T extends Prisma.ShoppingSearch$savedProductsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ShoppingSearch$savedProductsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SavedProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.

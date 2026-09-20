@@ -488,17 +488,17 @@ export type $UserStyleProfilePayload<ExtArgs extends runtime.Types.Extensions.In
         userId: string;
         /**
          * * Flexible AI-generated style information.
-         *    *
-         *    * Example:
-         *    * {
-         *    *   "preferredColors": ["black", "beige"],
-         *    *   "avoidedColors": ["neon green"],
-         *    *   "preferredFits": ["relaxed", "straight"],
-         *    *   "avoidedFits": ["very tight"],
-         *    *   "preferredStyles": ["minimal", "polished"],
-         *    *   "shoePreferences": ["sneakers", "loafers"],
-         *    *   "comfortPriority": "high"
-         *    * }
+         * *
+         * * Example:
+         * * {
+         * *   "preferredColors": ["black", "beige"],
+         * *   "avoidedColors": ["neon green"],
+         * *   "preferredFits": ["relaxed", "straight"],
+         * *   "avoidedFits": ["very tight"],
+         * *   "preferredStyles": ["minimal", "polished"],
+         * *   "shoePreferences": ["sneakers", "loafers"],
+         * *   "comfortPriority": "high"
+         * * }
          */
         preferences: runtime.JsonValue;
         /**

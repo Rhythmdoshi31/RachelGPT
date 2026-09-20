@@ -177,8 +177,8 @@ export type OutfitItemWhereInput = {
     role?: Prisma.StringNullableFilter<"OutfitItem"> | string | null;
     sortOrder?: Prisma.IntNullableFilter<"OutfitItem"> | number | null;
     outfit?: Prisma.XOR<Prisma.OutfitScalarRelationFilter, Prisma.OutfitWhereInput>;
-    wardrobeItem?: Prisma.XOR<Prisma.WardrobeItemScalarRelationFilter, Prisma.WardrobeItemWhereInput>;
     user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
+    wardrobeItem?: Prisma.XOR<Prisma.WardrobeItemScalarRelationFilter, Prisma.WardrobeItemWhereInput>;
 };
 export type OutfitItemOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -188,8 +188,8 @@ export type OutfitItemOrderByWithRelationInput = {
     role?: Prisma.SortOrderInput | Prisma.SortOrder;
     sortOrder?: Prisma.SortOrderInput | Prisma.SortOrder;
     outfit?: Prisma.OutfitOrderByWithRelationInput;
-    wardrobeItem?: Prisma.WardrobeItemOrderByWithRelationInput;
     user?: Prisma.UserOrderByWithRelationInput;
+    wardrobeItem?: Prisma.WardrobeItemOrderByWithRelationInput;
 };
 export type OutfitItemWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -203,8 +203,8 @@ export type OutfitItemWhereUniqueInput = Prisma.AtLeast<{
     role?: Prisma.StringNullableFilter<"OutfitItem"> | string | null;
     sortOrder?: Prisma.IntNullableFilter<"OutfitItem"> | number | null;
     outfit?: Prisma.XOR<Prisma.OutfitScalarRelationFilter, Prisma.OutfitWhereInput>;
-    wardrobeItem?: Prisma.XOR<Prisma.WardrobeItemScalarRelationFilter, Prisma.WardrobeItemWhereInput>;
     user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
+    wardrobeItem?: Prisma.XOR<Prisma.WardrobeItemScalarRelationFilter, Prisma.WardrobeItemWhereInput>;
 }, "id" | "outfitId_wardrobeItemId">;
 export type OutfitItemOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -235,8 +235,8 @@ export type OutfitItemCreateInput = {
     role?: string | null;
     sortOrder?: number | null;
     outfit: Prisma.OutfitCreateNestedOneWithoutItemsInput;
-    wardrobeItem: Prisma.WardrobeItemCreateNestedOneWithoutOutfitItemsInput;
     user: Prisma.UserCreateNestedOneWithoutOutfitItemsInput;
+    wardrobeItem: Prisma.WardrobeItemCreateNestedOneWithoutOutfitItemsInput;
 };
 export type OutfitItemUncheckedCreateInput = {
     id?: string;
@@ -251,8 +251,8 @@ export type OutfitItemUpdateInput = {
     role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     sortOrder?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     outfit?: Prisma.OutfitUpdateOneRequiredWithoutItemsNestedInput;
-    wardrobeItem?: Prisma.WardrobeItemUpdateOneRequiredWithoutOutfitItemsNestedInput;
     user?: Prisma.UserUpdateOneRequiredWithoutOutfitItemsNestedInput;
+    wardrobeItem?: Prisma.WardrobeItemUpdateOneRequiredWithoutOutfitItemsNestedInput;
 };
 export type OutfitItemUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -531,8 +531,8 @@ export type OutfitItemCreateWithoutOutfitInput = {
     id?: string;
     role?: string | null;
     sortOrder?: number | null;
-    wardrobeItem: Prisma.WardrobeItemCreateNestedOneWithoutOutfitItemsInput;
     user: Prisma.UserCreateNestedOneWithoutOutfitItemsInput;
+    wardrobeItem: Prisma.WardrobeItemCreateNestedOneWithoutOutfitItemsInput;
 };
 export type OutfitItemUncheckedCreateWithoutOutfitInput = {
     id?: string;
@@ -629,8 +629,8 @@ export type OutfitItemUpdateWithoutOutfitInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     sortOrder?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
-    wardrobeItem?: Prisma.WardrobeItemUpdateOneRequiredWithoutOutfitItemsNestedInput;
     user?: Prisma.UserUpdateOneRequiredWithoutOutfitItemsNestedInput;
+    wardrobeItem?: Prisma.WardrobeItemUpdateOneRequiredWithoutOutfitItemsNestedInput;
 };
 export type OutfitItemUncheckedUpdateWithoutOutfitInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -654,8 +654,8 @@ export type OutfitItemSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
     role?: boolean;
     sortOrder?: boolean;
     outfit?: boolean | Prisma.OutfitDefaultArgs<ExtArgs>;
-    wardrobeItem?: boolean | Prisma.WardrobeItemDefaultArgs<ExtArgs>;
     user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+    wardrobeItem?: boolean | Prisma.WardrobeItemDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["outfitItem"]>;
 export type OutfitItemSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -665,8 +665,8 @@ export type OutfitItemSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
     role?: boolean;
     sortOrder?: boolean;
     outfit?: boolean | Prisma.OutfitDefaultArgs<ExtArgs>;
-    wardrobeItem?: boolean | Prisma.WardrobeItemDefaultArgs<ExtArgs>;
     user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+    wardrobeItem?: boolean | Prisma.WardrobeItemDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["outfitItem"]>;
 export type OutfitItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -676,8 +676,8 @@ export type OutfitItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
     role?: boolean;
     sortOrder?: boolean;
     outfit?: boolean | Prisma.OutfitDefaultArgs<ExtArgs>;
-    wardrobeItem?: boolean | Prisma.WardrobeItemDefaultArgs<ExtArgs>;
     user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+    wardrobeItem?: boolean | Prisma.WardrobeItemDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["outfitItem"]>;
 export type OutfitItemSelectScalar = {
     id?: boolean;
@@ -690,25 +690,25 @@ export type OutfitItemSelectScalar = {
 export type OutfitItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "outfitId" | "wardrobeItemId" | "userId" | "role" | "sortOrder", ExtArgs["result"]["outfitItem"]>;
 export type OutfitItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     outfit?: boolean | Prisma.OutfitDefaultArgs<ExtArgs>;
-    wardrobeItem?: boolean | Prisma.WardrobeItemDefaultArgs<ExtArgs>;
     user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+    wardrobeItem?: boolean | Prisma.WardrobeItemDefaultArgs<ExtArgs>;
 };
 export type OutfitItemIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     outfit?: boolean | Prisma.OutfitDefaultArgs<ExtArgs>;
-    wardrobeItem?: boolean | Prisma.WardrobeItemDefaultArgs<ExtArgs>;
     user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+    wardrobeItem?: boolean | Prisma.WardrobeItemDefaultArgs<ExtArgs>;
 };
 export type OutfitItemIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     outfit?: boolean | Prisma.OutfitDefaultArgs<ExtArgs>;
-    wardrobeItem?: boolean | Prisma.WardrobeItemDefaultArgs<ExtArgs>;
     user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+    wardrobeItem?: boolean | Prisma.WardrobeItemDefaultArgs<ExtArgs>;
 };
 export type $OutfitItemPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "OutfitItem";
     objects: {
         outfit: Prisma.$OutfitPayload<ExtArgs>;
-        wardrobeItem: Prisma.$WardrobeItemPayload<ExtArgs>;
         user: Prisma.$UserPayload<ExtArgs>;
+        wardrobeItem: Prisma.$WardrobeItemPayload<ExtArgs>;
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -717,11 +717,11 @@ export type $OutfitItemPayload<ExtArgs extends runtime.Types.Extensions.Internal
         userId: string;
         /**
          * * Example:
-         *    * TOP
-         *    * BOTTOM
-         *    * SHOES
-         *    * BAG
-         *    * ACCESSORY
+         * * TOP
+         * * BOTTOM
+         * * SHOES
+         * * BAG
+         * * ACCESSORY
          */
         role: string | null;
         sortOrder: number | null;
@@ -1055,8 +1055,8 @@ export interface OutfitItemDelegate<ExtArgs extends runtime.Types.Extensions.Int
 export interface Prisma__OutfitItemClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
     outfit<T extends Prisma.OutfitDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OutfitDefaultArgs<ExtArgs>>): Prisma.Prisma__OutfitClient<runtime.Types.Result.GetResult<Prisma.$OutfitPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
-    wardrobeItem<T extends Prisma.WardrobeItemDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WardrobeItemDefaultArgs<ExtArgs>>): Prisma.Prisma__WardrobeItemClient<runtime.Types.Result.GetResult<Prisma.$WardrobeItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    wardrobeItem<T extends Prisma.WardrobeItemDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WardrobeItemDefaultArgs<ExtArgs>>): Prisma.Prisma__WardrobeItemClient<runtime.Types.Result.GetResult<Prisma.$WardrobeItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.

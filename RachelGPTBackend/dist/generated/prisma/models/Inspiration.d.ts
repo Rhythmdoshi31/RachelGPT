@@ -504,13 +504,13 @@ export type $InspirationPayload<ExtArgs extends runtime.Types.Extensions.Interna
         imagePath: string;
         /**
          * * Overall AI analysis.
-         *    *
-         *    * Example:
-         *    * {
-         *    *   "overallStyle": ["minimal", "smart-casual"],
-         *    *   "colors": ["black", "white"],
-         *    *   "occasion": "date-night"
-         *    * }
+         * *
+         * * Example:
+         * * {
+         * *   "overallStyle": ["minimal", "smart-casual"],
+         * *   "colors": ["black", "white"],
+         * *   "occasion": "date-night"
+         * * }
          */
         analysis: runtime.JsonValue | null;
         createdAt: Date;

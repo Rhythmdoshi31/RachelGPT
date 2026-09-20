@@ -150,8 +150,8 @@ export type InspirationItemWhereInput = {
     subcategory?: Prisma.StringNullableFilter<"InspirationItem"> | string | null;
     attributes?: Prisma.JsonFilter<"InspirationItem">;
     createdAt?: Prisma.DateTimeFilter<"InspirationItem"> | Date | string;
-    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
     inspiration?: Prisma.XOR<Prisma.InspirationScalarRelationFilter, Prisma.InspirationWhereInput>;
+    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
 };
 export type InspirationItemOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -161,8 +161,8 @@ export type InspirationItemOrderByWithRelationInput = {
     subcategory?: Prisma.SortOrderInput | Prisma.SortOrder;
     attributes?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
-    user?: Prisma.UserOrderByWithRelationInput;
     inspiration?: Prisma.InspirationOrderByWithRelationInput;
+    user?: Prisma.UserOrderByWithRelationInput;
 };
 export type InspirationItemWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -175,8 +175,8 @@ export type InspirationItemWhereUniqueInput = Prisma.AtLeast<{
     subcategory?: Prisma.StringNullableFilter<"InspirationItem"> | string | null;
     attributes?: Prisma.JsonFilter<"InspirationItem">;
     createdAt?: Prisma.DateTimeFilter<"InspirationItem"> | Date | string;
-    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
     inspiration?: Prisma.XOR<Prisma.InspirationScalarRelationFilter, Prisma.InspirationWhereInput>;
+    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
 }, "id">;
 export type InspirationItemOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -208,8 +208,8 @@ export type InspirationItemCreateInput = {
     subcategory?: string | null;
     attributes: Prisma.JsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Date | string;
-    user: Prisma.UserCreateNestedOneWithoutInspirationItemsInput;
     inspiration: Prisma.InspirationCreateNestedOneWithoutItemsInput;
+    user: Prisma.UserCreateNestedOneWithoutInspirationItemsInput;
 };
 export type InspirationItemUncheckedCreateInput = {
     id?: string;
@@ -226,8 +226,8 @@ export type InspirationItemUpdateInput = {
     subcategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     attributes?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    user?: Prisma.UserUpdateOneRequiredWithoutInspirationItemsNestedInput;
     inspiration?: Prisma.InspirationUpdateOneRequiredWithoutItemsNestedInput;
+    user?: Prisma.UserUpdateOneRequiredWithoutInspirationItemsNestedInput;
 };
 export type InspirationItemUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -530,8 +530,8 @@ export type InspirationItemSelect<ExtArgs extends runtime.Types.Extensions.Inter
     subcategory?: boolean;
     attributes?: boolean;
     createdAt?: boolean;
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     inspiration?: boolean | Prisma.InspirationDefaultArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["inspirationItem"]>;
 export type InspirationItemSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -541,8 +541,8 @@ export type InspirationItemSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
     subcategory?: boolean;
     attributes?: boolean;
     createdAt?: boolean;
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     inspiration?: boolean | Prisma.InspirationDefaultArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["inspirationItem"]>;
 export type InspirationItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -552,8 +552,8 @@ export type InspirationItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
     subcategory?: boolean;
     attributes?: boolean;
     createdAt?: boolean;
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     inspiration?: boolean | Prisma.InspirationDefaultArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["inspirationItem"]>;
 export type InspirationItemSelectScalar = {
     id?: boolean;
@@ -566,22 +566,22 @@ export type InspirationItemSelectScalar = {
 };
 export type InspirationItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "inspirationId" | "category" | "subcategory" | "attributes" | "createdAt", ExtArgs["result"]["inspirationItem"]>;
 export type InspirationItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     inspiration?: boolean | Prisma.InspirationDefaultArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 };
 export type InspirationItemIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     inspiration?: boolean | Prisma.InspirationDefaultArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 };
 export type InspirationItemIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     inspiration?: boolean | Prisma.InspirationDefaultArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 };
 export type $InspirationItemPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "InspirationItem";
     objects: {
-        user: Prisma.$UserPayload<ExtArgs>;
         inspiration: Prisma.$InspirationPayload<ExtArgs>;
+        user: Prisma.$UserPayload<ExtArgs>;
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -589,10 +589,10 @@ export type $InspirationItemPayload<ExtArgs extends runtime.Types.Extensions.Int
         inspirationId: string;
         /**
          * * Example:
-         *    * TOP
-         *    * BOTTOM
-         *    * SHOES
-         *    * BAG
+         * * TOP
+         * * BOTTOM
+         * * SHOES
+         * * BAG
          */
         category: string;
         subcategory: string | null;
@@ -927,8 +927,8 @@ export interface InspirationItemDelegate<ExtArgs extends runtime.Types.Extension
  */
 export interface Prisma__InspirationItemClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
-    user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     inspiration<T extends Prisma.InspirationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InspirationDefaultArgs<ExtArgs>>): Prisma.Prisma__InspirationClient<runtime.Types.Result.GetResult<Prisma.$InspirationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.

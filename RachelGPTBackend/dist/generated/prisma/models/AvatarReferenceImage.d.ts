@@ -413,10 +413,10 @@ export type $AvatarReferenceImagePayload<ExtArgs extends runtime.Types.Extension
         storagePath: string;
         /**
          * * FRONT
-         *    * SIDE
-         *    * FULL_BODY
-         *    * FACE
-         *    * OTHER
+         * * SIDE
+         * * FULL_BODY
+         * * FACE
+         * * OTHER
          */
         type: string | null;
         createdAt: Date;

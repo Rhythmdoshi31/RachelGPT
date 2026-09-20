@@ -4,12 +4,14 @@ import { prisma } from "./lib/prisma.js";
 import { authMiddleware, } from "./middleware/auth.js";
 import authRoutes from "./routes/auth.routes.js";
 import onboardingRoutes from "./routes/onboarding.routes.js";
+import personaRoutes from "./routes/persona.routes.js";
 const app = express();
 app.use(express.json());
 const PORT = process.env.PORT || 3000;
 // Auth routes
 app.use("/api/auth", authRoutes);
 app.use("/api/onboarding", onboardingRoutes);
+app.use("/api/personas", personaRoutes);
 // Health check
 app.get("/", (_req, res) => {
     res.json({

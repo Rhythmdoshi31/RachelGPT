@@ -1,0 +1,10 @@
+import { Response } from "express";
+import { AuthenticatedRequest } from "../middleware/auth.js";
+export declare function createWardrobeUploadUrl(req: AuthenticatedRequest, res: Response): Promise<Response<any, Record<string, any>>>;
+export declare function completeWardrobeUpload(req: AuthenticatedRequest, res: Response): Promise<Response<any, Record<string, any>>>;
+export declare function getWardrobe(req: AuthenticatedRequest, res: Response): Promise<Response<any, Record<string, any>>>;
+export declare function createWardrobeUploadUrls(req: AuthenticatedRequest, res: Response): Promise<Response<any, Record<string, any>>>;
+export declare function completeWardrobeUploads(req: AuthenticatedRequest, res: Response): Promise<Response<any, Record<string, any>>>;
+export declare function getWardrobeItemById(req: AuthenticatedRequest, res: Response): Promise<Response<any, Record<string, any>>>;
+export declare function updateWardrobeItem(req: AuthenticatedRequest, res: Response): Promise<Response<any, Record<string, any>>>;
+export declare function deleteWardrobeItem(req: AuthenticatedRequest, res: Response): Promise<Response<any, Record<string, any>>>;

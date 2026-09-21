@@ -9,6 +9,7 @@ import {
   getWardrobeItemById,
   updateWardrobeItem,
   deleteWardrobeItem,
+  analyzeWardrobeItem
 } from "../controllers/wardrobe.controller.js";
 
 import { authMiddleware } from "../middleware/auth.js";
@@ -61,6 +62,12 @@ router.delete(
   "/:id",
   authMiddleware,
   deleteWardrobeItem
+);
+
+router.post(
+  "/:id/analyze",
+  authMiddleware,
+  analyzeWardrobeItem
 );
 
 export default router;

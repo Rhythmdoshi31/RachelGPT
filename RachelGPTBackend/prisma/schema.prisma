@@ -383,6 +383,7 @@ model InspirationItem {
   category      String
   subcategory   String?
   attributes    Json
+  analysisStatus String @default("pending")
   /// * Optional embedding of the individual
   ///    * inspiration clothing item.
   embedding     Unsupported("vector")?

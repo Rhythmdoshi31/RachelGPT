@@ -3,10 +3,11 @@ import crypto from "node:crypto";
 import { prisma } from "../lib/prisma.js";
 import { supabaseAdmin } from "../lib/supabaseAdmin.js";
 import { AuthenticatedRequest } from "../middleware/auth.js";
+import { analyzeClothingImage } from "../services/vision/gemini.service.js";
 
 export async function createWardrobeUploadUrl(
   req: AuthenticatedRequest,
-  res: Response
+  res: Response,
 ) {
   try {
     const userId = req.userId;
@@ -48,13 +49,10 @@ export async function createWardrobeUploadUrl(
      */
     const wardrobeItemId = crypto.randomUUID();
 
-    const extension =
-      fileName.split(".").pop()?.toLowerCase() || "jpg";
+    const extension = fileName.split(".").pop()?.toLowerCase() || "jpg";
 
     const storagePath =
-      `${userId}/` +
-      `${wardrobeItemId}/` +
-      `${Date.now()}.${extension}`;
+      `${userId}/` + `${wardrobeItemId}/` + `${Date.now()}.${extension}`;
 
     const { data, error } = await supabaseAdmin.storage
       .from("Wardrobe")
@@ -87,10 +85,9 @@ export async function createWardrobeUploadUrl(
   }
 }
 
-
 export async function completeWardrobeUpload(
   req: AuthenticatedRequest,
-  res: Response
+  res: Response,
 ) {
   try {
     const userId = req.userId;
@@ -102,18 +99,12 @@ export async function completeWardrobeUpload(
       });
     }
 
-    const {
-      wardrobeItemId,
-      storagePath,
-      category,
-      subcategory,
-    } = req.body;
+    const { wardrobeItemId, storagePath, category, subcategory } = req.body;
 
     if (!wardrobeItemId || !storagePath || !category) {
       return res.status(400).json({
         success: false,
-        message:
-          "wardrobeItemId, storagePath and category are required",
+        message: "wardrobeItemId, storagePath and category are required",
       });
     }
 
@@ -124,8 +115,7 @@ export async function completeWardrobeUpload(
      * Expected:
      * <userId>/<wardrobeItemId>/<filename>
      */
-    const expectedPrefix =
-      `${userId}/${wardrobeItemId}/`;
+    const expectedPrefix = `${userId}/${wardrobeItemId}/`;
 
     if (!storagePath.startsWith(expectedPrefix)) {
       return res.status(403).json({
@@ -155,34 +145,32 @@ export async function completeWardrobeUpload(
      *
      * If either creation fails, neither record is saved.
      */
-    const wardrobeItem = await prisma.$transaction(
-      async (tx) => {
-        const item = await tx.wardrobeItem.create({
-          data: {
-            id: wardrobeItemId,
-            userId,
-            category,
-            subcategory: subcategory ?? null,
+    const wardrobeItem = await prisma.$transaction(async (tx) => {
+      const item = await tx.wardrobeItem.create({
+        data: {
+          id: wardrobeItemId,
+          userId,
+          category,
+          subcategory: subcategory ?? null,
 
-            // AI analysis hasn't happened yet.
-            attributes: {},
+          // AI analysis hasn't happened yet.
+          attributes: {},
 
-            primaryImagePath: storagePath,
-          },
-        });
+          primaryImagePath: storagePath,
+        },
+      });
 
-        await tx.wardrobeImage.create({
-          data: {
-            userId,
-            wardrobeItemId: item.id,
-            storagePath,
-            isPrimary: true,
-          },
-        });
+      await tx.wardrobeImage.create({
+        data: {
+          userId,
+          wardrobeItemId: item.id,
+          storagePath,
+          isPrimary: true,
+        },
+      });
 
-        return item;
-      }
-    );
+      return item;
+    });
 
     return res.status(201).json({
       success: true,
@@ -190,10 +178,7 @@ export async function completeWardrobeUpload(
       wardrobeItem,
     });
   } catch (error) {
-    console.error(
-      "Complete wardrobe upload error:",
-      error
-    );
+    console.error("Complete wardrobe upload error:", error);
 
     return res.status(500).json({
       success: false,
@@ -202,12 +187,7 @@ export async function completeWardrobeUpload(
   }
 }
 
-
-
-export async function getWardrobe(
-  req: AuthenticatedRequest,
-  res: Response
-) {
+export async function getWardrobe(req: AuthenticatedRequest, res: Response) {
   try {
     const userId = req.userId;
 
@@ -218,63 +198,51 @@ export async function getWardrobe(
       });
     }
 
-    const page = Math.max(
-      Number.parseInt(req.query.page as string) || 1,
-      1
-    );
+    const page = Math.max(Number.parseInt(req.query.page as string) || 1, 1);
 
-    const requestedLimit =
-      Number.parseInt(req.query.limit as string) || 20;
+    const requestedLimit = Number.parseInt(req.query.limit as string) || 20;
 
-    const limit = Math.min(
-      Math.max(requestedLimit, 1),
-      50
-    );
+    const limit = Math.min(Math.max(requestedLimit, 1), 50);
 
     const skip = (page - 1) * limit;
 
-    const [wardrobeItems, total] =
-      await Promise.all([
-        prisma.wardrobeItem.findMany({
-          where: {
-            userId,
-            isArchived: false,
-          },
-          include: {
-            images: true,
-          },
-          orderBy: {
-            addedAt: "desc",
-          },
-          skip,
-          take: limit,
-        }),
+    const [wardrobeItems, total] = await Promise.all([
+      prisma.wardrobeItem.findMany({
+        where: {
+          userId,
+          isArchived: false,
+        },
+        include: {
+          images: true,
+        },
+        orderBy: {
+          addedAt: "desc",
+        },
+        skip,
+        take: limit,
+      }),
 
-        prisma.wardrobeItem.count({
-          where: {
-            userId,
-            isArchived: false,
-          },
-        }),
-      ]);
+      prisma.wardrobeItem.count({
+        where: {
+          userId,
+          isArchived: false,
+        },
+      }),
+    ]);
 
     const wardrobe = await Promise.all(
       wardrobeItems.map(async (item) => {
         let primaryImageUrl: string | null = null;
 
         if (item.primaryImagePath) {
-          const { data, error } =
-            await supabaseAdmin.storage
-              .from("Wardrobe")
-              .createSignedUrl(
-                item.primaryImagePath,
-                60 * 60
-              );
+          const { data, error } = await supabaseAdmin.storage
+            .from("Wardrobe")
+            .createSignedUrl(item.primaryImagePath, 60 * 60);
 
           if (error) {
             console.error(
               `Failed to create signed URL for wardrobe item ${item.id}:`,
-              error
+              error,
             );
           } else {
             primaryImageUrl = data.signedUrl;
@@ -285,7 +253,7 @@ export async function getWardrobe(
           ...item,
           primaryImageUrl,
         };
-      })
+      }),
     );
 
     const totalPages = Math.ceil(total / limit);
@@ -314,7 +282,7 @@ export async function getWardrobe(
 
 export async function createWardrobeUploadUrls(
   req: AuthenticatedRequest,
-  res: Response
+  res: Response,
 ) {
   try {
     const userId = req.userId;
@@ -378,7 +346,7 @@ export async function createWardrobeUploadUrls(
             fileName: string;
             contentType: string;
           },
-          index: number
+          index: number,
         ) => {
           const wardrobeItemId = crypto.randomUUID();
 
@@ -396,7 +364,7 @@ export async function createWardrobeUploadUrls(
 
           if (error || !data) {
             throw new Error(
-              `Failed to create upload URL for file at index ${index}`
+              `Failed to create upload URL for file at index ${index}`,
             );
           }
 
@@ -406,8 +374,8 @@ export async function createWardrobeUploadUrls(
             storagePath,
             token: data.token,
           };
-        }
-      )
+        },
+      ),
     );
 
     return res.status(200).json({
@@ -426,7 +394,7 @@ export async function createWardrobeUploadUrls(
 
 export async function completeWardrobeUploads(
   req: AuthenticatedRequest,
-  res: Response
+  res: Response,
 ) {
   try {
     const userId = req.userId;
@@ -463,29 +431,24 @@ export async function completeWardrobeUploads(
       if (!upload?.wardrobeItemId || !upload?.storagePath) {
         return res.status(400).json({
           success: false,
-          message:
-            `wardrobeItemId and storagePath are required for upload at index ${i}`,
+          message: `wardrobeItemId and storagePath are required for upload at index ${i}`,
         });
       }
 
-      const expectedPrefix =
-        `${userId}/${upload.wardrobeItemId}/`;
+      const expectedPrefix = `${userId}/${upload.wardrobeItemId}/`;
 
       if (!upload.storagePath.startsWith(expectedPrefix)) {
         return res.status(403).json({
           success: false,
-          message:
-            `Invalid storage path for upload at index ${i}`,
+          message: `Invalid storage path for upload at index ${i}`,
         });
       }
     }
 
     // Make sure the same wardrobe item is not submitted twice
     const wardrobeItemIds = uploads.map(
-      (upload: {
-        wardrobeItemId: string;
-        storagePath: string;
-      }) => upload.wardrobeItemId
+      (upload: { wardrobeItemId: string; storagePath: string }) =>
+        upload.wardrobeItemId,
     );
 
     const uniqueIds = new Set(wardrobeItemIds);
@@ -513,43 +476,39 @@ export async function completeWardrobeUploads(
       return res.status(409).json({
         success: false,
         message: "One or more wardrobe items already exist",
-        existingItemIds: existingItems.map(
-          (item) => item.id
-        ),
+        existingItemIds: existingItems.map((item) => item.id),
       });
     }
 
-    const wardrobeItems = await prisma.$transaction(
-      async (tx) => {
-        const items = [];
+    const wardrobeItems = await prisma.$transaction(async (tx) => {
+      const items = [];
 
-        for (const upload of uploads) {
-          const item = await tx.wardrobeItem.create({
-            data: {
-              id: upload.wardrobeItemId,
-              userId,
-              category: "unknown",
-              subcategory: null,
-              attributes: {},
-              primaryImagePath: upload.storagePath,
-            },
-          });
+      for (const upload of uploads) {
+        const item = await tx.wardrobeItem.create({
+          data: {
+            id: upload.wardrobeItemId,
+            userId,
+            category: "unknown",
+            subcategory: null,
+            attributes: {},
+            primaryImagePath: upload.storagePath,
+          },
+        });
 
-          await tx.wardrobeImage.create({
-            data: {
-              userId,
-              wardrobeItemId: item.id,
-              storagePath: upload.storagePath,
-              isPrimary: true,
-            },
-          });
+        await tx.wardrobeImage.create({
+          data: {
+            userId,
+            wardrobeItemId: item.id,
+            storagePath: upload.storagePath,
+            isPrimary: true,
+          },
+        });
 
-          items.push(item);
-        }
-
-        return items;
+        items.push(item);
       }
-    );
+
+      return items;
+    });
 
     return res.status(201).json({
       success: true,
@@ -557,10 +516,7 @@ export async function completeWardrobeUploads(
       wardrobe: wardrobeItems,
     });
   } catch (error) {
-    console.error(
-      "Complete batch wardrobe uploads error:",
-      error
-    );
+    console.error("Complete batch wardrobe uploads error:", error);
 
     return res.status(500).json({
       success: false,
@@ -571,7 +527,7 @@ export async function completeWardrobeUploads(
 
 export async function getWardrobeItemById(
   req: AuthenticatedRequest,
-  res: Response
+  res: Response,
 ) {
   try {
     const userId = req.userId;
@@ -592,21 +548,20 @@ export async function getWardrobeItemById(
       });
     }
 
-    const wardrobeItem =
-      await prisma.wardrobeItem.findFirst({
-        where: {
-          id: idParam,
-          userId,
-          isArchived: false,
-        },
-        include: {
-          images: {
-            orderBy: {
-              createdAt: "asc",
-            },
+    const wardrobeItem = await prisma.wardrobeItem.findFirst({
+      where: {
+        id: idParam,
+        userId,
+        isArchived: false,
+      },
+      include: {
+        images: {
+          orderBy: {
+            createdAt: "asc",
           },
         },
-      });
+      },
+    });
 
     if (!wardrobeItem) {
       return res.status(404).json({
@@ -617,18 +572,14 @@ export async function getWardrobeItemById(
 
     const images = await Promise.all(
       wardrobeItem.images.map(async (image) => {
-        const { data, error } =
-          await supabaseAdmin.storage
-            .from("Wardrobe")
-            .createSignedUrl(
-              image.storagePath,
-              60 * 60
-            );
+        const { data, error } = await supabaseAdmin.storage
+          .from("Wardrobe")
+          .createSignedUrl(image.storagePath, 60 * 60);
 
         if (error) {
           console.error(
             `Failed to create signed URL for image ${image.id}:`,
-            error
+            error,
           );
 
           return {
@@ -641,7 +592,7 @@ export async function getWardrobeItemById(
           ...image,
           imageUrl: data.signedUrl,
         };
-      })
+      }),
     );
 
     return res.status(200).json({
@@ -652,10 +603,7 @@ export async function getWardrobeItemById(
       },
     });
   } catch (error) {
-    console.error(
-      "Get wardrobe item by ID error:",
-      error
-    );
+    console.error("Get wardrobe item by ID error:", error);
 
     return res.status(500).json({
       success: false,
@@ -666,7 +614,7 @@ export async function getWardrobeItemById(
 
 export async function updateWardrobeItem(
   req: AuthenticatedRequest,
-  res: Response
+  res: Response,
 ) {
   try {
     const userId = req.userId;
@@ -687,11 +635,7 @@ export async function updateWardrobeItem(
       });
     }
 
-    const {
-      category,
-      subcategory,
-      attributes,
-    } = req.body;
+    const { category, subcategory, attributes } = req.body;
 
     if (
       category === undefined &&
@@ -704,14 +648,13 @@ export async function updateWardrobeItem(
       });
     }
 
-    const existingItem =
-      await prisma.wardrobeItem.findFirst({
-        where: {
-          id: idParam,
-          userId,
-          isArchived: false,
-        },
-      });
+    const existingItem = await prisma.wardrobeItem.findFirst({
+      where: {
+        id: idParam,
+        userId,
+        isArchived: false,
+      },
+    });
 
     if (!existingItem) {
       return res.status(404).json({
@@ -720,28 +663,27 @@ export async function updateWardrobeItem(
       });
     }
 
-    const wardrobeItem =
-      await prisma.wardrobeItem.update({
-        where: {
-          id: idParam,
-        },
-        data: {
-          ...(category !== undefined && {
-            category,
-          }),
+    const wardrobeItem = await prisma.wardrobeItem.update({
+      where: {
+        id: idParam,
+      },
+      data: {
+        ...(category !== undefined && {
+          category,
+        }),
 
-          ...(subcategory !== undefined && {
-            subcategory,
-          }),
+        ...(subcategory !== undefined && {
+          subcategory,
+        }),
 
-          ...(attributes !== undefined && {
-            attributes,
-          }),
-        },
-        include: {
-          images: true,
-        },
-      });
+        ...(attributes !== undefined && {
+          attributes,
+        }),
+      },
+      include: {
+        images: true,
+      },
+    });
 
     return res.status(200).json({
       success: true,
@@ -749,10 +691,7 @@ export async function updateWardrobeItem(
       wardrobeItem,
     });
   } catch (error) {
-    console.error(
-      "Update wardrobe item error:",
-      error
-    );
+    console.error("Update wardrobe item error:", error);
 
     return res.status(500).json({
       success: false,
@@ -763,7 +702,7 @@ export async function updateWardrobeItem(
 
 export async function deleteWardrobeItem(
   req: AuthenticatedRequest,
-  res: Response
+  res: Response,
 ) {
   try {
     const userId = req.userId;
@@ -784,14 +723,13 @@ export async function deleteWardrobeItem(
       });
     }
 
-    const existingItem =
-      await prisma.wardrobeItem.findFirst({
-        where: {
-          id: idParam,
-          userId,
-          isArchived: false,
-        },
-      });
+    const existingItem = await prisma.wardrobeItem.findFirst({
+      where: {
+        id: idParam,
+        userId,
+        isArchived: false,
+      },
+    });
 
     if (!existingItem) {
       return res.status(404).json({
@@ -814,14 +752,104 @@ export async function deleteWardrobeItem(
       message: "Wardrobe item deleted successfully",
     });
   } catch (error) {
-    console.error(
-      "Delete wardrobe item error:",
-      error
-    );
+    console.error("Delete wardrobe item error:", error);
 
     return res.status(500).json({
       success: false,
       message: "Failed to delete wardrobe item",
+    });
+  }
+}
+
+export async function analyzeWardrobeItem(
+  req: AuthenticatedRequest,
+  res: Response,
+) {
+  try {
+    const userId = req.userId;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: "User not authenticated",
+      });
+    }
+
+    const idParam = req.params.id;
+
+    if (!idParam || Array.isArray(idParam)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid wardrobe item ID",
+      });
+    }
+
+    const wardrobeItem = await prisma.wardrobeItem.findFirst({
+      where: {
+        id: idParam,
+        userId,
+        isArchived: false,
+      },
+    });
+
+    if (!wardrobeItem) {
+      return res.status(404).json({
+        success: false,
+        message: "Wardrobe item not found",
+      });
+    }
+
+    if (!wardrobeItem.primaryImagePath) {
+      return res.status(400).json({
+        success: false,
+        message: "Wardrobe item has no primary image",
+      });
+    }
+
+    console.log("Downloading wardrobe image:", wardrobeItem.primaryImagePath);
+
+    const { data, error } = await supabaseAdmin.storage
+      .from("Wardrobe")
+      .download(wardrobeItem.primaryImagePath);
+
+    if (error || !data) {
+      console.error("Failed to download wardrobe image:", error);
+
+      return res.status(500).json({
+        success: false,
+        message: "Failed to retrieve wardrobe image",
+      });
+    }
+
+    const arrayBuffer = await data.arrayBuffer();
+
+    const imageBuffer = Buffer.from(arrayBuffer);
+
+    const extension = wardrobeItem.primaryImagePath
+      .split(".")
+      .pop()
+      ?.toLowerCase();
+
+    const mimeType =
+      extension === "png"
+        ? "image/png"
+        : extension === "webp"
+          ? "image/webp"
+          : "image/jpeg";
+
+    const analysis = await analyzeClothingImage(imageBuffer, mimeType);
+
+    return res.status(200).json({
+      success: true,
+      wardrobeItemId: wardrobeItem.id,
+      analysis,
+    });
+  } catch (error) {
+    console.error("Analyze wardrobe item error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Failed to analyze wardrobe item",
     });
   }
 }

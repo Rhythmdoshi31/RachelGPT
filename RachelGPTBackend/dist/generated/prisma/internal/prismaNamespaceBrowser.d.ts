@@ -223,6 +223,7 @@ export declare const InspirationItemScalarFieldEnum: {
     readonly category: 'category';
     readonly subcategory: 'subcategory';
     readonly attributes: 'attributes';
+    readonly analysisStatus: 'analysisStatus';
     readonly createdAt: 'createdAt';
 };
 export type InspirationItemScalarFieldEnum = (typeof InspirationItemScalarFieldEnum)[keyof typeof InspirationItemScalarFieldEnum];

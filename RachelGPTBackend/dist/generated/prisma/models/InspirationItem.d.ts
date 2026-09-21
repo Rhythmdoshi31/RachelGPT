@@ -16,6 +16,7 @@ export type InspirationItemMinAggregateOutputType = {
     inspirationId: string | null;
     category: string | null;
     subcategory: string | null;
+    analysisStatus: string | null;
     createdAt: Date | null;
 };
 export type InspirationItemMaxAggregateOutputType = {
@@ -24,6 +25,7 @@ export type InspirationItemMaxAggregateOutputType = {
     inspirationId: string | null;
     category: string | null;
     subcategory: string | null;
+    analysisStatus: string | null;
     createdAt: Date | null;
 };
 export type InspirationItemCountAggregateOutputType = {
@@ -33,6 +35,7 @@ export type InspirationItemCountAggregateOutputType = {
     category: number;
     subcategory: number;
     attributes: number;
+    analysisStatus: number;
     createdAt: number;
     _all: number;
 };
@@ -42,6 +45,7 @@ export type InspirationItemMinAggregateInputType = {
     inspirationId?: true;
     category?: true;
     subcategory?: true;
+    analysisStatus?: true;
     createdAt?: true;
 };
 export type InspirationItemMaxAggregateInputType = {
@@ -50,6 +54,7 @@ export type InspirationItemMaxAggregateInputType = {
     inspirationId?: true;
     category?: true;
     subcategory?: true;
+    analysisStatus?: true;
     createdAt?: true;
 };
 export type InspirationItemCountAggregateInputType = {
@@ -59,6 +64,7 @@ export type InspirationItemCountAggregateInputType = {
     category?: true;
     subcategory?: true;
     attributes?: true;
+    analysisStatus?: true;
     createdAt?: true;
     _all?: true;
 };
@@ -131,6 +137,7 @@ export type InspirationItemGroupByOutputType = {
     category: string;
     subcategory: string | null;
     attributes: runtime.JsonValue;
+    analysisStatus: string;
     createdAt: Date;
     _count: InspirationItemCountAggregateOutputType | null;
     _min: InspirationItemMinAggregateOutputType | null;
@@ -149,6 +156,7 @@ export type InspirationItemWhereInput = {
     category?: Prisma.StringFilter<"InspirationItem"> | string;
     subcategory?: Prisma.StringNullableFilter<"InspirationItem"> | string | null;
     attributes?: Prisma.JsonFilter<"InspirationItem">;
+    analysisStatus?: Prisma.StringFilter<"InspirationItem"> | string;
     createdAt?: Prisma.DateTimeFilter<"InspirationItem"> | Date | string;
     inspiration?: Prisma.XOR<Prisma.InspirationScalarRelationFilter, Prisma.InspirationWhereInput>;
     user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
@@ -160,6 +168,7 @@ export type InspirationItemOrderByWithRelationInput = {
     category?: Prisma.SortOrder;
     subcategory?: Prisma.SortOrderInput | Prisma.SortOrder;
     attributes?: Prisma.SortOrder;
+    analysisStatus?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     inspiration?: Prisma.InspirationOrderByWithRelationInput;
     user?: Prisma.UserOrderByWithRelationInput;
@@ -174,6 +183,7 @@ export type InspirationItemWhereUniqueInput = Prisma.AtLeast<{
     category?: Prisma.StringFilter<"InspirationItem"> | string;
     subcategory?: Prisma.StringNullableFilter<"InspirationItem"> | string | null;
     attributes?: Prisma.JsonFilter<"InspirationItem">;
+    analysisStatus?: Prisma.StringFilter<"InspirationItem"> | string;
     createdAt?: Prisma.DateTimeFilter<"InspirationItem"> | Date | string;
     inspiration?: Prisma.XOR<Prisma.InspirationScalarRelationFilter, Prisma.InspirationWhereInput>;
     user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
@@ -185,6 +195,7 @@ export type InspirationItemOrderByWithAggregationInput = {
     category?: Prisma.SortOrder;
     subcategory?: Prisma.SortOrderInput | Prisma.SortOrder;
     attributes?: Prisma.SortOrder;
+    analysisStatus?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     _count?: Prisma.InspirationItemCountOrderByAggregateInput;
     _max?: Prisma.InspirationItemMaxOrderByAggregateInput;
@@ -200,6 +211,7 @@ export type InspirationItemScalarWhereWithAggregatesInput = {
     category?: Prisma.StringWithAggregatesFilter<"InspirationItem"> | string;
     subcategory?: Prisma.StringNullableWithAggregatesFilter<"InspirationItem"> | string | null;
     attributes?: Prisma.JsonWithAggregatesFilter<"InspirationItem">;
+    analysisStatus?: Prisma.StringWithAggregatesFilter<"InspirationItem"> | string;
     createdAt?: Prisma.DateTimeWithAggregatesFilter<"InspirationItem"> | Date | string;
 };
 export type InspirationItemCreateInput = {
@@ -207,6 +219,7 @@ export type InspirationItemCreateInput = {
     category: string;
     subcategory?: string | null;
     attributes: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: string;
     createdAt?: Date | string;
     inspiration: Prisma.InspirationCreateNestedOneWithoutItemsInput;
     user: Prisma.UserCreateNestedOneWithoutInspirationItemsInput;
@@ -218,6 +231,7 @@ export type InspirationItemUncheckedCreateInput = {
     category: string;
     subcategory?: string | null;
     attributes: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: string;
     createdAt?: Date | string;
 };
 export type InspirationItemUpdateInput = {
@@ -225,6 +239,7 @@ export type InspirationItemUpdateInput = {
     category?: Prisma.StringFieldUpdateOperationsInput | string;
     subcategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     attributes?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     inspiration?: Prisma.InspirationUpdateOneRequiredWithoutItemsNestedInput;
     user?: Prisma.UserUpdateOneRequiredWithoutInspirationItemsNestedInput;
@@ -236,6 +251,7 @@ export type InspirationItemUncheckedUpdateInput = {
     category?: Prisma.StringFieldUpdateOperationsInput | string;
     subcategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     attributes?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 export type InspirationItemCreateManyInput = {
@@ -245,6 +261,7 @@ export type InspirationItemCreateManyInput = {
     category: string;
     subcategory?: string | null;
     attributes: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: string;
     createdAt?: Date | string;
 };
 export type InspirationItemUpdateManyMutationInput = {
@@ -252,6 +269,7 @@ export type InspirationItemUpdateManyMutationInput = {
     category?: Prisma.StringFieldUpdateOperationsInput | string;
     subcategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     attributes?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 export type InspirationItemUncheckedUpdateManyInput = {
@@ -261,6 +279,7 @@ export type InspirationItemUncheckedUpdateManyInput = {
     category?: Prisma.StringFieldUpdateOperationsInput | string;
     subcategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     attributes?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 export type InspirationItemListRelationFilter = {
@@ -278,6 +297,7 @@ export type InspirationItemCountOrderByAggregateInput = {
     category?: Prisma.SortOrder;
     subcategory?: Prisma.SortOrder;
     attributes?: Prisma.SortOrder;
+    analysisStatus?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
 };
 export type InspirationItemMaxOrderByAggregateInput = {
@@ -286,6 +306,7 @@ export type InspirationItemMaxOrderByAggregateInput = {
     inspirationId?: Prisma.SortOrder;
     category?: Prisma.SortOrder;
     subcategory?: Prisma.SortOrder;
+    analysisStatus?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
 };
 export type InspirationItemMinOrderByAggregateInput = {
@@ -294,6 +315,7 @@ export type InspirationItemMinOrderByAggregateInput = {
     inspirationId?: Prisma.SortOrder;
     category?: Prisma.SortOrder;
     subcategory?: Prisma.SortOrder;
+    analysisStatus?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
 };
 export type InspirationItemCreateNestedManyWithoutUserInput = {
@@ -377,6 +399,7 @@ export type InspirationItemCreateWithoutUserInput = {
     category: string;
     subcategory?: string | null;
     attributes: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: string;
     createdAt?: Date | string;
     inspiration: Prisma.InspirationCreateNestedOneWithoutItemsInput;
 };
@@ -386,6 +409,7 @@ export type InspirationItemUncheckedCreateWithoutUserInput = {
     category: string;
     subcategory?: string | null;
     attributes: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: string;
     createdAt?: Date | string;
 };
 export type InspirationItemCreateOrConnectWithoutUserInput = {
@@ -419,6 +443,7 @@ export type InspirationItemScalarWhereInput = {
     category?: Prisma.StringFilter<"InspirationItem"> | string;
     subcategory?: Prisma.StringNullableFilter<"InspirationItem"> | string | null;
     attributes?: Prisma.JsonFilter<"InspirationItem">;
+    analysisStatus?: Prisma.StringFilter<"InspirationItem"> | string;
     createdAt?: Prisma.DateTimeFilter<"InspirationItem"> | Date | string;
 };
 export type InspirationItemCreateWithoutInspirationInput = {
@@ -426,6 +451,7 @@ export type InspirationItemCreateWithoutInspirationInput = {
     category: string;
     subcategory?: string | null;
     attributes: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: string;
     createdAt?: Date | string;
     user: Prisma.UserCreateNestedOneWithoutInspirationItemsInput;
 };
@@ -435,6 +461,7 @@ export type InspirationItemUncheckedCreateWithoutInspirationInput = {
     category: string;
     subcategory?: string | null;
     attributes: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: string;
     createdAt?: Date | string;
 };
 export type InspirationItemCreateOrConnectWithoutInspirationInput = {
@@ -464,6 +491,7 @@ export type InspirationItemCreateManyUserInput = {
     category: string;
     subcategory?: string | null;
     attributes: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: string;
     createdAt?: Date | string;
 };
 export type InspirationItemUpdateWithoutUserInput = {
@@ -471,6 +499,7 @@ export type InspirationItemUpdateWithoutUserInput = {
     category?: Prisma.StringFieldUpdateOperationsInput | string;
     subcategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     attributes?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     inspiration?: Prisma.InspirationUpdateOneRequiredWithoutItemsNestedInput;
 };
@@ -480,6 +509,7 @@ export type InspirationItemUncheckedUpdateWithoutUserInput = {
     category?: Prisma.StringFieldUpdateOperationsInput | string;
     subcategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     attributes?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 export type InspirationItemUncheckedUpdateManyWithoutUserInput = {
@@ -488,6 +518,7 @@ export type InspirationItemUncheckedUpdateManyWithoutUserInput = {
     category?: Prisma.StringFieldUpdateOperationsInput | string;
     subcategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     attributes?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 export type InspirationItemCreateManyInspirationInput = {
@@ -496,6 +527,7 @@ export type InspirationItemCreateManyInspirationInput = {
     category: string;
     subcategory?: string | null;
     attributes: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: string;
     createdAt?: Date | string;
 };
 export type InspirationItemUpdateWithoutInspirationInput = {
@@ -503,6 +535,7 @@ export type InspirationItemUpdateWithoutInspirationInput = {
     category?: Prisma.StringFieldUpdateOperationsInput | string;
     subcategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     attributes?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     user?: Prisma.UserUpdateOneRequiredWithoutInspirationItemsNestedInput;
 };
@@ -512,6 +545,7 @@ export type InspirationItemUncheckedUpdateWithoutInspirationInput = {
     category?: Prisma.StringFieldUpdateOperationsInput | string;
     subcategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     attributes?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 export type InspirationItemUncheckedUpdateManyWithoutInspirationInput = {
@@ -520,6 +554,7 @@ export type InspirationItemUncheckedUpdateManyWithoutInspirationInput = {
     category?: Prisma.StringFieldUpdateOperationsInput | string;
     subcategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     attributes?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 export type InspirationItemSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -529,6 +564,7 @@ export type InspirationItemSelect<ExtArgs extends runtime.Types.Extensions.Inter
     category?: boolean;
     subcategory?: boolean;
     attributes?: boolean;
+    analysisStatus?: boolean;
     createdAt?: boolean;
     inspiration?: boolean | Prisma.InspirationDefaultArgs<ExtArgs>;
     user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
@@ -540,6 +576,7 @@ export type InspirationItemSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
     category?: boolean;
     subcategory?: boolean;
     attributes?: boolean;
+    analysisStatus?: boolean;
     createdAt?: boolean;
     inspiration?: boolean | Prisma.InspirationDefaultArgs<ExtArgs>;
     user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
@@ -551,6 +588,7 @@ export type InspirationItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
     category?: boolean;
     subcategory?: boolean;
     attributes?: boolean;
+    analysisStatus?: boolean;
     createdAt?: boolean;
     inspiration?: boolean | Prisma.InspirationDefaultArgs<ExtArgs>;
     user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
@@ -562,9 +600,10 @@ export type InspirationItemSelectScalar = {
     category?: boolean;
     subcategory?: boolean;
     attributes?: boolean;
+    analysisStatus?: boolean;
     createdAt?: boolean;
 };
-export type InspirationItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "inspirationId" | "category" | "subcategory" | "attributes" | "createdAt", ExtArgs["result"]["inspirationItem"]>;
+export type InspirationItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "inspirationId" | "category" | "subcategory" | "attributes" | "analysisStatus" | "createdAt", ExtArgs["result"]["inspirationItem"]>;
 export type InspirationItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     inspiration?: boolean | Prisma.InspirationDefaultArgs<ExtArgs>;
     user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
@@ -597,6 +636,7 @@ export type $InspirationItemPayload<ExtArgs extends runtime.Types.Extensions.Int
         category: string;
         subcategory: string | null;
         attributes: runtime.JsonValue;
+        analysisStatus: string;
         createdAt: Date;
     }, ExtArgs["result"]["inspirationItem"]>;
     composites: {};
@@ -960,6 +1000,7 @@ export interface InspirationItemFieldRefs {
     readonly category: Prisma.FieldRef<"InspirationItem", 'String'>;
     readonly subcategory: Prisma.FieldRef<"InspirationItem", 'String'>;
     readonly attributes: Prisma.FieldRef<"InspirationItem", 'Json'>;
+    readonly analysisStatus: Prisma.FieldRef<"InspirationItem", 'String'>;
     readonly createdAt: Prisma.FieldRef<"InspirationItem", 'DateTime'>;
 }
 /**

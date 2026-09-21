@@ -250,6 +250,7 @@ export const InspirationItemScalarFieldEnum = {
     category: 'category',
     subcategory: 'subcategory',
     attributes: 'attributes',
+    analysisStatus: 'analysisStatus',
     createdAt: 'createdAt'
 };
 export const ShoppingSearchScalarFieldEnum = {

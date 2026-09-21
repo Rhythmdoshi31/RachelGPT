@@ -1,6 +1,7 @@
 import crypto from "node:crypto";
 import { prisma } from "../lib/prisma.js";
 import { supabaseAdmin } from "../lib/supabaseAdmin.js";
+import { analyzeClothingImage } from "../services/vision/gemini.service.js";
 export async function createWardrobeUploadUrl(req, res) {
     try {
         const userId = req.userId;
@@ -36,9 +37,7 @@ export async function createWardrobeUploadUrl(req, res) {
          */
         const wardrobeItemId = crypto.randomUUID();
         const extension = fileName.split(".").pop()?.toLowerCase() || "jpg";
-        const storagePath = `${userId}/` +
-            `${wardrobeItemId}/` +
-            `${Date.now()}.${extension}`;
+        const storagePath = `${userId}/` + `${wardrobeItemId}/` + `${Date.now()}.${extension}`;
         const { data, error } = await supabaseAdmin.storage
             .from("Wardrobe")
             .createSignedUploadUrl(storagePath);
@@ -75,7 +74,7 @@ export async function completeWardrobeUpload(req, res) {
                 message: "User not authenticated",
             });
         }
-        const { wardrobeItemId, storagePath, category, subcategory, } = req.body;
+        const { wardrobeItemId, storagePath, category, subcategory } = req.body;
         if (!wardrobeItemId || !storagePath || !category) {
             return res.status(400).json({
                 success: false,
@@ -494,7 +493,7 @@ export async function updateWardrobeItem(req, res) {
                 message: "Invalid wardrobe item ID",
             });
         }
-        const { category, subcategory, attributes, } = req.body;
+        const { category, subcategory, attributes } = req.body;
         if (category === undefined &&
             subcategory === undefined &&
             attributes === undefined) {
@@ -596,6 +595,78 @@ export async function deleteWardrobeItem(req, res) {
         return res.status(500).json({
             success: false,
             message: "Failed to delete wardrobe item",
+        });
+    }
+}
+export async function analyzeWardrobeItem(req, res) {
+    try {
+        const userId = req.userId;
+        if (!userId) {
+            return res.status(401).json({
+                success: false,
+                message: "User not authenticated",
+            });
+        }
+        const idParam = req.params.id;
+        if (!idParam || Array.isArray(idParam)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid wardrobe item ID",
+            });
+        }
+        const wardrobeItem = await prisma.wardrobeItem.findFirst({
+            where: {
+                id: idParam,
+                userId,
+                isArchived: false,
+            },
+        });
+        if (!wardrobeItem) {
+            return res.status(404).json({
+                success: false,
+                message: "Wardrobe item not found",
+            });
+        }
+        if (!wardrobeItem.primaryImagePath) {
+            return res.status(400).json({
+                success: false,
+                message: "Wardrobe item has no primary image",
+            });
+        }
+        console.log("Downloading wardrobe image:", wardrobeItem.primaryImagePath);
+        const { data, error } = await supabaseAdmin.storage
+            .from("Wardrobe")
+            .download(wardrobeItem.primaryImagePath);
+        if (error || !data) {
+            console.error("Failed to download wardrobe image:", error);
+            return res.status(500).json({
+                success: false,
+                message: "Failed to retrieve wardrobe image",
+            });
+        }
+        const arrayBuffer = await data.arrayBuffer();
+        const imageBuffer = Buffer.from(arrayBuffer);
+        const extension = wardrobeItem.primaryImagePath
+            .split(".")
+            .pop()
+            ?.toLowerCase();
+        const mimeType = extension === "png"
+            ? "image/png"
+            : extension === "webp"
+                ? "image/webp"
+                : "image/jpeg";
+        const analysis = await analyzeClothingImage(imageBuffer, mimeType);
+        return res.status(200).json({
+            success: true,
+            wardrobeItemId: wardrobeItem.id,
+            analysis,
+        });
+    }
+    catch (error) {
+        console.error("Analyze wardrobe item error:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Failed to analyze wardrobe item",
         });
     }
 }

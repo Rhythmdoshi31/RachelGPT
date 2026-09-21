@@ -8,3 +8,4 @@ export declare function completeWardrobeUploads(req: AuthenticatedRequest, res: 
 export declare function getWardrobeItemById(req: AuthenticatedRequest, res: Response): Promise<Response<any, Record<string, any>>>;
 export declare function updateWardrobeItem(req: AuthenticatedRequest, res: Response): Promise<Response<any, Record<string, any>>>;
 export declare function deleteWardrobeItem(req: AuthenticatedRequest, res: Response): Promise<Response<any, Record<string, any>>>;
+export declare function analyzeWardrobeItem(req: AuthenticatedRequest, res: Response): Promise<Response<any, Record<string, any>>>;

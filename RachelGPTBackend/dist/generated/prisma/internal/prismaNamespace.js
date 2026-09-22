@@ -142,6 +142,7 @@ export const WardrobeItemScalarFieldEnum = {
     category: 'category',
     subcategory: 'subcategory',
     attributes: 'attributes',
+    analysisStatus: 'analysisStatus',
     primaryImagePath: 'primaryImagePath',
     addedAt: 'addedAt',
     lastWornAt: 'lastWornAt',

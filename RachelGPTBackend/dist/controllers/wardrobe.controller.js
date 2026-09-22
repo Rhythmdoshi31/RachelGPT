@@ -633,34 +633,73 @@ export async function analyzeWardrobeItem(req, res) {
                 message: "Wardrobe item has no primary image",
             });
         }
-        console.log("Downloading wardrobe image:", wardrobeItem.primaryImagePath);
-        const { data, error } = await supabaseAdmin.storage
-            .from("Wardrobe")
-            .download(wardrobeItem.primaryImagePath);
-        if (error || !data) {
-            console.error("Failed to download wardrobe image:", error);
-            return res.status(500).json({
-                success: false,
-                message: "Failed to retrieve wardrobe image",
+        // Mark analysis as processing
+        await prisma.wardrobeItem.update({
+            where: {
+                id: wardrobeItem.id,
+            },
+            data: {
+                analysisStatus: "processing",
+            },
+        });
+        try {
+            console.log("Downloading wardrobe image:", wardrobeItem.primaryImagePath);
+            const { data: imageBlob, error: downloadError } = await supabaseAdmin.storage
+                .from("Wardrobe")
+                .download(wardrobeItem.primaryImagePath);
+            if (downloadError || !imageBlob) {
+                throw new Error(downloadError?.message ||
+                    "Failed to download wardrobe image");
+            }
+            const arrayBuffer = await imageBlob.arrayBuffer();
+            const buffer = Buffer.from(arrayBuffer);
+            const extension = wardrobeItem.primaryImagePath
+                .split(".")
+                .pop()
+                ?.toLowerCase();
+            const mimeTypeMap = {
+                jpg: "image/jpeg",
+                jpeg: "image/jpeg",
+                png: "image/png",
+                webp: "image/webp",
+                heic: "image/heic",
+                heif: "image/heif",
+            };
+            const mimeType = mimeTypeMap[extension || ""] || "image/jpeg";
+            const analysis = await analyzeClothingImage(buffer, mimeType);
+            const updatedItem = await prisma.wardrobeItem.update({
+                where: {
+                    id: wardrobeItem.id,
+                },
+                data: {
+                    category: analysis.category,
+                    subcategory: analysis.subcategory,
+                    attributes: analysis.attributes,
+                    analysisStatus: "completed",
+                },
+            });
+            return res.status(200).json({
+                success: true,
+                wardrobeItemId: updatedItem.id,
+                analysis,
+                wardrobeItem: updatedItem,
             });
         }
-        const arrayBuffer = await data.arrayBuffer();
-        const imageBuffer = Buffer.from(arrayBuffer);
-        const extension = wardrobeItem.primaryImagePath
-            .split(".")
-            .pop()
-            ?.toLowerCase();
-        const mimeType = extension === "png"
-            ? "image/png"
-            : extension === "webp"
-                ? "image/webp"
-                : "image/jpeg";
-        const analysis = await analyzeClothingImage(imageBuffer, mimeType);
-        return res.status(200).json({
-            success: true,
-            wardrobeItemId: wardrobeItem.id,
-            analysis,
-        });
+        catch (analysisError) {
+            console.error("Wardrobe AI analysis error:", analysisError);
+            await prisma.wardrobeItem.update({
+                where: {
+                    id: wardrobeItem.id,
+                },
+                data: {
+                    analysisStatus: "failed",
+                },
+            });
+            return res.status(502).json({
+                success: false,
+                message: "Wardrobe image analysis failed",
+            });
+        }
     }
     catch (error) {
         console.error("Analyze wardrobe item error:", error);

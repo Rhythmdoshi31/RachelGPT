@@ -23,6 +23,7 @@ export type WardrobeItemMinAggregateOutputType = {
     userId: string | null;
     category: string | null;
     subcategory: string | null;
+    analysisStatus: string | null;
     primaryImagePath: string | null;
     addedAt: Date | null;
     lastWornAt: Date | null;
@@ -36,6 +37,7 @@ export type WardrobeItemMaxAggregateOutputType = {
     userId: string | null;
     category: string | null;
     subcategory: string | null;
+    analysisStatus: string | null;
     primaryImagePath: string | null;
     addedAt: Date | null;
     lastWornAt: Date | null;
@@ -50,6 +52,7 @@ export type WardrobeItemCountAggregateOutputType = {
     category: number;
     subcategory: number;
     attributes: number;
+    analysisStatus: number;
     primaryImagePath: number;
     addedAt: number;
     lastWornAt: number;
@@ -70,6 +73,7 @@ export type WardrobeItemMinAggregateInputType = {
     userId?: true;
     category?: true;
     subcategory?: true;
+    analysisStatus?: true;
     primaryImagePath?: true;
     addedAt?: true;
     lastWornAt?: true;
@@ -83,6 +87,7 @@ export type WardrobeItemMaxAggregateInputType = {
     userId?: true;
     category?: true;
     subcategory?: true;
+    analysisStatus?: true;
     primaryImagePath?: true;
     addedAt?: true;
     lastWornAt?: true;
@@ -97,6 +102,7 @@ export type WardrobeItemCountAggregateInputType = {
     category?: true;
     subcategory?: true;
     attributes?: true;
+    analysisStatus?: true;
     primaryImagePath?: true;
     addedAt?: true;
     lastWornAt?: true;
@@ -188,6 +194,7 @@ export type WardrobeItemGroupByOutputType = {
     category: string;
     subcategory: string | null;
     attributes: runtime.JsonValue;
+    analysisStatus: string;
     primaryImagePath: string | null;
     addedAt: Date;
     lastWornAt: Date | null;
@@ -213,6 +220,7 @@ export type WardrobeItemWhereInput = {
     category?: Prisma.StringFilter<"WardrobeItem"> | string;
     subcategory?: Prisma.StringNullableFilter<"WardrobeItem"> | string | null;
     attributes?: Prisma.JsonFilter<"WardrobeItem">;
+    analysisStatus?: Prisma.StringFilter<"WardrobeItem"> | string;
     primaryImagePath?: Prisma.StringNullableFilter<"WardrobeItem"> | string | null;
     addedAt?: Prisma.DateTimeFilter<"WardrobeItem"> | Date | string;
     lastWornAt?: Prisma.DateTimeNullableFilter<"WardrobeItem"> | Date | string | null;
@@ -232,6 +240,7 @@ export type WardrobeItemOrderByWithRelationInput = {
     category?: Prisma.SortOrder;
     subcategory?: Prisma.SortOrderInput | Prisma.SortOrder;
     attributes?: Prisma.SortOrder;
+    analysisStatus?: Prisma.SortOrder;
     primaryImagePath?: Prisma.SortOrderInput | Prisma.SortOrder;
     addedAt?: Prisma.SortOrder;
     lastWornAt?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -254,6 +263,7 @@ export type WardrobeItemWhereUniqueInput = Prisma.AtLeast<{
     category?: Prisma.StringFilter<"WardrobeItem"> | string;
     subcategory?: Prisma.StringNullableFilter<"WardrobeItem"> | string | null;
     attributes?: Prisma.JsonFilter<"WardrobeItem">;
+    analysisStatus?: Prisma.StringFilter<"WardrobeItem"> | string;
     primaryImagePath?: Prisma.StringNullableFilter<"WardrobeItem"> | string | null;
     addedAt?: Prisma.DateTimeFilter<"WardrobeItem"> | Date | string;
     lastWornAt?: Prisma.DateTimeNullableFilter<"WardrobeItem"> | Date | string | null;
@@ -273,6 +283,7 @@ export type WardrobeItemOrderByWithAggregationInput = {
     category?: Prisma.SortOrder;
     subcategory?: Prisma.SortOrderInput | Prisma.SortOrder;
     attributes?: Prisma.SortOrder;
+    analysisStatus?: Prisma.SortOrder;
     primaryImagePath?: Prisma.SortOrderInput | Prisma.SortOrder;
     addedAt?: Prisma.SortOrder;
     lastWornAt?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -295,6 +306,7 @@ export type WardrobeItemScalarWhereWithAggregatesInput = {
     category?: Prisma.StringWithAggregatesFilter<"WardrobeItem"> | string;
     subcategory?: Prisma.StringNullableWithAggregatesFilter<"WardrobeItem"> | string | null;
     attributes?: Prisma.JsonWithAggregatesFilter<"WardrobeItem">;
+    analysisStatus?: Prisma.StringWithAggregatesFilter<"WardrobeItem"> | string;
     primaryImagePath?: Prisma.StringNullableWithAggregatesFilter<"WardrobeItem"> | string | null;
     addedAt?: Prisma.DateTimeWithAggregatesFilter<"WardrobeItem"> | Date | string;
     lastWornAt?: Prisma.DateTimeNullableWithAggregatesFilter<"WardrobeItem"> | Date | string | null;
@@ -308,6 +320,7 @@ export type WardrobeItemCreateInput = {
     category: string;
     subcategory?: string | null;
     attributes: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: string;
     primaryImagePath?: string | null;
     addedAt?: Date | string;
     lastWornAt?: Date | string | null;
@@ -327,6 +340,7 @@ export type WardrobeItemUncheckedCreateInput = {
     category: string;
     subcategory?: string | null;
     attributes: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: string;
     primaryImagePath?: string | null;
     addedAt?: Date | string;
     lastWornAt?: Date | string | null;
@@ -344,6 +358,7 @@ export type WardrobeItemUpdateInput = {
     category?: Prisma.StringFieldUpdateOperationsInput | string;
     subcategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     attributes?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     primaryImagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     addedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     lastWornAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -363,6 +378,7 @@ export type WardrobeItemUncheckedUpdateInput = {
     category?: Prisma.StringFieldUpdateOperationsInput | string;
     subcategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     attributes?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     primaryImagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     addedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     lastWornAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -381,6 +397,7 @@ export type WardrobeItemCreateManyInput = {
     category: string;
     subcategory?: string | null;
     attributes: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: string;
     primaryImagePath?: string | null;
     addedAt?: Date | string;
     lastWornAt?: Date | string | null;
@@ -394,6 +411,7 @@ export type WardrobeItemUpdateManyMutationInput = {
     category?: Prisma.StringFieldUpdateOperationsInput | string;
     subcategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     attributes?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     primaryImagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     addedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     lastWornAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -408,6 +426,7 @@ export type WardrobeItemUncheckedUpdateManyInput = {
     category?: Prisma.StringFieldUpdateOperationsInput | string;
     subcategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     attributes?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     primaryImagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     addedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     lastWornAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -430,6 +449,7 @@ export type WardrobeItemCountOrderByAggregateInput = {
     category?: Prisma.SortOrder;
     subcategory?: Prisma.SortOrder;
     attributes?: Prisma.SortOrder;
+    analysisStatus?: Prisma.SortOrder;
     primaryImagePath?: Prisma.SortOrder;
     addedAt?: Prisma.SortOrder;
     lastWornAt?: Prisma.SortOrder;
@@ -446,6 +466,7 @@ export type WardrobeItemMaxOrderByAggregateInput = {
     userId?: Prisma.SortOrder;
     category?: Prisma.SortOrder;
     subcategory?: Prisma.SortOrder;
+    analysisStatus?: Prisma.SortOrder;
     primaryImagePath?: Prisma.SortOrder;
     addedAt?: Prisma.SortOrder;
     lastWornAt?: Prisma.SortOrder;
@@ -459,6 +480,7 @@ export type WardrobeItemMinOrderByAggregateInput = {
     userId?: Prisma.SortOrder;
     category?: Prisma.SortOrder;
     subcategory?: Prisma.SortOrder;
+    analysisStatus?: Prisma.SortOrder;
     primaryImagePath?: Prisma.SortOrder;
     addedAt?: Prisma.SortOrder;
     lastWornAt?: Prisma.SortOrder;
@@ -583,6 +605,7 @@ export type WardrobeItemCreateWithoutUserInput = {
     category: string;
     subcategory?: string | null;
     attributes: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: string;
     primaryImagePath?: string | null;
     addedAt?: Date | string;
     lastWornAt?: Date | string | null;
@@ -600,6 +623,7 @@ export type WardrobeItemUncheckedCreateWithoutUserInput = {
     category: string;
     subcategory?: string | null;
     attributes: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: string;
     primaryImagePath?: string | null;
     addedAt?: Date | string;
     lastWornAt?: Date | string | null;
@@ -642,6 +666,7 @@ export type WardrobeItemScalarWhereInput = {
     category?: Prisma.StringFilter<"WardrobeItem"> | string;
     subcategory?: Prisma.StringNullableFilter<"WardrobeItem"> | string | null;
     attributes?: Prisma.JsonFilter<"WardrobeItem">;
+    analysisStatus?: Prisma.StringFilter<"WardrobeItem"> | string;
     primaryImagePath?: Prisma.StringNullableFilter<"WardrobeItem"> | string | null;
     addedAt?: Prisma.DateTimeFilter<"WardrobeItem"> | Date | string;
     lastWornAt?: Prisma.DateTimeNullableFilter<"WardrobeItem"> | Date | string | null;
@@ -655,6 +680,7 @@ export type WardrobeItemCreateWithoutImagesInput = {
     category: string;
     subcategory?: string | null;
     attributes: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: string;
     primaryImagePath?: string | null;
     addedAt?: Date | string;
     lastWornAt?: Date | string | null;
@@ -673,6 +699,7 @@ export type WardrobeItemUncheckedCreateWithoutImagesInput = {
     category: string;
     subcategory?: string | null;
     attributes: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: string;
     primaryImagePath?: string | null;
     addedAt?: Date | string;
     lastWornAt?: Date | string | null;
@@ -702,6 +729,7 @@ export type WardrobeItemUpdateWithoutImagesInput = {
     category?: Prisma.StringFieldUpdateOperationsInput | string;
     subcategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     attributes?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     primaryImagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     addedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     lastWornAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -720,6 +748,7 @@ export type WardrobeItemUncheckedUpdateWithoutImagesInput = {
     category?: Prisma.StringFieldUpdateOperationsInput | string;
     subcategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     attributes?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     primaryImagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     addedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     lastWornAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -736,6 +765,7 @@ export type WardrobeItemCreateWithoutOutfitItemsInput = {
     category: string;
     subcategory?: string | null;
     attributes: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: string;
     primaryImagePath?: string | null;
     addedAt?: Date | string;
     lastWornAt?: Date | string | null;
@@ -754,6 +784,7 @@ export type WardrobeItemUncheckedCreateWithoutOutfitItemsInput = {
     category: string;
     subcategory?: string | null;
     attributes: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: string;
     primaryImagePath?: string | null;
     addedAt?: Date | string;
     lastWornAt?: Date | string | null;
@@ -783,6 +814,7 @@ export type WardrobeItemUpdateWithoutOutfitItemsInput = {
     category?: Prisma.StringFieldUpdateOperationsInput | string;
     subcategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     attributes?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     primaryImagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     addedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     lastWornAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -801,6 +833,7 @@ export type WardrobeItemUncheckedUpdateWithoutOutfitItemsInput = {
     category?: Prisma.StringFieldUpdateOperationsInput | string;
     subcategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     attributes?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     primaryImagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     addedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     lastWornAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -817,6 +850,7 @@ export type WardrobeItemCreateWithoutInteractionsInput = {
     category: string;
     subcategory?: string | null;
     attributes: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: string;
     primaryImagePath?: string | null;
     addedAt?: Date | string;
     lastWornAt?: Date | string | null;
@@ -835,6 +869,7 @@ export type WardrobeItemUncheckedCreateWithoutInteractionsInput = {
     category: string;
     subcategory?: string | null;
     attributes: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: string;
     primaryImagePath?: string | null;
     addedAt?: Date | string;
     lastWornAt?: Date | string | null;
@@ -864,6 +899,7 @@ export type WardrobeItemUpdateWithoutInteractionsInput = {
     category?: Prisma.StringFieldUpdateOperationsInput | string;
     subcategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     attributes?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     primaryImagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     addedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     lastWornAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -882,6 +918,7 @@ export type WardrobeItemUncheckedUpdateWithoutInteractionsInput = {
     category?: Prisma.StringFieldUpdateOperationsInput | string;
     subcategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     attributes?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     primaryImagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     addedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     lastWornAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -898,6 +935,7 @@ export type WardrobeItemCreateWithoutWearEventsInput = {
     category: string;
     subcategory?: string | null;
     attributes: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: string;
     primaryImagePath?: string | null;
     addedAt?: Date | string;
     lastWornAt?: Date | string | null;
@@ -916,6 +954,7 @@ export type WardrobeItemUncheckedCreateWithoutWearEventsInput = {
     category: string;
     subcategory?: string | null;
     attributes: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: string;
     primaryImagePath?: string | null;
     addedAt?: Date | string;
     lastWornAt?: Date | string | null;
@@ -945,6 +984,7 @@ export type WardrobeItemUpdateWithoutWearEventsInput = {
     category?: Prisma.StringFieldUpdateOperationsInput | string;
     subcategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     attributes?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     primaryImagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     addedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     lastWornAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -963,6 +1003,7 @@ export type WardrobeItemUncheckedUpdateWithoutWearEventsInput = {
     category?: Prisma.StringFieldUpdateOperationsInput | string;
     subcategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     attributes?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     primaryImagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     addedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     lastWornAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -979,6 +1020,7 @@ export type WardrobeItemCreateManyUserInput = {
     category: string;
     subcategory?: string | null;
     attributes: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: string;
     primaryImagePath?: string | null;
     addedAt?: Date | string;
     lastWornAt?: Date | string | null;
@@ -992,6 +1034,7 @@ export type WardrobeItemUpdateWithoutUserInput = {
     category?: Prisma.StringFieldUpdateOperationsInput | string;
     subcategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     attributes?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     primaryImagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     addedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     lastWornAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -1009,6 +1052,7 @@ export type WardrobeItemUncheckedUpdateWithoutUserInput = {
     category?: Prisma.StringFieldUpdateOperationsInput | string;
     subcategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     attributes?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     primaryImagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     addedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     lastWornAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -1026,6 +1070,7 @@ export type WardrobeItemUncheckedUpdateManyWithoutUserInput = {
     category?: Prisma.StringFieldUpdateOperationsInput | string;
     subcategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     attributes?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    analysisStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     primaryImagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     addedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     lastWornAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -1088,6 +1133,7 @@ export type WardrobeItemSelect<ExtArgs extends runtime.Types.Extensions.Internal
     category?: boolean;
     subcategory?: boolean;
     attributes?: boolean;
+    analysisStatus?: boolean;
     primaryImagePath?: boolean;
     addedAt?: boolean;
     lastWornAt?: boolean;
@@ -1108,6 +1154,7 @@ export type WardrobeItemSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
     category?: boolean;
     subcategory?: boolean;
     attributes?: boolean;
+    analysisStatus?: boolean;
     primaryImagePath?: boolean;
     addedAt?: boolean;
     lastWornAt?: boolean;
@@ -1123,6 +1170,7 @@ export type WardrobeItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
     category?: boolean;
     subcategory?: boolean;
     attributes?: boolean;
+    analysisStatus?: boolean;
     primaryImagePath?: boolean;
     addedAt?: boolean;
     lastWornAt?: boolean;
@@ -1138,6 +1186,7 @@ export type WardrobeItemSelectScalar = {
     category?: boolean;
     subcategory?: boolean;
     attributes?: boolean;
+    analysisStatus?: boolean;
     primaryImagePath?: boolean;
     addedAt?: boolean;
     lastWornAt?: boolean;
@@ -1146,7 +1195,7 @@ export type WardrobeItemSelectScalar = {
     createdAt?: boolean;
     updatedAt?: boolean;
 };
-export type WardrobeItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "category" | "subcategory" | "attributes" | "primaryImagePath" | "addedAt" | "lastWornAt" | "timesWorn" | "isArchived" | "createdAt" | "updatedAt", ExtArgs["result"]["wardrobeItem"]>;
+export type WardrobeItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "category" | "subcategory" | "attributes" | "analysisStatus" | "primaryImagePath" | "addedAt" | "lastWornAt" | "timesWorn" | "isArchived" | "createdAt" | "updatedAt", ExtArgs["result"]["wardrobeItem"]>;
 export type WardrobeItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     outfitItems?: boolean | Prisma.WardrobeItem$outfitItemsArgs<ExtArgs>;
     interactions?: boolean | Prisma.WardrobeItem$interactionsArgs<ExtArgs>;
@@ -1191,6 +1240,7 @@ export type $WardrobeItemPayload<ExtArgs extends runtime.Types.Extensions.Intern
          * * }
          */
         attributes: runtime.JsonValue;
+        analysisStatus: string;
         /**
          * * Object-storage path.
          * *
@@ -1571,6 +1621,7 @@ export interface WardrobeItemFieldRefs {
     readonly category: Prisma.FieldRef<"WardrobeItem", 'String'>;
     readonly subcategory: Prisma.FieldRef<"WardrobeItem", 'String'>;
     readonly attributes: Prisma.FieldRef<"WardrobeItem", 'Json'>;
+    readonly analysisStatus: Prisma.FieldRef<"WardrobeItem", 'String'>;
     readonly primaryImagePath: Prisma.FieldRef<"WardrobeItem", 'String'>;
     readonly addedAt: Prisma.FieldRef<"WardrobeItem", 'DateTime'>;
     readonly lastWornAt: Prisma.FieldRef<"WardrobeItem", 'DateTime'>;

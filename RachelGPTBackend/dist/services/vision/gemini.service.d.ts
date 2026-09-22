@@ -16,4 +16,7 @@ export interface ClothingAnalysis {
         details: string[];
     };
 }
+/**
+ * Analyze a clothing image using Gemini Vision.
+ */
 export declare function analyzeClothingImage(imageBuffer: Buffer, mimeType: string): Promise<ClothingAnalysis>;

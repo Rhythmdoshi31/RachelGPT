@@ -104,6 +104,7 @@ export declare const WardrobeItemScalarFieldEnum: {
     readonly category: 'category';
     readonly subcategory: 'subcategory';
     readonly attributes: 'attributes';
+    readonly analysisStatus: 'analysisStatus';
     readonly primaryImagePath: 'primaryImagePath';
     readonly addedAt: 'addedAt';
     readonly lastWornAt: 'lastWornAt';

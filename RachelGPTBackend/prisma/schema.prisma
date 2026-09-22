@@ -109,6 +109,7 @@ model WardrobeItem {
   ///    *   "occasions": ["casual", "date-night"]
   ///    * }
   attributes       Json
+  analysisStatus String @default("pending")
   /// * Object-storage path.
   ///    *
   ///    * Example:

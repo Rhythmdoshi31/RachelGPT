@@ -3,12 +3,6 @@ import fs from "node:fs";
 import path from "node:path";
 import { createClient } from "@supabase/supabase-js";
 
-/*
- * ---------------------------------------------------------
- * Environment
- * ---------------------------------------------------------
- */
-
 const API_URL = "http://localhost:3000";
 
 const ACCESS_TOKEN = process.env.TEST_ACCESS_TOKEN;
@@ -21,150 +15,243 @@ const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
 
 if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-  throw new Error("SUPABASE_URL or SUPABASE_ANON_KEY is missing from .env");
+  throw new Error(
+    "SUPABASE_URL or SUPABASE_ANON_KEY is missing from .env"
+  );
 }
 
+const supabase = createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
+
 /*
  * ---------------------------------------------------------
- * Supabase client
+ * Images to upload
+ * ---------------------------------------------------------
  *
- * This is only for the test client.
- *
- * The real frontend will eventually do this same upload
- * directly to Supabase Storage.
- * ---------------------------------------------------------
+ * Put your 3 images inside test/
  */
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-/*
- * ---------------------------------------------------------
- * Test image
- * ---------------------------------------------------------
- */
-
-const imagePath = path.join(process.cwd(), "test", "checkshirt.jpg");
-
-const fileName = "checkshirt.jpg";
-const contentType = "image/jpeg";
-
-/*
- * ---------------------------------------------------------
- * Main
- * ---------------------------------------------------------
- */
+const files = [
+  {
+    fileName: "brownsambas.jpg",
+    contentType: "image/jpeg",
+  },
+  {
+    fileName: "beigestripe.jpg",
+    contentType: "image/jpeg",
+  },
+  {
+    fileName: "olivejeans.jpg",
+    contentType: "image/jpeg",
+  },
+];
 
 async function main() {
   /*
+   * ---------------------------------------------------------
    * STEP 1
-   *
-   * Ask our backend for permission to upload.
+   * Ask backend for upload credentials for all 3 images.
+   * ---------------------------------------------------------
    */
 
-  console.log("\nRequesting upload information...");
+  console.log("\nRequesting batch upload information...");
 
-  const uploadUrlResponse = await fetch(`${API_URL}/api/wardrobe/upload-url`, {
-    method: "POST",
+  const uploadUrlResponse = await fetch(
+    `${API_URL}/api/wardrobe/upload-urls`,
+    {
+      method: "POST",
 
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${ACCESS_TOKEN}`,
-    },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${ACCESS_TOKEN}`,
+      },
 
-    body: JSON.stringify({
-      fileName,
-      contentType,
-    }),
-  });
+      body: JSON.stringify({
+        files,
+      }),
+    }
+  );
 
   const uploadUrlData = await uploadUrlResponse.json();
 
-  console.log("Upload URL response:", uploadUrlData);
+  console.log(
+    "Upload URL response:",
+    uploadUrlData
+  );
 
   if (!uploadUrlResponse.ok) {
     throw new Error(
-      uploadUrlData?.message || "Failed to get upload information",
+      uploadUrlData?.message ||
+        "Failed to get upload information"
     );
   }
 
-  const { wardrobeItemId, storagePath, token } = uploadUrlData.upload;
+  const uploads = uploadUrlData.uploads;
+
+  if (!Array.isArray(uploads)) {
+    throw new Error(
+      "Backend did not return an uploads array"
+    );
+  }
 
   /*
    * ---------------------------------------------------------
    * STEP 2
-   *
-   * Read the actual image from disk.
+   * Upload all 3 actual images directly to Supabase.
    * ---------------------------------------------------------
    */
 
-  console.log("\nReading image:", imagePath);
+  const completedUploads = [];
 
-  if (!fs.existsSync(imagePath)) {
-    throw new Error(`Image does not exist: ${imagePath}`);
+  for (const upload of uploads) {
+    const file = files[upload.index];
+
+    const imagePath = path.join(
+      process.cwd(),
+      "test",
+      file.fileName
+    );
+
+    console.log(
+      `\nReading ${file.fileName}...`
+    );
+
+    if (!fs.existsSync(imagePath)) {
+      throw new Error(
+        `Image does not exist: ${imagePath}`
+      );
+    }
+
+    const imageBuffer = fs.readFileSync(imagePath);
+
+    console.log(
+      `Size: ${(imageBuffer.length / 1024).toFixed(2)} KB`
+    );
+
+    console.log(
+      `Uploading ${file.fileName}...`
+    );
+
+    const { data, error } = await supabase.storage
+      .from("Wardrobe")
+      .uploadToSignedUrl(
+        upload.storagePath,
+        upload.token,
+        imageBuffer,
+        {
+          contentType: file.contentType,
+        }
+      );
+
+    if (error) {
+      console.error(
+        `Failed to upload ${file.fileName}:`,
+        error
+      );
+
+      throw error;
+    }
+
+    console.log(
+      `${file.fileName} uploaded successfully`,
+      data
+    );
+
+    completedUploads.push({
+      wardrobeItemId: upload.wardrobeItemId,
+      storagePath: upload.storagePath,
+    });
   }
-
-  const imageBuffer = fs.readFileSync(imagePath);
-
-  console.log(`Image size: ${(imageBuffer.length / 1024).toFixed(2)} KB`);
 
   /*
    * ---------------------------------------------------------
    * STEP 3
+   * Tell backend all 3 images were uploaded.
    *
-   * Upload the actual image directly to Supabase Storage.
-   *
-   * The backend gave us:
-   *
-   * - storagePath
-   * - signed upload token
-   *
-   * The backend does NOT receive the image.
+   * Backend will verify that every Storage object actually
+   * exists before creating database records.
    * ---------------------------------------------------------
    */
 
-  console.log("\nUploading image to Supabase Storage...");
+  console.log(
+    "\nCompleting batch upload..."
+  );
 
-  const { data, error } = await supabase.storage
-    .from("Wardrobe")
-    .uploadToSignedUrl(storagePath, token, imageBuffer, {
-      contentType,
-    });
+  const completeResponse = await fetch(
+    `${API_URL}/api/wardrobe/complete-batch`,
+    {
+      method: "POST",
 
-  if (error) {
-    console.error("Supabase signed upload error:", error);
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${ACCESS_TOKEN}`,
+      },
 
-    throw error;
+      body: JSON.stringify({
+        uploads: completedUploads,
+      }),
+    }
+  );
+
+  const completeData =
+    await completeResponse.json();
+
+  console.log(
+    "\nComplete batch response:",
+    completeData
+  );
+
+  if (!completeResponse.ok) {
+    throw new Error(
+      completeData?.message ||
+        "Failed to complete batch upload"
+    );
   }
 
   /*
    * ---------------------------------------------------------
    * STEP 4
-   *
-   * Upload succeeded.
+   * Print the IDs we'll use for batch Gemini analysis.
    * ---------------------------------------------------------
    */
 
-  console.log("\nImage uploaded successfully!");
+  console.log(
+    "\n========================================"
+  );
 
-  console.log("Supabase upload result:", data);
+  console.log(
+    "BATCH UPLOAD SUCCESSFUL"
+  );
 
-  console.log("Wardrobe Item ID:", wardrobeItemId);
+  console.log(
+    "========================================\n"
+  );
 
-  console.log("Storage Path:", storagePath);
+  console.log(
+    "Wardrobe Item IDs:"
+  );
 
-  console.log("\nThe image is now in Supabase Storage.");
+  for (const upload of completedUploads) {
+    console.log(
+      upload.wardrobeItemId
+    );
+  }
 
-  console.log("Next step: call complete/complete-batch.");
+  console.log(
+    "\nUse these IDs with:"
+  );
+
+  console.log(
+    "POST /api/wardrobe/analyze-batch"
+  );
 }
 
-/*
- * ---------------------------------------------------------
- * Error handling
- * ---------------------------------------------------------
- */
-
 main().catch((error) => {
-  console.error("\nUpload test failed:");
+  console.error(
+    "\nBatch upload test failed:"
+  );
 
   console.error(error);
 

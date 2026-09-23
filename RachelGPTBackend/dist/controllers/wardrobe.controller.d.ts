@@ -10,3 +10,4 @@ export declare function updateWardrobeItem(req: AuthenticatedRequest, res: Respo
 export declare function deleteWardrobeItem(req: AuthenticatedRequest, res: Response): Promise<Response<any, Record<string, any>>>;
 export declare function analyzeWardrobeItem(req: AuthenticatedRequest, res: Response): Promise<Response<any, Record<string, any>>>;
 export declare function analyzeWardrobeBatch(req: AuthenticatedRequest, res: Response): Promise<Response<any, Record<string, any>>>;
+export declare function getWardrobeAnalysisStatus(req: AuthenticatedRequest, res: Response): Promise<Response<any, Record<string, any>>>;

@@ -1471,3 +1471,107 @@ async function processWardrobeAnalysisBatch(
     `Wardrobe batch analysis finished. Total items: ${items.length}`
   );
 }
+
+export async function getWardrobeAnalysisStatus(
+  req: AuthenticatedRequest,
+  res: Response
+) {
+  try {
+    const userId = req.userId;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized",
+      });
+    }
+
+    const idsParam = req.query.ids;
+
+    if (typeof idsParam !== "string" || !idsParam.trim()) {
+      return res.status(400).json({
+        success: false,
+        message: "ids query parameter is required",
+      });
+    }
+
+    const wardrobeItemIds = idsParam
+      .split(",")
+      .map((id) => id.trim())
+      .filter(Boolean);
+
+    if (wardrobeItemIds.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "At least one wardrobe item ID is required",
+      });
+    }
+
+    if (wardrobeItemIds.length > 50) {
+      return res.status(400).json({
+        success: false,
+        message: "Maximum 50 wardrobe item IDs are allowed",
+      });
+    }
+
+    const uniqueIds = [...new Set(wardrobeItemIds)];
+
+    const items = await prisma.wardrobeItem.findMany({
+      where: {
+        id: {
+          in: uniqueIds,
+        },
+        userId,
+        isArchived: false,
+      },
+      select: {
+        id: true,
+        category: true,
+        subcategory: true,
+        attributes: true,
+        analysisStatus: true,
+        primaryImagePath: true,
+      },
+    });
+
+    const itemMap = new Map(items.map((item) => [item.id, item]));
+
+    const result = uniqueIds.map((id) => {
+      const item = itemMap.get(id);
+
+      if (!item) {
+        return {
+          id,
+          analysisStatus: "not_found",
+        };
+      }
+
+      return {
+        id: item.id,
+        analysisStatus: item.analysisStatus,
+        category: item.category,
+        subcategory: item.subcategory,
+        attributes: item.attributes,
+      };
+    });
+
+    const allCompleted = result.every(
+      (item) =>
+        item.analysisStatus === "completed" ||
+        item.analysisStatus === "failed"
+    );
+
+    return res.json({
+      success: true,
+      allCompleted,
+      items: result,
+    });
+  } catch (error) {
+    console.error("Get wardrobe analysis status error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Failed to get wardrobe analysis status",
+    });
+  }
+}

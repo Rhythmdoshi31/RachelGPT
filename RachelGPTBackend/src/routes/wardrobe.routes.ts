@@ -10,6 +10,7 @@ import {
   deleteWardrobeItem,
   analyzeWardrobeItem,
   analyzeWardrobeBatch,
+  getWardrobeAnalysisStatus
 } from "../controllers/wardrobe.controller.js";
 
 import { authMiddleware } from "../middleware/auth.js";
@@ -46,6 +47,18 @@ router.get(
   getWardrobe
 );
 
+ router.post(
+  "/analyze-batch",
+  authMiddleware,
+  analyzeWardrobeBatch
+);
+
+router.get(
+  "/analysis-status",
+  authMiddleware,
+  getWardrobeAnalysisStatus
+);
+
 router.get(
   "/:id",
   authMiddleware,
@@ -70,10 +83,5 @@ router.post(
   analyzeWardrobeItem
 );
 
- router.post(
-  "/analyze-batch",
-  authMiddleware,
-  analyzeWardrobeBatch
-);
 
 export default router;

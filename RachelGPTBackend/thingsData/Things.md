@@ -67,3 +67,35 @@ POST /api/wardrobe/:id/analyze --> sending to gemini to analyze the image
 POST http://localhost:3000/api/wardrobe/upload-urls --> uploading to object storage
 
 POST http://localhost:3000/api/wardrobe/complete --> create single wardrobe item
+
+
+checkshirt.jpg
+      ↓
+/upload-url
+      ↓
+signed upload token
+      ↓
+uploadToSignedUrl()
+      ↓
+Supabase Storage ✅
+      ↓
+/complete
+      ↓
+PostgreSQL ✅
+      ↓
+/:id/analyze
+      ↓
+Storage download() ✅
+      ↓
+Gemini Vision ✅
+      ↓
+structured analysis ✅
+      ↓
+analysisStatus = completed ✅
+
+
+POST /api/wardrobe/analyze-batch --> after this, this gives that batch processing has started onlyy
+
+PERODICALLY DO - until the analysis of all items go from pending to completed 
+
+GET /api/wardrobe/analysis-status?ids=id1,id2,id3

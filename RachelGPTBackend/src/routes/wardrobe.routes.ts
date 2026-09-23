@@ -1,5 +1,4 @@
 import { Router } from "express";
-
 import {
   createWardrobeUploadUrl,
   createWardrobeUploadUrls,
@@ -9,7 +8,8 @@ import {
   getWardrobeItemById,
   updateWardrobeItem,
   deleteWardrobeItem,
-  analyzeWardrobeItem
+  analyzeWardrobeItem,
+  analyzeWardrobeBatch,
 } from "../controllers/wardrobe.controller.js";
 
 import { authMiddleware } from "../middleware/auth.js";
@@ -68,6 +68,12 @@ router.post(
   "/:id/analyze",
   authMiddleware,
   analyzeWardrobeItem
+);
+
+ router.post(
+  "/analyze-batch",
+  authMiddleware,
+  analyzeWardrobeBatch
 );
 
 export default router;

@@ -63,3 +63,7 @@ DELETE http://localhost:3000/api/wardrobe/e2415209-2219-4df1-b687-eda6bb8ac695 -
 ### VISION AI
 
 POST /api/wardrobe/:id/analyze --> sending to gemini to analyze the image
+
+POST http://localhost:3000/api/wardrobe/upload-urls --> uploading to object storage
+
+POST http://localhost:3000/api/wardrobe/complete --> create single wardrobe item

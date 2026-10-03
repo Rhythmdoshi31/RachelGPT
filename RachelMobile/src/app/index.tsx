@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { SvgUri } from "react-native-svg";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { router } from "expo-router";
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
@@ -43,7 +44,9 @@ export default function WelcomeScreen() {
           Styl Me
         </Text>
 
-        <Pressable>
+        <Pressable
+        onPress={() => router.push("/login")}
+          >
           <Text className="font-[Manrope] text-[15px] text-[#2B1B16]">
             Log in
           </Text>
@@ -104,6 +107,7 @@ export default function WelcomeScreen() {
 
         {/* Primary button */}
         <Pressable
+          onPress={() => router.push("/signup")}
           className="mt-5 h-11 w-[82%] items-center justify-center rounded-full bg-[#3F5792]"
           style={({ pressed }) => ({
             opacity: pressed ? 0.85 : 1,

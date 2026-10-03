@@ -3,359 +3,142 @@ import {
   Dimensions,
   Image,
   Pressable,
-  SafeAreaView,
-  StyleSheet,
   Text,
   View,
 } from "react-native";
-import { router } from "expo-router";
-import { StatusBar } from "expo-status-bar";
 import { SvgUri } from "react-native-svg";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 export default function WelcomeScreen() {
   return (
-    <View style={styles.container}>
-      <StatusBar style="dark" />
-
-      {/* Overall linen background */}
-      <View style={styles.pageBackgroundContainer}>
+    <SafeAreaView
+  className="flex-1 bg-[#FAF7F2]"
+  edges={["top"]}
+>
+      {/* Bottom page background */}
+      <View
+        className="absolute left-0 right-0 bottom-0 overflow-hidden"
+        style={{
+          height: SCREEN_HEIGHT * 0.42,
+        }}
+      >
         <Image
           source={require("../../assets/images/backgrounds/Ivory_linen_with_blue_arcs-2.png")}
-          style={styles.pageBackground}
-          resizeMode="cover"
+          className="absolute left-0 bottom-0"
+          style={{
+            width: SCREEN_WIDTH,
+            height: SCREEN_HEIGHT * 0.75,
+          }}
+          resizeMode="stretch"
         />
       </View>
 
-      <SafeAreaView style={styles.safeArea}>
-        {/* Top navigation */}
-        <View style={styles.header}>
-          <Text style={styles.logo}>Styl Me</Text>
+      {/* Header */}
+      <View className="h-16 flex-row items-center justify-between px-7">
+        <Text
+          className="font-[DMSerifDisplay] text-[29px] leading-[33px] text-[#2B1B16]"
+        >
+          Styl Me
+        </Text>
 
-          <Pressable onPress={() => router.push("/login")} hitSlop={12}>
-            <Text style={styles.login}>Log in</Text>
-          </Pressable>
-        </View>
-
-        {/* Hero */}
-        <View style={styles.heroContainer}>
-          <View style={styles.heroImageContainer}>
-            {/* Studio background */}
-            <Image
-              source={require("../../assets/images/backgrounds/Sunlit_Ivory_Arches_with_Olive_Tree.png")}
-              style={styles.studioImage}
-              resizeMode="stretch"
-            />
-
-            {/* Woman layered on top */}
-            <Image
-              source={require("../../assets/images/backgrounds/Confident_woman_in_cream_and_denim-5.png")}
-              style={styles.womanImage}
-              resizeMode="contain"
-            />
-          </View>
-        </View>
-
-        {/* Main copy */}
-        <View style={styles.content}>
-          <Text style={styles.heading}>
-            Your wardrobe,{"\n"}styled around you.
+        <Pressable>
+          <Text className="font-[Manrope] text-[15px] text-[#2B1B16]">
+            Log in
           </Text>
+        </Pressable>
+      </View>
 
-          <Text style={styles.subtitle}>
-            AI-powered outfit ideas, a smarter wardrobe{"\n"}
-            and a more confident you.
-          </Text>
+      {/* Hero */}
+      <View className="w-full items-center -mt-2">
+        <View
+          className="overflow-hidden bg-[#E9DDCF]"
+          style={{
+            width: SCREEN_WIDTH * 0.54,
+            height: SCREEN_HEIGHT * 0.48,
+            borderTopLeftRadius: SCREEN_WIDTH * 0.27,
+            borderTopRightRadius: SCREEN_WIDTH * 0.27,
+          }}
+        >
+          {/* Studio */}
+          <Image
+            source={require("../../assets/images/backgrounds/Sunlit_Ivory_Arches_with_Olive_Tree.png")}
+            className="absolute inset-0 h-full w-full"
+            resizeMode="stretch"
+          />
 
-          {/* Create account */}
-          <Pressable
-            style={({ pressed }) => [
-              styles.primaryButton,
-              pressed && styles.buttonPressed,
-            ]}
-            onPress={() => router.push("/signup")}
-          >
-            <Text style={styles.primaryButtonText}>Create an account</Text>
-          </Pressable>
-
-          {/* Google */}
-          <Pressable style={styles.googleButton}>
-            <SvgUri
-              uri="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-              width={18}
-              height={18}
-            />
-
-            <Text style={styles.googleButtonText}>Continue with Google</Text>
-          </Pressable>
-
-          {/* Legal */}
-          <Text style={styles.legalText}>
-            By continuing, you agree to our{" "}
-            <Text style={styles.legalLink}>Terms</Text>
-            {" & "}
-            <Text style={styles.legalLink}>Privacy Policy</Text>.
-          </Text>
+          {/* Woman */}
+          <Image
+            source={require("../../assets/images/backgrounds/Confident_woman_in_cream_and_denim-5.png")}
+            className="absolute"
+            style={{
+              top: -5,
+              right: -20,
+              bottom: -30,
+              left: -25,
+              width: "auto",
+              height: "auto",
+              transform: [{ scale: 1.02 }],
+            }}
+            resizeMode="contain"
+          />
         </View>
-      </SafeAreaView>
-    </View>
+      </View>
+
+      {/* Content */}
+      <View className="flex-1 items-center px-6 pt-4">
+        <Text
+          className="mt-[14px] text-center font-[DMSerifDisplay] text-[32px] leading-[32px] text-[#2B1B16]"
+          style={{
+            transform: [{ scaleY: 1.12 }],
+          }}
+        >
+          Your style,{"\n"}beautifully yours.
+        </Text>
+
+        <Text className="mt-[11px] text-center font-[Manrope] text-[12.5px] leading-[17px] text-[#65463A]">
+          Discover what to wear from the wardrobe{"\n"}
+          you already own.
+        </Text>
+
+        {/* Primary button */}
+        <Pressable
+          className="mt-5 h-11 w-[82%] items-center justify-center rounded-full bg-[#3F5792]"
+          style={({ pressed }) => ({
+            opacity: pressed ? 0.85 : 1,
+          })}
+        >
+          <Text className="font-[ManropeMedium] text-[13px] text-white">
+            Get started
+          </Text>
+        </Pressable>
+
+        {/* Google button */}
+        <Pressable
+          className="mt-2 h-11 w-[82%] flex-row items-center justify-center rounded-full border border-[#2B1B16]"
+          style={({ pressed }) => ({
+            opacity: pressed ? 0.85 : 1,
+          })}
+        >
+          <SvgUri
+            uri="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+            width={18}
+            height={18}
+          />
+
+          <Text className="ml-2 font-[Manrope] text-[12.5px] text-[#2B1B16]">
+            Continue with Google
+          </Text>
+        </Pressable>
+
+        {/* Legal */}
+        <Text className="mb-1 mt-2 text-center font-[Manrope] text-[10px] leading-[15px] text-[#65463A]">
+          By continuing, you agree to our{" "}
+          <Text className="text-[#3F5792]">Terms</Text> and{" "}
+          <Text className="text-[#3F5792]">Privacy Policy</Text>.
+        </Text>
+      </View>
+    </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#FAF7F2",
-  },
-
-  safeArea: {
-    flex: 1,
-  },
-
-  /*
-   * Linen background
-   *
-   * Only occupies the lower ~42% of the screen.
-   */
-  pageBackgroundContainer: {
-    position: "absolute",
-
-    left: 0,
-    right: 0,
-    bottom: 0,
-
-    height: SCREEN_HEIGHT * 0.42,
-
-    overflow: "hidden",
-  },
-
-  pageBackground: {
-    position: "absolute",
-
-    width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT * 0.75,
-
-    left: 0,
-    bottom: 0,
-
-    /*
-     * Rotate the linen artwork 180 degrees.
-     */
-    // transform: [
-    //   {
-    //     rotate: "180deg",
-    //   },
-    // ],
-  },
-
-  /*
-   * Header
-   */
-  header: {
-    height: 64,
-
-    paddingHorizontal: 28,
-
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-
-  logo: {
-    fontFamily: "DMSerifDisplay",
-    fontSize: 29,
-    lineHeight: 33,
-    color: "#2B1B16",
-  },
-
-  login: {
-    fontFamily: "Manrope",
-    fontSize: 15,
-    color: "#2B1B16",
-  },
-
-  /*
-   * Hero
-   */
-  heroContainer: {
-    width: "100%",
-    alignItems: "center",
-
-    marginTop: -8,
-  },
-
-  heroImageContainer: {
-    width: SCREEN_WIDTH * 0.54,
-    height: SCREEN_HEIGHT * 0.48,
-
-    overflow: "hidden",
-
-    borderTopLeftRadius: SCREEN_WIDTH * 0.27,
-    borderTopRightRadius: SCREEN_WIDTH * 0.27,
-
-    backgroundColor: "#E9DDCF",
-  },
-
-  /*
-   * Studio background
-   *
-   * Fills the ENTIRE arch.
-   *
-   * Horizontal = compact
-   * Vertical = stretched
-   */
-  studioImage: {
-    position: "absolute",
-
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-
-    width: "100%",
-    height: "100%",
-
-    transform: [
-      {
-        scaleX: 1,
-      },
-      {
-        scaleY: 1,
-      },
-    ],
-  },
-
-  /*
-   * Woman
-   *
-   * KEEPING YOUR CURRENT SETTINGS
-   */
-  womanImage: {
-    position: "absolute",
-
-    top: -5,
-    right: -20,
-    bottom: -30,
-    left: -25,
-
-    width: "auto",
-    height: "auto",
-
-    transform: [
-      {
-        scale: 1.02,
-      },
-    ],
-  },
-
-  /*
-   * Main content
-   */
-  content: {
-    flex: 1,
-
-    alignItems: "center",
-
-    paddingHorizontal: 24,
-    paddingTop: 16,
-  },
-
-  heading: {
-    fontFamily: "DMSerifDisplay",
-    fontSize: 32,
-    lineHeight: 32,
-    textAlign: "center",
-    color: "#2B1B16",
-    marginTop: 14,
-
-    transform: [{ scaleY: 1.12 }],
-  },
-
-  subtitle: {
-    marginTop: 11,
-    fontFamily: "Manrope",
-    fontSize: 12.5,
-    lineHeight: 17,
-    textAlign: "center",
-    color: "#65463A",
-  },
-
-  /*
-   * Create account
-   */
-  primaryButton: {
-    width: "82%",
-    height: 44,
-    marginTop: 20,
-    borderRadius: 22,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#3F5792",
-  },
-
-  primaryButtonText: {
-    fontFamily: "ManropeMedium",
-
-    fontSize: 13,
-
-    color: "#FFFFFF",
-  },
-
-  /*
-   * Google
-   */
-  googleButton: {
-    width: "82%",
-    height: 44,
-    marginTop: 8,
-    borderRadius: 22,
-    borderWidth: 1,
-    borderColor: "#2B1B16",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
-  googleLogo: {
-    fontFamily: "ManropeSemiBold",
-
-    fontSize: 20,
-
-    color: "#4285F4",
-
-    marginRight: 13,
-  },
-
-  googleButtonText: {
-    fontFamily: "Manrope",
-    fontSize: 12.5,
-    color: "#2B1B16",
-    marginLeft: 10,
-  },
-
-  /*
-   * Legal
-   */
-  legalText: {
-    marginTop: 10,
-    marginBottom: 4,
-
-    fontFamily: "Manrope",
-
-    fontSize: 10,
-    lineHeight: 15,
-
-    textAlign: "center",
-
-    color: "#65463A",
-  },
-
-  legalLink: {
-    color: "#3F5792",
-  },
-
-  buttonPressed: {
-    opacity: 0.85,
-  },
-});

@@ -1,7 +1,6 @@
 import "../global.css";
-import { DarkTheme, DefaultTheme, ThemeProvider } from "expo-router";
+import { Stack, DarkTheme, DefaultTheme, ThemeProvider } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import { Stack } from "expo-router";
 import { useColorScheme } from "react-native";
 import { useEffect } from "react";
 import {
@@ -47,8 +46,7 @@ export default function RootLayout() {
         }}
       >
         <Stack.Screen name="index" />
-        <Stack.Screen name="login" />
-        <Stack.Screen name="signup" />
+        <Stack.Screen name="(auth)" />
       </Stack>
     </ThemeProvider>
   );

@@ -98,7 +98,7 @@ export default function SignupScreen() {
       >
         {/* Background image - NEVER moves with keyboard */}
         <Image
-          source={require("../../assets/images/backgrounds/Quiet_Luxury_Wardrobe_Corner-3.png")}
+          source={require("../../../assets/images/backgrounds/Quiet_Luxury_Wardrobe_Corner-3.png")}
           className="absolute left-0 right-0 bottom-0"
           style={{
             top: 56,

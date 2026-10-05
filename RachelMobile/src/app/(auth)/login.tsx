@@ -15,27 +15,8 @@ import { SvgUri } from "react-native-svg";
 import { router } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 
+import { getAuthErrorMessage } from "../../lib/authErrors";
 import { supabase } from "../../lib/supabase";
-const getAuthErrorMessage = (error: unknown) => {
-  if (error instanceof TypeError && error.message.includes("Network")) {
-    return "Unable to connect. Please check your internet connection and try again.";
-  }
-
-  if (
-    error instanceof Error &&
-    (
-      error.message.toLowerCase().includes("network") ||
-      error.message.toLowerCase().includes("fetch") ||
-      error.message.toLowerCase().includes("connection")
-    )
-  ) {
-    return "Unable to connect. Please check your internet connection and try again.";
-  }
-
-  return error instanceof Error
-    ? error.message
-    : "Something went wrong. Please try again.";
-};
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -49,6 +30,10 @@ export default function Login() {
   const [authError, setAuthError] = useState("");
 
   const translateY = useRef(new Animated.Value(0)).current;
+
+  // --------------------------------------------------
+  // Keyboard animation
+  // --------------------------------------------------
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener(
@@ -85,6 +70,10 @@ export default function Login() {
     };
   }, [translateY]);
 
+  // --------------------------------------------------
+  // Validation
+  // --------------------------------------------------
+
   const validate = () => {
     setSubmitted(true);
 
@@ -95,36 +84,45 @@ export default function Login() {
     return false;
   };
 
+  // --------------------------------------------------
+  // Login
+  // --------------------------------------------------
+
   const handleLogin = async () => {
-  if (!validate()) {
-    return;
-  }
-
-  Keyboard.dismiss();
-
-  setLoading(true);
-  setAuthError("");
-
-  try {
-    const { error } = await supabase.auth.signInWithPassword({
-      email: email.trim(),
-      password,
-    });
-
-    if (error) {
-      setAuthError(getAuthErrorMessage(error));
+    if (!validate()) {
       return;
     }
 
-    router.replace("/home");
-  } catch (error) {
-    console.error("LOGIN ERROR:", error);
+    Keyboard.dismiss();
 
-    setAuthError(getAuthErrorMessage(error));
-  } finally {
-    setLoading(false);
-  }
-};
+    setLoading(true);
+    setAuthError("");
+
+    try {
+      const { error } =
+        await supabase.auth.signInWithPassword({
+          email: email.trim(),
+          password,
+        });
+
+      if (error) {
+        setAuthError(getAuthErrorMessage(error));
+        return;
+      }
+
+      router.replace("/home");
+    } catch (error) {
+      console.error("LOGIN ERROR:", error);
+
+      setAuthError(getAuthErrorMessage(error));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // --------------------------------------------------
+  // Validation messages
+  // --------------------------------------------------
 
   const emailError =
     submitted && !email.trim()
@@ -135,6 +133,10 @@ export default function Login() {
     submitted && !password
       ? "Please enter your password."
       : "";
+
+  // --------------------------------------------------
+  // UI
+  // --------------------------------------------------
 
   return (
     <SafeAreaView
@@ -168,7 +170,9 @@ export default function Login() {
 
           <Text
             className="text-[28px] leading-[32px] text-[#2B1B16]"
-            style={{ fontFamily: "DMSerifDisplay" }}
+            style={{
+              fontFamily: "DMSerifDisplay",
+            }}
           >
             Styl Me
           </Text>
@@ -195,7 +199,9 @@ export default function Login() {
               {/* Title */}
               <Text
                 className="mb-[12px] text-center text-[28px] leading-[32px] text-[#2B1B16]"
-                style={{ fontFamily: "DMSerifDisplay" }}
+                style={{
+                  fontFamily: "DMSerifDisplay",
+                }}
               >
                 Welcome back
               </Text>
@@ -221,14 +227,18 @@ export default function Login() {
                     autoCapitalize="none"
                     autoCorrect={false}
                     className="ml-[11px] flex-1 text-[14px] text-[#2B1B16]"
-                    style={{ fontFamily: "Manrope" }}
+                    style={{
+                      fontFamily: "Manrope",
+                    }}
                   />
                 </View>
 
                 {!!emailError && (
                   <Text
                     className="ml-[4px] mt-[3px] text-[10px] text-red-600"
-                    style={{ fontFamily: "Manrope" }}
+                    style={{
+                      fontFamily: "Manrope",
+                    }}
                   >
                     {emailError}
                   </Text>
@@ -256,12 +266,16 @@ export default function Login() {
                     autoCapitalize="none"
                     autoCorrect={false}
                     className="ml-[11px] flex-1 text-[14px] text-[#2B1B16]"
-                    style={{ fontFamily: "Manrope" }}
+                    style={{
+                      fontFamily: "Manrope",
+                    }}
                   />
 
                   <Pressable
                     onPress={() =>
-                      setShowPassword((previous) => !previous)
+                      setShowPassword(
+                        (previous) => !previous
+                      )
                     }
                     hitSlop={10}
                   >
@@ -280,7 +294,9 @@ export default function Login() {
                 {!!passwordError && (
                   <Text
                     className="ml-[4px] mt-[3px] text-[10px] text-red-600"
-                    style={{ fontFamily: "Manrope" }}
+                    style={{
+                      fontFamily: "Manrope",
+                    }}
                   >
                     {passwordError}
                   </Text>
@@ -292,12 +308,14 @@ export default function Login() {
                 <Pressable
                   className="mt-[6px] self-end"
                   onPress={() => {
-                    // Add forgot password flow later
+                    // Forgot password flow will be added later.
                   }}
                 >
                   <Text
                     className="text-[10.5px] text-[#3F5792]"
-                    style={{ fontFamily: "ManropeSemiBold" }}
+                    style={{
+                      fontFamily: "ManropeSemiBold",
+                    }}
                   >
                     Forgot password?
                   </Text>
@@ -308,7 +326,9 @@ export default function Login() {
               {!!authError && (
                 <Text
                   className="mt-[7px] text-center text-[10.5px] leading-[15px] text-red-600"
-                  style={{ fontFamily: "Manrope" }}
+                  style={{
+                    fontFamily: "Manrope",
+                  }}
                 >
                   {authError}
                 </Text>
@@ -320,18 +340,21 @@ export default function Login() {
                 disabled={loading}
                 className="mt-[12px] h-[50px] w-full items-center justify-center rounded-[14px] bg-[#3F5792]"
                 style={({ pressed }) => ({
-                  opacity: pressed || loading ? 0.85 : 1,
+                  opacity:
+                    pressed || loading ? 0.85 : 1,
                 })}
               >
                 <Text
                   className="text-[13px] text-white"
-                  style={{ fontFamily: "ManropeMedium" }}
+                  style={{
+                    fontFamily: "ManropeMedium",
+                  }}
                 >
                   {loading ? "Logging in..." : "Log in"}
                 </Text>
               </Pressable>
 
-              {/* Everything below Login disappears when keyboard opens */}
+              {/* Social login + signup */}
               {!keyboardVisible && (
                 <>
                   {/* OR */}
@@ -340,7 +363,9 @@ export default function Login() {
 
                     <Text
                       className="mx-[10px] text-[10px] text-[#65463A]"
-                      style={{ fontFamily: "Manrope" }}
+                      style={{
+                        fontFamily: "Manrope",
+                      }}
                     >
                       OR
                     </Text>
@@ -363,7 +388,9 @@ export default function Login() {
 
                     <Text
                       className="ml-[9px] text-[12.5px] text-[#2B1B16]"
-                      style={{ fontFamily: "Manrope" }}
+                      style={{
+                        fontFamily: "Manrope",
+                      }}
                     >
                       Continue with Apple
                     </Text>
@@ -384,7 +411,9 @@ export default function Login() {
 
                     <Text
                       className="ml-[9px] text-[12.5px] text-[#2B1B16]"
-                      style={{ fontFamily: "Manrope" }}
+                      style={{
+                        fontFamily: "Manrope",
+                      }}
                     >
                       Continue with Google
                     </Text>
@@ -394,19 +423,23 @@ export default function Login() {
                   <View className="mt-[11px] flex-row justify-center">
                     <Text
                       className="text-[11px] text-[#65463A]"
-                      style={{ fontFamily: "Manrope" }}
+                      style={{
+                        fontFamily: "Manrope",
+                      }}
                     >
                       Don&apos;t have an account?{" "}
                     </Text>
 
                     <Pressable
                       onPress={() =>
-                        router.push("/(auth)/signup")
+                        router.push("/signup")
                       }
                     >
                       <Text
                         className="text-[11px] text-[#3F5792]"
-                        style={{ fontFamily: "ManropeSemiBold" }}
+                        style={{
+                          fontFamily: "ManropeSemiBold",
+                        }}
                       >
                         Create account
                       </Text>

@@ -15,28 +15,8 @@ import { SvgUri } from "react-native-svg";
 import { router } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 
+import { getAuthErrorMessage } from "../../lib/authErrors";
 import { supabase } from "../../lib/supabase";
-
-const getAuthErrorMessage = (error: unknown) => {
-  if (error instanceof TypeError && error.message.includes("Network")) {
-    return "Unable to connect. Please check your internet connection and try again.";
-  }
-
-  if (
-    error instanceof Error &&
-    (
-      error.message.toLowerCase().includes("network") ||
-      error.message.toLowerCase().includes("fetch") ||
-      error.message.toLowerCase().includes("connection")
-    )
-  ) {
-    return "Unable to connect. Please check your internet connection and try again.";
-  }
-
-  return error instanceof Error
-    ? error.message
-    : "Something went wrong. Please try again.";
-};
 
 export default function Signup() {
   const [firstName, setFirstName] = useState("");
@@ -53,37 +33,48 @@ export default function Signup() {
 
   const translateY = useRef(new Animated.Value(0)).current;
 
+  // --------------------------------------------------
+  // Keyboard animation
+  // --------------------------------------------------
+
   useEffect(() => {
-    const showEvent = "keyboardWillShow";
-    const hideEvent = "keyboardWillHide";
+    const showSubscription = Keyboard.addListener(
+      "keyboardWillShow",
+      (event) => {
+        setKeyboardVisible(true);
 
-    const showSubscription = Keyboard.addListener(showEvent, (event) => {
-      setKeyboardVisible(true);
+        Animated.timing(translateY, {
+          toValue: -event.endCoordinates.height + 18,
+          duration: event.duration || 250,
+          easing: Easing.out(Easing.ease),
+          useNativeDriver: true,
+        }).start();
+      }
+    );
 
-      Animated.timing(translateY, {
-        toValue: -event.endCoordinates.height + 18,
-        duration: event.duration || 250,
-        easing: Easing.out(Easing.ease),
-        useNativeDriver: true,
-      }).start();
-    });
+    const hideSubscription = Keyboard.addListener(
+      "keyboardWillHide",
+      (event) => {
+        setKeyboardVisible(false);
 
-    const hideSubscription = Keyboard.addListener(hideEvent, (event) => {
-      setKeyboardVisible(false);
-
-      Animated.timing(translateY, {
-        toValue: 0,
-        duration: event.duration || 250,
-        easing: Easing.out(Easing.ease),
-        useNativeDriver: true,
-      }).start();
-    });
+        Animated.timing(translateY, {
+          toValue: 0,
+          duration: event.duration || 250,
+          easing: Easing.out(Easing.ease),
+          useNativeDriver: true,
+        }).start();
+      }
+    );
 
     return () => {
       showSubscription.remove();
       hideSubscription.remove();
     };
   }, [translateY]);
+
+  // --------------------------------------------------
+  // Validation
+  // --------------------------------------------------
 
   const validate = () => {
     setSubmitted(true);
@@ -100,43 +91,51 @@ export default function Signup() {
     return false;
   };
 
-const handleSignup = async () => {
-  Keyboard.dismiss();
+  // --------------------------------------------------
+  // Signup
+  // --------------------------------------------------
 
-  if (!validate()) {
-    return;
-  }
+  const handleSignup = async () => {
+    Keyboard.dismiss();
 
-  setLoading(true);
-  setAuthError("");
-
-  try {
-    const { data, error } = await supabase.auth.signUp({
-      email: email.trim(),
-      password,
-      options: {
-        data: {
-          first_name: firstName.trim(),
-        },
-      },
-    });
-
-    if (error) {
-      setAuthError(getAuthErrorMessage(error));
+    if (!validate()) {
       return;
     }
 
-    if (data.user) {
-      router.replace("/onboarding");
-    }
-  } catch (error) {
-    console.error("SIGNUP ERROR:", error);
+    setLoading(true);
+    setAuthError("");
 
-    setAuthError(getAuthErrorMessage(error));
-  } finally {
-    setLoading(false);
-  }
-};
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email: email.trim(),
+        password,
+        options: {
+          data: {
+            first_name: firstName.trim(),
+          },
+        },
+      });
+
+      if (error) {
+        setAuthError(getAuthErrorMessage(error));
+        return;
+      }
+
+      if (data.user) {
+        router.replace("/onboarding");
+      }
+    } catch (error) {
+      console.error("SIGNUP ERROR:", error);
+
+      setAuthError(getAuthErrorMessage(error));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // --------------------------------------------------
+  // Validation messages
+  // --------------------------------------------------
 
   const firstNameError =
     submitted && !firstName.trim()
@@ -157,6 +156,10 @@ const handleSignup = async () => {
     submitted && !agreed
       ? "Please agree to the terms."
       : "";
+
+  // --------------------------------------------------
+  // UI
+  // --------------------------------------------------
 
   return (
     <SafeAreaView
@@ -190,7 +193,9 @@ const handleSignup = async () => {
 
           <Text
             className="text-[28px] leading-[32px] text-[#2B1B16]"
-            style={{ fontFamily: "DMSerifDisplay" }}
+            style={{
+              fontFamily: "DMSerifDisplay",
+            }}
           >
             Styl Me
           </Text>
@@ -217,7 +222,9 @@ const handleSignup = async () => {
               {/* Title */}
               <Text
                 className="mb-[12px] text-center text-[28px] leading-[32px] text-[#2B1B16]"
-                style={{ fontFamily: "DMSerifDisplay" }}
+                style={{
+                  fontFamily: "DMSerifDisplay",
+                }}
               >
                 Create your account
               </Text>
@@ -242,14 +249,18 @@ const handleSignup = async () => {
                     autoCapitalize="words"
                     autoCorrect={false}
                     className="ml-[11px] flex-1 text-[14px] text-[#2B1B16]"
-                    style={{ fontFamily: "Manrope" }}
+                    style={{
+                      fontFamily: "Manrope",
+                    }}
                   />
                 </View>
 
                 {!!firstNameError && (
                   <Text
                     className="ml-[4px] mt-[3px] text-[10px] text-red-600"
-                    style={{ fontFamily: "Manrope" }}
+                    style={{
+                      fontFamily: "Manrope",
+                    }}
                   >
                     {firstNameError}
                   </Text>
@@ -277,14 +288,18 @@ const handleSignup = async () => {
                     autoCapitalize="none"
                     autoCorrect={false}
                     className="ml-[11px] flex-1 text-[14px] text-[#2B1B16]"
-                    style={{ fontFamily: "Manrope" }}
+                    style={{
+                      fontFamily: "Manrope",
+                    }}
                   />
                 </View>
 
                 {!!emailError && (
                   <Text
                     className="ml-[4px] mt-[3px] text-[10px] text-red-600"
-                    style={{ fontFamily: "Manrope" }}
+                    style={{
+                      fontFamily: "Manrope",
+                    }}
                   >
                     {emailError}
                   </Text>
@@ -312,12 +327,16 @@ const handleSignup = async () => {
                     autoCapitalize="none"
                     autoCorrect={false}
                     className="ml-[11px] flex-1 text-[14px] text-[#2B1B16]"
-                    style={{ fontFamily: "Manrope" }}
+                    style={{
+                      fontFamily: "Manrope",
+                    }}
                   />
 
                   <Pressable
                     onPress={() =>
-                      setShowPassword((previous) => !previous)
+                      setShowPassword(
+                        (previous) => !previous
+                      )
                     }
                     hitSlop={10}
                   >
@@ -336,7 +355,9 @@ const handleSignup = async () => {
                 {!!passwordError && (
                   <Text
                     className="ml-[4px] mt-[3px] text-[10px] text-red-600"
-                    style={{ fontFamily: "Manrope" }}
+                    style={{
+                      fontFamily: "Manrope",
+                    }}
                   >
                     {passwordError}
                   </Text>
@@ -345,7 +366,9 @@ const handleSignup = async () => {
 
               {/* Terms */}
               <Pressable
-                onPress={() => setAgreed((previous) => !previous)}
+                onPress={() =>
+                  setAgreed((previous) => !previous)
+                }
                 className="mt-[2px] flex-row items-center"
               >
                 <View
@@ -366,7 +389,9 @@ const handleSignup = async () => {
 
                 <Text
                   className="ml-[8px] flex-1 text-[10.5px] leading-[15px] text-[#65463A]"
-                  style={{ fontFamily: "Manrope" }}
+                  style={{
+                    fontFamily: "Manrope",
+                  }}
                 >
                   I agree to the Terms of Service and Privacy Policy.
                 </Text>
@@ -375,7 +400,9 @@ const handleSignup = async () => {
               {!!termsError && (
                 <Text
                   className="ml-[4px] mt-[3px] text-[10px] text-red-600"
-                  style={{ fontFamily: "Manrope" }}
+                  style={{
+                    fontFamily: "Manrope",
+                  }}
                 >
                   {termsError}
                 </Text>
@@ -385,7 +412,9 @@ const handleSignup = async () => {
               {!!authError && (
                 <Text
                   className="mt-[7px] text-center text-[10.5px] leading-[15px] text-red-600"
-                  style={{ fontFamily: "Manrope" }}
+                  style={{
+                    fontFamily: "Manrope",
+                  }}
                 >
                   {authError}
                 </Text>
@@ -397,18 +426,23 @@ const handleSignup = async () => {
                 disabled={loading}
                 className="mt-[12px] h-[50px] w-full items-center justify-center rounded-[14px] bg-[#3F5792]"
                 style={({ pressed }) => ({
-                  opacity: pressed || loading ? 0.85 : 1,
+                  opacity:
+                    pressed || loading ? 0.85 : 1,
                 })}
               >
                 <Text
                   className="text-[13px] text-white"
-                  style={{ fontFamily: "ManropeMedium" }}
+                  style={{
+                    fontFamily: "ManropeMedium",
+                  }}
                 >
-                  {loading ? "Creating account..." : "Create account"}
+                  {loading
+                    ? "Creating account..."
+                    : "Create account"}
                 </Text>
               </Pressable>
 
-              {/* Everything below primary button hidden while keyboard is open */}
+              {/* Social auth + login link */}
               {!keyboardVisible && (
                 <>
                   {/* OR */}
@@ -417,7 +451,9 @@ const handleSignup = async () => {
 
                     <Text
                       className="mx-[10px] text-[10px] text-[#65463A]"
-                      style={{ fontFamily: "Manrope" }}
+                      style={{
+                        fontFamily: "Manrope",
+                      }}
                     >
                       OR
                     </Text>
@@ -440,7 +476,9 @@ const handleSignup = async () => {
 
                     <Text
                       className="ml-[9px] text-[12.5px] text-[#2B1B16]"
-                      style={{ fontFamily: "Manrope" }}
+                      style={{
+                        fontFamily: "Manrope",
+                      }}
                     >
                       Continue with Apple
                     </Text>
@@ -461,7 +499,9 @@ const handleSignup = async () => {
 
                     <Text
                       className="ml-[9px] text-[12.5px] text-[#2B1B16]"
-                      style={{ fontFamily: "Manrope" }}
+                      style={{
+                        fontFamily: "Manrope",
+                      }}
                     >
                       Continue with Google
                     </Text>
@@ -471,19 +511,23 @@ const handleSignup = async () => {
                   <View className="mt-[11px] flex-row justify-center">
                     <Text
                       className="text-[11px] text-[#65463A]"
-                      style={{ fontFamily: "Manrope" }}
+                      style={{
+                        fontFamily: "Manrope",
+                      }}
                     >
                       Already have an account?{" "}
                     </Text>
 
                     <Pressable
                       onPress={() =>
-                        router.push("/(auth)/login")
+                        router.push("/login")
                       }
                     >
                       <Text
                         className="text-[11px] text-[#3F5792]"
-                        style={{ fontFamily: "ManropeSemiBold" }}
+                        style={{
+                          fontFamily: "ManropeSemiBold",
+                        }}
                       >
                         Log in
                       </Text>

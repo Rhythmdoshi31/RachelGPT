@@ -1,10 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
 import {
   Animated,
   Easing,
   Image,
   Keyboard,
-  Platform,
   Pressable,
   ScrollView,
   Text,
@@ -15,103 +13,173 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { SvgUri } from "react-native-svg";
 import { router } from "expo-router";
+import { useEffect, useRef, useState } from "react";
 
-export default function SignupScreen() {
-  const [showPassword, setShowPassword] = useState(false);
-  const [agreed, setAgreed] = useState(false);
+import { supabase } from "../../lib/supabase";
 
+const getAuthErrorMessage = (error: unknown) => {
+  if (error instanceof TypeError && error.message.includes("Network")) {
+    return "Unable to connect. Please check your internet connection and try again.";
+  }
+
+  if (
+    error instanceof Error &&
+    (
+      error.message.toLowerCase().includes("network") ||
+      error.message.toLowerCase().includes("fetch") ||
+      error.message.toLowerCase().includes("connection")
+    )
+  ) {
+    return "Unable to connect. Please check your internet connection and try again.";
+  }
+
+  return error instanceof Error
+    ? error.message
+    : "Something went wrong. Please try again.";
+};
+
+export default function Signup() {
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [showPassword, setShowPassword] = useState(false);
+  const [agreed, setAgreed] = useState(false);
+
   const [submitted, setSubmitted] = useState(false);
   const [keyboardVisible, setKeyboardVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [authError, setAuthError] = useState("");
 
-  const keyboardOffset = useRef(new Animated.Value(0)).current;
+  const translateY = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    if (Platform.OS !== "ios") return;
+    const showEvent = "keyboardWillShow";
+    const hideEvent = "keyboardWillHide";
 
-    const showSubscription = Keyboard.addListener(
-      "keyboardWillShow",
-      (event) => {
-        setKeyboardVisible(true);
+    const showSubscription = Keyboard.addListener(showEvent, (event) => {
+      setKeyboardVisible(true);
 
-        Animated.timing(keyboardOffset, {
-          toValue: -event.endCoordinates.height + 18,
-          duration: event.duration || 250,
-          easing: Easing.bezier(0.25, 0.1, 0.25, 1),
-          useNativeDriver: true,
-        }).start();
-      }
-    );
+      Animated.timing(translateY, {
+        toValue: -event.endCoordinates.height + 18,
+        duration: event.duration || 250,
+        easing: Easing.out(Easing.ease),
+        useNativeDriver: true,
+      }).start();
+    });
 
-    const hideSubscription = Keyboard.addListener(
-      "keyboardWillHide",
-      (event) => {
-        Animated.timing(keyboardOffset, {
-          toValue: 0,
-          duration: event.duration || 250,
-          easing: Easing.bezier(0.25, 0.1, 0.25, 1),
-          useNativeDriver: true,
-        }).start(() => {
-          setKeyboardVisible(false);
-        });
-      }
-    );
+    const hideSubscription = Keyboard.addListener(hideEvent, (event) => {
+      setKeyboardVisible(false);
+
+      Animated.timing(translateY, {
+        toValue: 0,
+        duration: event.duration || 250,
+        easing: Easing.out(Easing.ease),
+        useNativeDriver: true,
+      }).start();
+    });
 
     return () => {
       showSubscription.remove();
       hideSubscription.remove();
     };
-  }, [keyboardOffset]);
-
-  const emailValid =
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+  }, [translateY]);
 
   const validate = () => {
     setSubmitted(true);
 
     if (
-      !firstName.trim() ||
-      !email.trim() ||
-      !emailValid ||
-      !password ||
-      !agreed
+      firstName.trim() &&
+      email.trim() &&
+      password.length >= 6 &&
+      agreed
     ) {
+      return true;
+    }
+
+    return false;
+  };
+
+const handleSignup = async () => {
+  Keyboard.dismiss();
+
+  if (!validate()) {
+    return;
+  }
+
+  setLoading(true);
+  setAuthError("");
+
+  try {
+    const { data, error } = await supabase.auth.signUp({
+      email: email.trim(),
+      password,
+      options: {
+        data: {
+          first_name: firstName.trim(),
+        },
+      },
+    });
+
+    if (error) {
+      setAuthError(getAuthErrorMessage(error));
       return;
     }
 
-    Keyboard.dismiss();
+    if (data.user) {
+      router.replace("/onboarding");
+    }
+  } catch (error) {
+    console.error("SIGNUP ERROR:", error);
 
-    // Connect account creation here later.
-  };
+    setAuthError(getAuthErrorMessage(error));
+  } finally {
+    setLoading(false);
+  }
+};
+
+  const firstNameError =
+    submitted && !firstName.trim()
+      ? "Please enter your first name."
+      : "";
+
+  const emailError =
+    submitted && !email.trim()
+      ? "Please enter your email."
+      : "";
+
+  const passwordError =
+    submitted && password.length < 6
+      ? "Password must be at least 6 characters."
+      : "";
+
+  const termsError =
+    submitted && !agreed
+      ? "Please agree to the terms."
+      : "";
 
   return (
-    <Pressable
-      className="flex-1"
-      onPress={Keyboard.dismiss}
+    <SafeAreaView
+      className="flex-1 bg-[#FAF7F2]"
+      edges={["top", "bottom"]}
     >
-      <SafeAreaView
-        className="flex-1 bg-[#FAF7F2]"
-        edges={["top", "bottom"]}
+      <Pressable
+        className="flex-1"
+        onPress={Keyboard.dismiss}
       >
-        {/* Background image - NEVER moves with keyboard */}
+        {/* Background */}
         <Image
           source={require("../../../assets/images/backgrounds/Quiet_Luxury_Wardrobe_Corner-3.png")}
           className="absolute left-0 right-0 bottom-0"
-          style={{
-            top: 56,
-          }}
+          style={{ top: 56 }}
           resizeMode="cover"
         />
 
         {/* Navigation */}
-        <View className="h-[56px] flex-row items-center justify-center px-6">
+        <View className="h-[56px] flex-row items-center justify-center">
           <Pressable
             onPress={() => router.back()}
-            className="absolute left-5 h-10 w-10 items-center justify-center"
-            hitSlop={10}
+            className="absolute left-[5px] h-[50px] w-[50px] items-center justify-center"
           >
             <Ionicons
               name="chevron-back"
@@ -120,156 +188,136 @@ export default function SignupScreen() {
             />
           </Pressable>
 
-          <Text className="font-[DMSerifDisplay] text-[28px] leading-[32px] text-[#2B1B16]">
+          <Text
+            className="text-[28px] leading-[32px] text-[#2B1B16]"
+            style={{ fontFamily: "DMSerifDisplay" }}
+          >
             Styl Me
           </Text>
         </View>
 
-        {/* Keyboard-aware content */}
+        {/* Form */}
         <Animated.View
           className="flex-1"
           style={{
-            transform: [
-              {
-                translateY: keyboardOffset,
-              },
-            ],
+            transform: [{ translateY }],
           }}
         >
           <ScrollView
-            className="flex-1"
+            keyboardShouldPersistTaps="handled"
+            showsVerticalScrollIndicator={false}
             contentContainerStyle={{
               flexGrow: 1,
               justifyContent: "flex-end",
               paddingHorizontal: 20,
               paddingBottom: 18,
             }}
-            keyboardShouldPersistTaps="handled"
-            showsVerticalScrollIndicator={false}
-            bounces={false}
           >
-            {/* Intro */}
-            <View className="items-center">
-              <Text className="font-[Manrope] text-[14px] text-[#65463A]">
-                Step 1 of 5
+            <View className="w-full">
+              {/* Title */}
+              <Text
+                className="mb-[12px] text-center text-[28px] leading-[32px] text-[#2B1B16]"
+                style={{ fontFamily: "DMSerifDisplay" }}
+              >
+                Create your account
               </Text>
 
-              <Text className="mt-[13px] text-center font-[DMSerifDisplay] text-[30px] leading-[34px] text-[#2B1B16]">
-                Let’s make this yours.
-              </Text>
-
-              <Text className="mt-[7px] text-center font-[Manrope] text-[15px] leading-[20px] text-[#65463A]">
-                A few details, then we’ll meet your stylist.
-              </Text>
-            </View>
-
-            {/* Form */}
-            <View className="mt-[25px] w-full max-w-[340px] self-center">
-              {/* First name */}
-              <View>
-                <View
-                  className={`h-[50px] flex-row items-center rounded-[14px] border bg-[#FAF7F2]/75 px-4 ${
-                    submitted && !firstName.trim()
-                      ? "border-[#C94A4A]"
-                      : "border-[#DCCFC4]"
-                  }`}
-                >
+              {/* First Name */}
+              <View className="mb-[7px]">
+                <View className="h-[50px] flex-row items-center rounded-[14px] border border-[#B49482] bg-[#FAF7F2]/95 px-[15px]">
                   <Ionicons
                     name="person-outline"
                     size={21}
-                    color="#8A7163"
+                    color="#65463A"
                   />
 
                   <TextInput
-                    placeholder="First name"
-                    placeholderTextColor="#806C61"
                     value={firstName}
-                    onChangeText={setFirstName}
+                    onChangeText={(value) => {
+                      setFirstName(value);
+                      setAuthError("");
+                    }}
+                    placeholder="First name"
+                    placeholderTextColor="#8C766B"
                     autoCapitalize="words"
-                    returnKeyType="next"
-                    className="ml-4 flex-1 font-[Manrope] text-[15px] text-[#2B1B16]"
+                    autoCorrect={false}
+                    className="ml-[11px] flex-1 text-[14px] text-[#2B1B16]"
+                    style={{ fontFamily: "Manrope" }}
                   />
                 </View>
 
-                {submitted && !firstName.trim() && (
-                  <Text className="mt-[3px] ml-[4px] font-[Manrope] text-[10px] text-[#C94A4A]">
-                    Please enter your first name.
+                {!!firstNameError && (
+                  <Text
+                    className="ml-[4px] mt-[3px] text-[10px] text-red-600"
+                    style={{ fontFamily: "Manrope" }}
+                  >
+                    {firstNameError}
                   </Text>
                 )}
               </View>
 
               {/* Email */}
-              <View className="mt-[6px]">
-                <View
-                  className={`h-[50px] flex-row items-center rounded-[14px] border bg-[#FAF7F2]/75 px-4 ${
-                    submitted &&
-                    (!email.trim() || !emailValid)
-                      ? "border-[#C94A4A]"
-                      : "border-[#DCCFC4]"
-                  }`}
-                >
+              <View className="mb-[7px]">
+                <View className="h-[50px] flex-row items-center rounded-[14px] border border-[#B49482] bg-[#FAF7F2]/95 px-[15px]">
                   <Ionicons
                     name="mail-outline"
                     size={21}
-                    color="#8A7163"
+                    color="#65463A"
                   />
 
                   <TextInput
-                    placeholder="Email address"
-                    placeholderTextColor="#806C61"
                     value={email}
-                    onChangeText={setEmail}
+                    onChangeText={(value) => {
+                      setEmail(value);
+                      setAuthError("");
+                    }}
+                    placeholder="Email address"
+                    placeholderTextColor="#8C766B"
                     keyboardType="email-address"
                     autoCapitalize="none"
                     autoCorrect={false}
-                    returnKeyType="next"
-                    className="ml-4 flex-1 font-[Manrope] text-[15px] text-[#2B1B16]"
+                    className="ml-[11px] flex-1 text-[14px] text-[#2B1B16]"
+                    style={{ fontFamily: "Manrope" }}
                   />
                 </View>
 
-                {submitted && !email.trim() && (
-                  <Text className="mt-[3px] ml-[4px] font-[Manrope] text-[10px] text-[#C94A4A]">
-                    Please enter your email address.
+                {!!emailError && (
+                  <Text
+                    className="ml-[4px] mt-[3px] text-[10px] text-red-600"
+                    style={{ fontFamily: "Manrope" }}
+                  >
+                    {emailError}
                   </Text>
                 )}
-
-                {submitted &&
-                  email.trim() &&
-                  !emailValid && (
-                    <Text className="mt-[3px] ml-[4px] font-[Manrope] text-[10px] text-[#C94A4A]">
-                      Please enter a valid email address.
-                    </Text>
-                  )}
               </View>
 
               {/* Password */}
-              <View className="mt-[6px]">
-                <View
-                  className={`h-[50px] flex-row items-center rounded-[14px] border bg-[#FAF7F2]/75 px-4 ${
-                    submitted && !password
-                      ? "border-[#C94A4A]"
-                      : "border-[#DCCFC4]"
-                  }`}
-                >
+              <View className="mb-[7px]">
+                <View className="h-[50px] flex-row items-center rounded-[14px] border border-[#B49482] bg-[#FAF7F2]/95 px-[15px]">
                   <Ionicons
                     name="lock-closed-outline"
                     size={21}
-                    color="#8A7163"
+                    color="#65463A"
                   />
 
                   <TextInput
-                    placeholder="Create password"
-                    placeholderTextColor="#806C61"
                     value={password}
-                    onChangeText={setPassword}
+                    onChangeText={(value) => {
+                      setPassword(value);
+                      setAuthError("");
+                    }}
+                    placeholder="Password"
+                    placeholderTextColor="#8C766B"
                     secureTextEntry={!showPassword}
-                    returnKeyType="done"
-                    className="ml-4 flex-1 font-[Manrope] text-[15px] text-[#2B1B16]"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    className="ml-[11px] flex-1 text-[14px] text-[#2B1B16]"
+                    style={{ fontFamily: "Manrope" }}
                   />
 
                   <Pressable
                     onPress={() =>
-                      setShowPassword((value) => !value)
+                      setShowPassword((previous) => !previous)
                     }
                     hitSlop={10}
                   >
@@ -280,133 +328,163 @@ export default function SignupScreen() {
                           : "eye-outline"
                       }
                       size={21}
-                      color="#8A7163"
+                      color="#65463A"
                     />
                   </Pressable>
                 </View>
 
-                {submitted && !password && (
-                  <Text className="mt-[3px] ml-[4px] font-[Manrope] text-[10px] text-[#C94A4A]">
-                    Please create a password.
+                {!!passwordError && (
+                  <Text
+                    className="ml-[4px] mt-[3px] text-[10px] text-red-600"
+                    style={{ fontFamily: "Manrope" }}
+                  >
+                    {passwordError}
                   </Text>
                 )}
               </View>
 
               {/* Terms */}
               <Pressable
-                onPress={() => setAgreed((value) => !value)}
-                className="mt-[9px] flex-row items-center"
+                onPress={() => setAgreed((previous) => !previous)}
+                className="mt-[2px] flex-row items-center"
               >
                 <View
-                  className={`h-[21px] w-[21px] items-center justify-center rounded-[5px] border ${
+                  className={`h-[19px] w-[19px] items-center justify-center rounded-[5px] border ${
                     agreed
                       ? "border-[#3F5792] bg-[#3F5792]"
-                      : submitted
-                      ? "border-[#C94A4A] bg-transparent"
-                      : "border-[#B9AAA0] bg-transparent"
+                      : "border-[#65463A] bg-[#FAF7F2]"
                   }`}
                 >
                   {agreed && (
                     <Ionicons
                       name="checkmark"
-                      size={15}
+                      size={14}
                       color="#FFFFFF"
                     />
                   )}
                 </View>
 
-                <Text className="ml-[10px] flex-1 font-[Manrope] text-[12px] leading-[17px] text-[#65463A]">
-                  I agree to the{" "}
-                  <Text className="text-[#3F5792]">
-                    Terms
-                  </Text>{" "}
-                  and{" "}
-                  <Text className="text-[#3F5792]">
-                    Privacy Policy
-                  </Text>
+                <Text
+                  className="ml-[8px] flex-1 text-[10.5px] leading-[15px] text-[#65463A]"
+                  style={{ fontFamily: "Manrope" }}
+                >
+                  I agree to the Terms of Service and Privacy Policy.
                 </Text>
               </Pressable>
 
-              {submitted && !agreed && (
-                <Text className="mt-[3px] ml-[4px] font-[Manrope] text-[10px] text-[#C94A4A]">
-                  Please agree to the Terms and Privacy Policy.
+              {!!termsError && (
+                <Text
+                  className="ml-[4px] mt-[3px] text-[10px] text-red-600"
+                  style={{ fontFamily: "Manrope" }}
+                >
+                  {termsError}
                 </Text>
               )}
 
-              {/* Create account */}
+              {/* Auth error */}
+              {!!authError && (
+                <Text
+                  className="mt-[7px] text-center text-[10.5px] leading-[15px] text-red-600"
+                  style={{ fontFamily: "Manrope" }}
+                >
+                  {authError}
+                </Text>
+              )}
+
+              {/* Create Account */}
               <Pressable
-                onPress={validate}
-                className="mt-[9px] h-[50px] items-center justify-center rounded-[14px] bg-[#3F5792]"
+                onPress={handleSignup}
+                disabled={loading}
+                className="mt-[12px] h-[50px] w-full items-center justify-center rounded-[14px] bg-[#3F5792]"
                 style={({ pressed }) => ({
-                  opacity: pressed ? 0.85 : 1,
+                  opacity: pressed || loading ? 0.85 : 1,
                 })}
               >
-                <Text className="font-[DMSerifDisplay] text-[20px] text-white">
-                  Create account
+                <Text
+                  className="text-[13px] text-white"
+                  style={{ fontFamily: "ManropeMedium" }}
+                >
+                  {loading ? "Creating account..." : "Create account"}
                 </Text>
               </Pressable>
 
-              {/* Everything below the primary button is hidden while typing */}
+              {/* Everything below primary button hidden while keyboard is open */}
               {!keyboardVisible && (
                 <>
                   {/* OR */}
-                  <View className="mt-[10px] flex-row items-center">
-                    <View className="h-px flex-1 bg-[#D8CCC2]" />
+                  <View className="my-[10px] flex-row items-center">
+                    <View className="h-[1px] flex-1 bg-[#B49482]/50" />
 
-                    <Text className="mx-[14px] font-[Manrope] text-[13px] text-[#806C61]">
+                    <Text
+                      className="mx-[10px] text-[10px] text-[#65463A]"
+                      style={{ fontFamily: "Manrope" }}
+                    >
                       OR
                     </Text>
 
-                    <View className="h-px flex-1 bg-[#D8CCC2]" />
+                    <View className="h-[1px] flex-1 bg-[#B49482]/50" />
                   </View>
 
                   {/* Apple */}
                   <Pressable
-                    className="mt-[8px] h-[50px] flex-row items-center justify-center rounded-[14px] border border-[#DCCFC4] bg-[#FAF7F2]/80"
+                    className="h-[50px] w-full flex-row items-center justify-center rounded-[14px] border border-[#2B1B16] bg-[#FAF7F2]/90"
                     style={({ pressed }) => ({
-                      opacity: pressed ? 0.8 : 1,
+                      opacity: pressed ? 0.85 : 1,
                     })}
                   >
                     <Ionicons
                       name="logo-apple"
-                      size={21}
-                      color="#000000"
+                      size={18}
+                      color="#2B1B16"
                     />
 
-                    <Text className="ml-[18px] font-[Manrope] text-[15px] text-[#2B1B16]">
+                    <Text
+                      className="ml-[9px] text-[12.5px] text-[#2B1B16]"
+                      style={{ fontFamily: "Manrope" }}
+                    >
                       Continue with Apple
                     </Text>
                   </Pressable>
 
                   {/* Google */}
                   <Pressable
-                    className="mt-[6px] h-[50px] flex-row items-center justify-center rounded-[14px] border border-[#DCCFC4] bg-[#FAF7F2]/80"
+                    className="mt-[8px] h-[50px] w-full flex-row items-center justify-center rounded-[14px] border border-[#2B1B16] bg-[#FAF7F2]/90"
                     style={({ pressed }) => ({
-                      opacity: pressed ? 0.8 : 1,
+                      opacity: pressed ? 0.85 : 1,
                     })}
                   >
                     <SvgUri
                       uri="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-                      width={21}
-                      height={21}
+                      width={18}
+                      height={18}
                     />
 
-                    <Text className="ml-[18px] font-[Manrope] text-[15px] text-[#2B1B16]">
+                    <Text
+                      className="ml-[9px] text-[12.5px] text-[#2B1B16]"
+                      style={{ fontFamily: "Manrope" }}
+                    >
                       Continue with Google
                     </Text>
                   </Pressable>
 
                   {/* Login */}
-                  <View className="mt-[9px] flex-row items-center justify-center">
-                    <Text className="font-[Manrope] text-[12px] text-[#806C61]">
+                  <View className="mt-[11px] flex-row justify-center">
+                    <Text
+                      className="text-[11px] text-[#65463A]"
+                      style={{ fontFamily: "Manrope" }}
+                    >
                       Already have an account?{" "}
                     </Text>
 
                     <Pressable
-                      onPress={() => router.push("/login")}
-                      hitSlop={8}
+                      onPress={() =>
+                        router.push("/(auth)/login")
+                      }
                     >
-                      <Text className="font-[ManropeMedium] text-[12px] text-[#3F5792]">
+                      <Text
+                        className="text-[11px] text-[#3F5792]"
+                        style={{ fontFamily: "ManropeSemiBold" }}
+                      >
                         Log in
                       </Text>
                     </Pressable>
@@ -416,7 +494,7 @@ export default function SignupScreen() {
             </View>
           </ScrollView>
         </Animated.View>
-      </SafeAreaView>
-    </Pressable>
+      </Pressable>
+    </SafeAreaView>
   );
 }

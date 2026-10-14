@@ -99,3 +99,28 @@ POST /api/wardrobe/analyze-batch --> after this, this gives that batch processin
 PERODICALLY DO - until the analysis of all items go from pending to completed 
 
 GET /api/wardrobe/analysis-status?ids=id1,id2,id3
+
+#### FRONTEND WILL BE LIKE ---
+Select images
+     ↓
+POST /api/wardrobe/upload-urls
+     ↓
+Upload images directly to Supabase
+     ↓
+POST /api/wardrobe/complete-batch
+     ↓
+Receive wardrobeItemIds
+     ↓
+POST /api/wardrobe/analyze-batch
+     ↓
+202 Accepted
+     ↓
+Show "Analyzing your wardrobe..."
+     ↓
+Poll /api/wardrobe/analysis-status
+     ↓
+allCompleted === true
+     ↓
+Use returned analysis data
+     ↓
+Show wardrobe

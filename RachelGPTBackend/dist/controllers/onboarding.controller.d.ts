@@ -3,3 +3,4 @@ import { AuthenticatedRequest } from "../middleware/auth.js";
 export declare function saveStyleProfile(req: AuthenticatedRequest, res: Response): Promise<Response<any, Record<string, any>>>;
 export declare function getStyleProfile(req: AuthenticatedRequest, res: Response): Promise<Response<any, Record<string, any>>>;
 export declare function getOnboardingStatus(req: AuthenticatedRequest, res: Response): Promise<Response<any, Record<string, any>>>;
+export declare function updateOnboardingProgress(req: AuthenticatedRequest, res: Response): Promise<Response<any, Record<string, any>>>;

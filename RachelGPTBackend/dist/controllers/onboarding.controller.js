@@ -125,4 +125,70 @@ export async function getOnboardingStatus(req, res) {
         });
     }
 }
+export async function updateOnboardingProgress(req, res) {
+    try {
+        const userId = req.userId;
+        if (!userId) {
+            return res.status(401).json({
+                success: false,
+                message: "User not authenticated",
+            });
+        }
+        const { onboardingStep, selectedStylist } = req.body;
+        if (!Number.isInteger(onboardingStep) ||
+            onboardingStep < 1 ||
+            onboardingStep > 4) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid onboarding step",
+            });
+        }
+        if (selectedStylist !== undefined &&
+            !["Rachel", "KJay"].includes(selectedStylist)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid stylist selection",
+            });
+        }
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+            select: { onboardingCompleted: true },
+        });
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found",
+            });
+        }
+        if (user.onboardingCompleted) {
+            return res.status(409).json({
+                success: false,
+                message: "Onboarding has already been completed",
+            });
+        }
+        const updatedUser = await prisma.user.update({
+            where: { id: userId },
+            data: {
+                onboardingStep,
+            },
+            select: {
+                onboardingCompleted: true,
+                onboardingStep: true,
+                onboardingCompletedAt: true,
+            },
+        });
+        return res.status(200).json({
+            success: true,
+            message: "Onboarding progress saved",
+            ...updatedUser,
+        });
+    }
+    catch (error) {
+        console.error("Update onboarding progress error:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Failed to update onboarding progress",
+        });
+    }
+}
 //# sourceMappingURL=onboarding.controller.js.map

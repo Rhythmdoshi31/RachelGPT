@@ -3,6 +3,7 @@ import {
   saveStyleProfile,
   getStyleProfile,
   getOnboardingStatus,
+  updateOnboardingProgress,
 } from "../controllers/onboarding.controller.js";
 import { authMiddleware } from "../middleware/auth.js";
 
@@ -21,4 +22,11 @@ router.get(
 );
 
 router.get("/status", authMiddleware, getOnboardingStatus);
+
+router.patch(
+  "/progress",
+  authMiddleware,
+  updateOnboardingProgress
+);
+
 export default router;

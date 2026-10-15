@@ -8,30 +8,33 @@ datasource db {
 }
 
 model User {
-  id                   String               @id @db.Uuid
-  email                String?              @unique
-  name                 String?
-  avatarUrl            String?
-  createdAt            DateTime             @default(now())
-  updatedAt            DateTime             @updatedAt
-  avatar               Avatar?
-  conversations        Conversation[]
-  conversationMemories ConversationMemory[]
-  inspirations         Inspiration[]
-  inspirationItems     InspirationItem[]
-  messages             Message[]
-  outfits              Outfit[]
-  outfitItems          OutfitItem[]
-  preferenceEvents     PreferenceEvent[]
-  savedProducts        SavedProduct[]
-  shoppingSearches     ShoppingSearch[]
-  subscriptions        Subscription[]
-  interactions         UserInteraction[]
-  personas             UserPersona[]
-  styleProfile         UserStyleProfile?
-  wardrobeImages       WardrobeImage[]
-  wardrobeItems        WardrobeItem[]
-  wearEvents           WearEvent[]
+  id                    String               @id @db.Uuid
+  email                 String?              @unique
+  name                  String?
+  avatarUrl             String?
+  createdAt             DateTime             @default(now())
+  updatedAt             DateTime             @updatedAt
+  avatar                Avatar?
+  conversations         Conversation[]
+  conversationMemories  ConversationMemory[]
+  inspirations          Inspiration[]
+  inspirationItems      InspirationItem[]
+  messages              Message[]
+  outfits               Outfit[]
+  outfitItems           OutfitItem[]
+  preferenceEvents      PreferenceEvent[]
+  savedProducts         SavedProduct[]
+  shoppingSearches      ShoppingSearch[]
+  subscriptions         Subscription[]
+  interactions          UserInteraction[]
+  personas              UserPersona[]
+  styleProfile          UserStyleProfile?
+  wardrobeImages        WardrobeImage[]
+  wardrobeItems         WardrobeItem[]
+  wearEvents            WearEvent[]
+  onboardingCompleted   Boolean              @default(false)
+  onboardingStep        Int                  @default(1)
+  onboardingCompletedAt DateTime?
 }
 
 model Persona {
@@ -90,6 +93,7 @@ model UserStyleProfile {
   user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+
 model WardrobeItem {
   id               String                 @id @default(uuid())
   userId           String                 @db.Uuid
@@ -109,7 +113,7 @@ model WardrobeItem {
   ///    *   "occasions": ["casual", "date-night"]
   ///    * }
   attributes       Json
-  analysisStatus String @default("pending")
+  analysisStatus   String                 @default("pending")
   /// * Object-storage path.
   ///    *
   ///    * Example:
@@ -373,24 +377,24 @@ model Inspiration {
 }
 
 model InspirationItem {
-  id            String                 @id @default(uuid())
-  userId        String                 @db.Uuid
-  inspirationId String
+  id             String                 @id @default(uuid())
+  userId         String                 @db.Uuid
+  inspirationId  String
   /// * Example:
   ///    * TOP
   ///    * BOTTOM
   ///    * SHOES
   ///    * BAG
-  category      String
-  subcategory   String?
-  attributes    Json
-  analysisStatus String @default("pending")
+  category       String
+  subcategory    String?
+  attributes     Json
+  analysisStatus String                 @default("pending")
   /// * Optional embedding of the individual
   ///    * inspiration clothing item.
-  embedding     Unsupported("vector")?
-  createdAt     DateTime               @default(now())
-  inspiration   Inspiration            @relation(fields: [inspirationId], references: [id], onDelete: Cascade)
-  user          User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  embedding      Unsupported("vector")?
+  createdAt      DateTime               @default(now())
+  inspiration    Inspiration            @relation(fields: [inspirationId], references: [id], onDelete: Cascade)
+  user           User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([inspirationId])

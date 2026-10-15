@@ -339,9 +339,6 @@ export type UserPersonaUncheckedUpdateManyWithoutPersonaNestedInput = {
     updateMany?: Prisma.UserPersonaUpdateManyWithWhereWithoutPersonaInput | Prisma.UserPersonaUpdateManyWithWhereWithoutPersonaInput[];
     deleteMany?: Prisma.UserPersonaScalarWhereInput | Prisma.UserPersonaScalarWhereInput[];
 };
-export type BoolFieldUpdateOperationsInput = {
-    set?: boolean;
-};
 export type UserPersonaCreateWithoutUserInput = {
     id?: string;
     isActive?: boolean;

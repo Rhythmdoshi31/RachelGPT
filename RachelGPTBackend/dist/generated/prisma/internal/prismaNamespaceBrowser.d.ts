@@ -63,6 +63,9 @@ export declare const UserScalarFieldEnum: {
     readonly avatarUrl: 'avatarUrl';
     readonly createdAt: 'createdAt';
     readonly updatedAt: 'updatedAt';
+    readonly onboardingCompleted: 'onboardingCompleted';
+    readonly onboardingStep: 'onboardingStep';
+    readonly onboardingCompletedAt: 'onboardingCompletedAt';
 };
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum];
 export declare const PersonaScalarFieldEnum: {

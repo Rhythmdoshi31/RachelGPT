@@ -76,7 +76,10 @@ export const UserScalarFieldEnum = {
     name: 'name',
     avatarUrl: 'avatarUrl',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    onboardingCompleted: 'onboardingCompleted',
+    onboardingStep: 'onboardingStep',
+    onboardingCompletedAt: 'onboardingCompletedAt'
 };
 export const PersonaScalarFieldEnum = {
     id: 'id',

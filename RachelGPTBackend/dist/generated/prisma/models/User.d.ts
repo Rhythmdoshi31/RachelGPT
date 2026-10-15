@@ -7,8 +7,16 @@ import type * as Prisma from "../internal/prismaNamespace.js";
 export type UserModel = runtime.Types.Result.DefaultSelection<Prisma.$UserPayload>;
 export type AggregateUser = {
     _count: UserCountAggregateOutputType | null;
+    _avg: UserAvgAggregateOutputType | null;
+    _sum: UserSumAggregateOutputType | null;
     _min: UserMinAggregateOutputType | null;
     _max: UserMaxAggregateOutputType | null;
+};
+export type UserAvgAggregateOutputType = {
+    onboardingStep: number | null;
+};
+export type UserSumAggregateOutputType = {
+    onboardingStep: number | null;
 };
 export type UserMinAggregateOutputType = {
     id: string | null;
@@ -17,6 +25,9 @@ export type UserMinAggregateOutputType = {
     avatarUrl: string | null;
     createdAt: Date | null;
     updatedAt: Date | null;
+    onboardingCompleted: boolean | null;
+    onboardingStep: number | null;
+    onboardingCompletedAt: Date | null;
 };
 export type UserMaxAggregateOutputType = {
     id: string | null;
@@ -25,6 +36,9 @@ export type UserMaxAggregateOutputType = {
     avatarUrl: string | null;
     createdAt: Date | null;
     updatedAt: Date | null;
+    onboardingCompleted: boolean | null;
+    onboardingStep: number | null;
+    onboardingCompletedAt: Date | null;
 };
 export type UserCountAggregateOutputType = {
     id: number;
@@ -33,7 +47,16 @@ export type UserCountAggregateOutputType = {
     avatarUrl: number;
     createdAt: number;
     updatedAt: number;
+    onboardingCompleted: number;
+    onboardingStep: number;
+    onboardingCompletedAt: number;
     _all: number;
+};
+export type UserAvgAggregateInputType = {
+    onboardingStep?: true;
+};
+export type UserSumAggregateInputType = {
+    onboardingStep?: true;
 };
 export type UserMinAggregateInputType = {
     id?: true;
@@ -42,6 +65,9 @@ export type UserMinAggregateInputType = {
     avatarUrl?: true;
     createdAt?: true;
     updatedAt?: true;
+    onboardingCompleted?: true;
+    onboardingStep?: true;
+    onboardingCompletedAt?: true;
 };
 export type UserMaxAggregateInputType = {
     id?: true;
@@ -50,6 +76,9 @@ export type UserMaxAggregateInputType = {
     avatarUrl?: true;
     createdAt?: true;
     updatedAt?: true;
+    onboardingCompleted?: true;
+    onboardingStep?: true;
+    onboardingCompletedAt?: true;
 };
 export type UserCountAggregateInputType = {
     id?: true;
@@ -58,6 +87,9 @@ export type UserCountAggregateInputType = {
     avatarUrl?: true;
     createdAt?: true;
     updatedAt?: true;
+    onboardingCompleted?: true;
+    onboardingStep?: true;
+    onboardingCompletedAt?: true;
     _all?: true;
 };
 export type UserAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -98,6 +130,18 @@ export type UserAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      *
+     * Select which fields to average
+    **/
+    _avg?: UserAvgAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to sum
+    **/
+    _sum?: UserSumAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
      * Select which fields to find the minimum value
     **/
     _min?: UserMinAggregateInputType;
@@ -119,6 +163,8 @@ export type UserGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
     take?: number;
     skip?: number;
     _count?: UserCountAggregateInputType | true;
+    _avg?: UserAvgAggregateInputType;
+    _sum?: UserSumAggregateInputType;
     _min?: UserMinAggregateInputType;
     _max?: UserMaxAggregateInputType;
 };
@@ -129,7 +175,12 @@ export type UserGroupByOutputType = {
     avatarUrl: string | null;
     createdAt: Date;
     updatedAt: Date;
+    onboardingCompleted: boolean;
+    onboardingStep: number;
+    onboardingCompletedAt: Date | null;
     _count: UserCountAggregateOutputType | null;
+    _avg: UserAvgAggregateOutputType | null;
+    _sum: UserSumAggregateOutputType | null;
     _min: UserMinAggregateOutputType | null;
     _max: UserMaxAggregateOutputType | null;
 };
@@ -146,6 +197,9 @@ export type UserWhereInput = {
     avatarUrl?: Prisma.StringNullableFilter<"User"> | string | null;
     createdAt?: Prisma.DateTimeFilter<"User"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string;
+    onboardingCompleted?: Prisma.BoolFilter<"User"> | boolean;
+    onboardingStep?: Prisma.IntFilter<"User"> | number;
+    onboardingCompletedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null;
     avatar?: Prisma.XOR<Prisma.AvatarNullableScalarRelationFilter, Prisma.AvatarWhereInput> | null;
     conversations?: Prisma.ConversationListRelationFilter;
     conversationMemories?: Prisma.ConversationMemoryListRelationFilter;
@@ -172,6 +226,9 @@ export type UserOrderByWithRelationInput = {
     avatarUrl?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
+    onboardingCompleted?: Prisma.SortOrder;
+    onboardingStep?: Prisma.SortOrder;
+    onboardingCompletedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     avatar?: Prisma.AvatarOrderByWithRelationInput;
     conversations?: Prisma.ConversationOrderByRelationAggregateInput;
     conversationMemories?: Prisma.ConversationMemoryOrderByRelationAggregateInput;
@@ -201,6 +258,9 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
     avatarUrl?: Prisma.StringNullableFilter<"User"> | string | null;
     createdAt?: Prisma.DateTimeFilter<"User"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string;
+    onboardingCompleted?: Prisma.BoolFilter<"User"> | boolean;
+    onboardingStep?: Prisma.IntFilter<"User"> | number;
+    onboardingCompletedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null;
     avatar?: Prisma.XOR<Prisma.AvatarNullableScalarRelationFilter, Prisma.AvatarWhereInput> | null;
     conversations?: Prisma.ConversationListRelationFilter;
     conversationMemories?: Prisma.ConversationMemoryListRelationFilter;
@@ -227,9 +287,14 @@ export type UserOrderByWithAggregationInput = {
     avatarUrl?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
+    onboardingCompleted?: Prisma.SortOrder;
+    onboardingStep?: Prisma.SortOrder;
+    onboardingCompletedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     _count?: Prisma.UserCountOrderByAggregateInput;
+    _avg?: Prisma.UserAvgOrderByAggregateInput;
     _max?: Prisma.UserMaxOrderByAggregateInput;
     _min?: Prisma.UserMinOrderByAggregateInput;
+    _sum?: Prisma.UserSumOrderByAggregateInput;
 };
 export type UserScalarWhereWithAggregatesInput = {
     AND?: Prisma.UserScalarWhereWithAggregatesInput | Prisma.UserScalarWhereWithAggregatesInput[];
@@ -241,6 +306,9 @@ export type UserScalarWhereWithAggregatesInput = {
     avatarUrl?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null;
     createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string;
     updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string;
+    onboardingCompleted?: Prisma.BoolWithAggregatesFilter<"User"> | boolean;
+    onboardingStep?: Prisma.IntWithAggregatesFilter<"User"> | number;
+    onboardingCompletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null;
 };
 export type UserCreateInput = {
     id: string;
@@ -249,6 +317,9 @@ export type UserCreateInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    onboardingCompleted?: boolean;
+    onboardingStep?: number;
+    onboardingCompletedAt?: Date | string | null;
     avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryCreateNestedManyWithoutUserInput;
@@ -275,6 +346,9 @@ export type UserUncheckedCreateInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    onboardingCompleted?: boolean;
+    onboardingStep?: number;
+    onboardingCompletedAt?: Date | string | null;
     avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedCreateNestedManyWithoutUserInput;
@@ -301,6 +375,9 @@ export type UserUpdateInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUpdateManyWithoutUserNestedInput;
@@ -327,6 +404,9 @@ export type UserUncheckedUpdateInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedUpdateManyWithoutUserNestedInput;
@@ -353,6 +433,9 @@ export type UserCreateManyInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    onboardingCompleted?: boolean;
+    onboardingStep?: number;
+    onboardingCompletedAt?: Date | string | null;
 };
 export type UserUpdateManyMutationInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -361,6 +444,9 @@ export type UserUpdateManyMutationInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
 };
 export type UserUncheckedUpdateManyInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -369,6 +455,9 @@ export type UserUncheckedUpdateManyInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
 };
 export type UserCountOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -377,6 +466,12 @@ export type UserCountOrderByAggregateInput = {
     avatarUrl?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
+    onboardingCompleted?: Prisma.SortOrder;
+    onboardingStep?: Prisma.SortOrder;
+    onboardingCompletedAt?: Prisma.SortOrder;
+};
+export type UserAvgOrderByAggregateInput = {
+    onboardingStep?: Prisma.SortOrder;
 };
 export type UserMaxOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -385,6 +480,9 @@ export type UserMaxOrderByAggregateInput = {
     avatarUrl?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
+    onboardingCompleted?: Prisma.SortOrder;
+    onboardingStep?: Prisma.SortOrder;
+    onboardingCompletedAt?: Prisma.SortOrder;
 };
 export type UserMinOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -393,6 +491,12 @@ export type UserMinOrderByAggregateInput = {
     avatarUrl?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
+    onboardingCompleted?: Prisma.SortOrder;
+    onboardingStep?: Prisma.SortOrder;
+    onboardingCompletedAt?: Prisma.SortOrder;
+};
+export type UserSumOrderByAggregateInput = {
+    onboardingStep?: Prisma.SortOrder;
 };
 export type UserScalarRelationFilter = {
     is?: Prisma.UserWhereInput;
@@ -406,6 +510,19 @@ export type NullableStringFieldUpdateOperationsInput = {
 };
 export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string;
+};
+export type BoolFieldUpdateOperationsInput = {
+    set?: boolean;
+};
+export type IntFieldUpdateOperationsInput = {
+    set?: number;
+    increment?: number;
+    decrement?: number;
+    multiply?: number;
+    divide?: number;
+};
+export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null;
 };
 export type UserCreateNestedOneWithoutPersonasInput = {
     create?: Prisma.XOR<Prisma.UserCreateWithoutPersonasInput, Prisma.UserUncheckedCreateWithoutPersonasInput>;
@@ -630,6 +747,9 @@ export type UserCreateWithoutPersonasInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    onboardingCompleted?: boolean;
+    onboardingStep?: number;
+    onboardingCompletedAt?: Date | string | null;
     avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryCreateNestedManyWithoutUserInput;
@@ -655,6 +775,9 @@ export type UserUncheckedCreateWithoutPersonasInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    onboardingCompleted?: boolean;
+    onboardingStep?: number;
+    onboardingCompletedAt?: Date | string | null;
     avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedCreateNestedManyWithoutUserInput;
@@ -693,6 +816,9 @@ export type UserUpdateWithoutPersonasInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUpdateManyWithoutUserNestedInput;
@@ -718,6 +844,9 @@ export type UserUncheckedUpdateWithoutPersonasInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedUpdateManyWithoutUserNestedInput;
@@ -743,6 +872,9 @@ export type UserCreateWithoutStyleProfileInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    onboardingCompleted?: boolean;
+    onboardingStep?: number;
+    onboardingCompletedAt?: Date | string | null;
     avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryCreateNestedManyWithoutUserInput;
@@ -768,6 +900,9 @@ export type UserUncheckedCreateWithoutStyleProfileInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    onboardingCompleted?: boolean;
+    onboardingStep?: number;
+    onboardingCompletedAt?: Date | string | null;
     avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedCreateNestedManyWithoutUserInput;
@@ -806,6 +941,9 @@ export type UserUpdateWithoutStyleProfileInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUpdateManyWithoutUserNestedInput;
@@ -831,6 +969,9 @@ export type UserUncheckedUpdateWithoutStyleProfileInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedUpdateManyWithoutUserNestedInput;
@@ -856,6 +997,9 @@ export type UserCreateWithoutWardrobeItemsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    onboardingCompleted?: boolean;
+    onboardingStep?: number;
+    onboardingCompletedAt?: Date | string | null;
     avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryCreateNestedManyWithoutUserInput;
@@ -881,6 +1025,9 @@ export type UserUncheckedCreateWithoutWardrobeItemsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    onboardingCompleted?: boolean;
+    onboardingStep?: number;
+    onboardingCompletedAt?: Date | string | null;
     avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedCreateNestedManyWithoutUserInput;
@@ -919,6 +1066,9 @@ export type UserUpdateWithoutWardrobeItemsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUpdateManyWithoutUserNestedInput;
@@ -944,6 +1094,9 @@ export type UserUncheckedUpdateWithoutWardrobeItemsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedUpdateManyWithoutUserNestedInput;
@@ -969,6 +1122,9 @@ export type UserCreateWithoutWardrobeImagesInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    onboardingCompleted?: boolean;
+    onboardingStep?: number;
+    onboardingCompletedAt?: Date | string | null;
     avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryCreateNestedManyWithoutUserInput;
@@ -994,6 +1150,9 @@ export type UserUncheckedCreateWithoutWardrobeImagesInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    onboardingCompleted?: boolean;
+    onboardingStep?: number;
+    onboardingCompletedAt?: Date | string | null;
     avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedCreateNestedManyWithoutUserInput;
@@ -1032,6 +1191,9 @@ export type UserUpdateWithoutWardrobeImagesInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUpdateManyWithoutUserNestedInput;
@@ -1057,6 +1219,9 @@ export type UserUncheckedUpdateWithoutWardrobeImagesInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedUpdateManyWithoutUserNestedInput;
@@ -1082,6 +1247,9 @@ export type UserCreateWithoutOutfitsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    onboardingCompleted?: boolean;
+    onboardingStep?: number;
+    onboardingCompletedAt?: Date | string | null;
     avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryCreateNestedManyWithoutUserInput;
@@ -1107,6 +1275,9 @@ export type UserUncheckedCreateWithoutOutfitsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    onboardingCompleted?: boolean;
+    onboardingStep?: number;
+    onboardingCompletedAt?: Date | string | null;
     avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedCreateNestedManyWithoutUserInput;
@@ -1145,6 +1316,9 @@ export type UserUpdateWithoutOutfitsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUpdateManyWithoutUserNestedInput;
@@ -1170,6 +1344,9 @@ export type UserUncheckedUpdateWithoutOutfitsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedUpdateManyWithoutUserNestedInput;
@@ -1195,6 +1372,9 @@ export type UserCreateWithoutOutfitItemsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    onboardingCompleted?: boolean;
+    onboardingStep?: number;
+    onboardingCompletedAt?: Date | string | null;
     avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryCreateNestedManyWithoutUserInput;
@@ -1220,6 +1400,9 @@ export type UserUncheckedCreateWithoutOutfitItemsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    onboardingCompleted?: boolean;
+    onboardingStep?: number;
+    onboardingCompletedAt?: Date | string | null;
     avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedCreateNestedManyWithoutUserInput;
@@ -1258,6 +1441,9 @@ export type UserUpdateWithoutOutfitItemsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUpdateManyWithoutUserNestedInput;
@@ -1283,6 +1469,9 @@ export type UserUncheckedUpdateWithoutOutfitItemsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedUpdateManyWithoutUserNestedInput;
@@ -1308,6 +1497,9 @@ export type UserCreateWithoutInteractionsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    onboardingCompleted?: boolean;
+    onboardingStep?: number;
+    onboardingCompletedAt?: Date | string | null;
     avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryCreateNestedManyWithoutUserInput;
@@ -1333,6 +1525,9 @@ export type UserUncheckedCreateWithoutInteractionsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    onboardingCompleted?: boolean;
+    onboardingStep?: number;
+    onboardingCompletedAt?: Date | string | null;
     avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedCreateNestedManyWithoutUserInput;
@@ -1371,6 +1566,9 @@ export type UserUpdateWithoutInteractionsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUpdateManyWithoutUserNestedInput;
@@ -1396,6 +1594,9 @@ export type UserUncheckedUpdateWithoutInteractionsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedUpdateManyWithoutUserNestedInput;
@@ -1421,6 +1622,9 @@ export type UserCreateWithoutWearEventsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    onboardingCompleted?: boolean;
+    onboardingStep?: number;
+    onboardingCompletedAt?: Date | string | null;
     avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryCreateNestedManyWithoutUserInput;
@@ -1446,6 +1650,9 @@ export type UserUncheckedCreateWithoutWearEventsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    onboardingCompleted?: boolean;
+    onboardingStep?: number;
+    onboardingCompletedAt?: Date | string | null;
     avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedCreateNestedManyWithoutUserInput;
@@ -1484,6 +1691,9 @@ export type UserUpdateWithoutWearEventsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUpdateManyWithoutUserNestedInput;
@@ -1509,6 +1719,9 @@ export type UserUncheckedUpdateWithoutWearEventsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedUpdateManyWithoutUserNestedInput;
@@ -1534,6 +1747,9 @@ export type UserCreateWithoutConversationsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    onboardingCompleted?: boolean;
+    onboardingStep?: number;
+    onboardingCompletedAt?: Date | string | null;
     avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationCreateNestedManyWithoutUserInput;
@@ -1559,6 +1775,9 @@ export type UserUncheckedCreateWithoutConversationsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    onboardingCompleted?: boolean;
+    onboardingStep?: number;
+    onboardingCompletedAt?: Date | string | null;
     avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationUncheckedCreateNestedManyWithoutUserInput;
@@ -1597,6 +1816,9 @@ export type UserUpdateWithoutConversationsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUpdateManyWithoutUserNestedInput;
@@ -1622,6 +1844,9 @@ export type UserUncheckedUpdateWithoutConversationsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUncheckedUpdateManyWithoutUserNestedInput;
@@ -1647,6 +1872,9 @@ export type UserCreateWithoutMessagesInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    onboardingCompleted?: boolean;
+    onboardingStep?: number;
+    onboardingCompletedAt?: Date | string | null;
     avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryCreateNestedManyWithoutUserInput;
@@ -1672,6 +1900,9 @@ export type UserUncheckedCreateWithoutMessagesInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    onboardingCompleted?: boolean;
+    onboardingStep?: number;
+    onboardingCompletedAt?: Date | string | null;
     avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedCreateNestedManyWithoutUserInput;
@@ -1710,6 +1941,9 @@ export type UserUpdateWithoutMessagesInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUpdateManyWithoutUserNestedInput;
@@ -1735,6 +1969,9 @@ export type UserUncheckedUpdateWithoutMessagesInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedUpdateManyWithoutUserNestedInput;
@@ -1760,6 +1997,9 @@ export type UserCreateWithoutConversationMemoriesInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    onboardingCompleted?: boolean;
+    onboardingStep?: number;
+    onboardingCompletedAt?: Date | string | null;
     avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationCreateNestedManyWithoutUserInput;
@@ -1785,6 +2025,9 @@ export type UserUncheckedCreateWithoutConversationMemoriesInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    onboardingCompleted?: boolean;
+    onboardingStep?: number;
+    onboardingCompletedAt?: Date | string | null;
     avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationUncheckedCreateNestedManyWithoutUserInput;
@@ -1823,6 +2066,9 @@ export type UserUpdateWithoutConversationMemoriesInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUpdateManyWithoutUserNestedInput;
@@ -1848,6 +2094,9 @@ export type UserUncheckedUpdateWithoutConversationMemoriesInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUncheckedUpdateManyWithoutUserNestedInput;
@@ -1873,6 +2122,9 @@ export type UserCreateWithoutPreferenceEventsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    onboardingCompleted?: boolean;
+    onboardingStep?: number;
+    onboardingCompletedAt?: Date | string | null;
     avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryCreateNestedManyWithoutUserInput;
@@ -1898,6 +2150,9 @@ export type UserUncheckedCreateWithoutPreferenceEventsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    onboardingCompleted?: boolean;
+    onboardingStep?: number;
+    onboardingCompletedAt?: Date | string | null;
     avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedCreateNestedManyWithoutUserInput;
@@ -1936,6 +2191,9 @@ export type UserUpdateWithoutPreferenceEventsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUpdateManyWithoutUserNestedInput;
@@ -1961,6 +2219,9 @@ export type UserUncheckedUpdateWithoutPreferenceEventsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedUpdateManyWithoutUserNestedInput;
@@ -1986,6 +2247,9 @@ export type UserCreateWithoutInspirationsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    onboardingCompleted?: boolean;
+    onboardingStep?: number;
+    onboardingCompletedAt?: Date | string | null;
     avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryCreateNestedManyWithoutUserInput;
@@ -2011,6 +2275,9 @@ export type UserUncheckedCreateWithoutInspirationsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    onboardingCompleted?: boolean;
+    onboardingStep?: number;
+    onboardingCompletedAt?: Date | string | null;
     avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedCreateNestedManyWithoutUserInput;
@@ -2049,6 +2316,9 @@ export type UserUpdateWithoutInspirationsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUpdateManyWithoutUserNestedInput;
@@ -2074,6 +2344,9 @@ export type UserUncheckedUpdateWithoutInspirationsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedUpdateManyWithoutUserNestedInput;
@@ -2099,6 +2372,9 @@ export type UserCreateWithoutInspirationItemsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    onboardingCompleted?: boolean;
+    onboardingStep?: number;
+    onboardingCompletedAt?: Date | string | null;
     avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryCreateNestedManyWithoutUserInput;
@@ -2124,6 +2400,9 @@ export type UserUncheckedCreateWithoutInspirationItemsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    onboardingCompleted?: boolean;
+    onboardingStep?: number;
+    onboardingCompletedAt?: Date | string | null;
     avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedCreateNestedManyWithoutUserInput;
@@ -2162,6 +2441,9 @@ export type UserUpdateWithoutInspirationItemsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUpdateManyWithoutUserNestedInput;
@@ -2187,6 +2469,9 @@ export type UserUncheckedUpdateWithoutInspirationItemsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedUpdateManyWithoutUserNestedInput;
@@ -2212,6 +2497,9 @@ export type UserCreateWithoutShoppingSearchesInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    onboardingCompleted?: boolean;
+    onboardingStep?: number;
+    onboardingCompletedAt?: Date | string | null;
     avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryCreateNestedManyWithoutUserInput;
@@ -2237,6 +2525,9 @@ export type UserUncheckedCreateWithoutShoppingSearchesInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    onboardingCompleted?: boolean;
+    onboardingStep?: number;
+    onboardingCompletedAt?: Date | string | null;
     avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedCreateNestedManyWithoutUserInput;
@@ -2275,6 +2566,9 @@ export type UserUpdateWithoutShoppingSearchesInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUpdateManyWithoutUserNestedInput;
@@ -2300,6 +2594,9 @@ export type UserUncheckedUpdateWithoutShoppingSearchesInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedUpdateManyWithoutUserNestedInput;
@@ -2325,6 +2622,9 @@ export type UserCreateWithoutSavedProductsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    onboardingCompleted?: boolean;
+    onboardingStep?: number;
+    onboardingCompletedAt?: Date | string | null;
     avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryCreateNestedManyWithoutUserInput;
@@ -2350,6 +2650,9 @@ export type UserUncheckedCreateWithoutSavedProductsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    onboardingCompleted?: boolean;
+    onboardingStep?: number;
+    onboardingCompletedAt?: Date | string | null;
     avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedCreateNestedManyWithoutUserInput;
@@ -2388,6 +2691,9 @@ export type UserUpdateWithoutSavedProductsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUpdateManyWithoutUserNestedInput;
@@ -2413,6 +2719,9 @@ export type UserUncheckedUpdateWithoutSavedProductsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedUpdateManyWithoutUserNestedInput;
@@ -2438,6 +2747,9 @@ export type UserCreateWithoutAvatarInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    onboardingCompleted?: boolean;
+    onboardingStep?: number;
+    onboardingCompletedAt?: Date | string | null;
     conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationCreateNestedManyWithoutUserInput;
@@ -2463,6 +2775,9 @@ export type UserUncheckedCreateWithoutAvatarInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    onboardingCompleted?: boolean;
+    onboardingStep?: number;
+    onboardingCompletedAt?: Date | string | null;
     conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedCreateNestedManyWithoutUserInput;
     inspirations?: Prisma.InspirationUncheckedCreateNestedManyWithoutUserInput;
@@ -2501,6 +2816,9 @@ export type UserUpdateWithoutAvatarInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUpdateManyWithoutUserNestedInput;
@@ -2526,6 +2844,9 @@ export type UserUncheckedUpdateWithoutAvatarInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedUpdateManyWithoutUserNestedInput;
     inspirations?: Prisma.InspirationUncheckedUpdateManyWithoutUserNestedInput;
@@ -2551,6 +2872,9 @@ export type UserCreateWithoutSubscriptionsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    onboardingCompleted?: boolean;
+    onboardingStep?: number;
+    onboardingCompletedAt?: Date | string | null;
     avatar?: Prisma.AvatarCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryCreateNestedManyWithoutUserInput;
@@ -2576,6 +2900,9 @@ export type UserUncheckedCreateWithoutSubscriptionsInput = {
     avatarUrl?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    onboardingCompleted?: boolean;
+    onboardingStep?: number;
+    onboardingCompletedAt?: Date | string | null;
     avatar?: Prisma.AvatarUncheckedCreateNestedOneWithoutUserInput;
     conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedCreateNestedManyWithoutUserInput;
@@ -2614,6 +2941,9 @@ export type UserUpdateWithoutSubscriptionsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     avatar?: Prisma.AvatarUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUpdateManyWithoutUserNestedInput;
@@ -2639,6 +2969,9 @@ export type UserUncheckedUpdateWithoutSubscriptionsInput = {
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number;
+    onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     avatar?: Prisma.AvatarUncheckedUpdateOneWithoutUserNestedInput;
     conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput;
     conversationMemories?: Prisma.ConversationMemoryUncheckedUpdateManyWithoutUserNestedInput;
@@ -2808,6 +3141,9 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
     avatarUrl?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    onboardingCompleted?: boolean;
+    onboardingStep?: boolean;
+    onboardingCompletedAt?: boolean;
     avatar?: boolean | Prisma.User$avatarArgs<ExtArgs>;
     conversations?: boolean | Prisma.User$conversationsArgs<ExtArgs>;
     conversationMemories?: boolean | Prisma.User$conversationMemoriesArgs<ExtArgs>;
@@ -2835,6 +3171,9 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
     avatarUrl?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    onboardingCompleted?: boolean;
+    onboardingStep?: boolean;
+    onboardingCompletedAt?: boolean;
 }, ExtArgs["result"]["user"]>;
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -2843,6 +3182,9 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
     avatarUrl?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    onboardingCompleted?: boolean;
+    onboardingStep?: boolean;
+    onboardingCompletedAt?: boolean;
 }, ExtArgs["result"]["user"]>;
 export type UserSelectScalar = {
     id?: boolean;
@@ -2851,8 +3193,11 @@ export type UserSelectScalar = {
     avatarUrl?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    onboardingCompleted?: boolean;
+    onboardingStep?: boolean;
+    onboardingCompletedAt?: boolean;
 };
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "name" | "avatarUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>;
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "name" | "avatarUrl" | "createdAt" | "updatedAt" | "onboardingCompleted" | "onboardingStep" | "onboardingCompletedAt", ExtArgs["result"]["user"]>;
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     avatar?: boolean | Prisma.User$avatarArgs<ExtArgs>;
     conversations?: boolean | Prisma.User$conversationsArgs<ExtArgs>;
@@ -2905,6 +3250,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
         avatarUrl: string | null;
         createdAt: Date;
         updatedAt: Date;
+        onboardingCompleted: boolean;
+        onboardingStep: number;
+        onboardingCompletedAt: Date | null;
     }, ExtArgs["result"]["user"]>;
     composites: {};
 };
@@ -3283,6 +3631,9 @@ export interface UserFieldRefs {
     readonly avatarUrl: Prisma.FieldRef<"User", 'String'>;
     readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>;
     readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>;
+    readonly onboardingCompleted: Prisma.FieldRef<"User", 'Boolean'>;
+    readonly onboardingStep: Prisma.FieldRef<"User", 'Int'>;
+    readonly onboardingCompletedAt: Prisma.FieldRef<"User", 'DateTime'>;
 }
 /**
  * User findUnique

@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   saveStyleProfile,
   getStyleProfile,
+  getOnboardingStatus,
 } from "../controllers/onboarding.controller.js";
 import { authMiddleware } from "../middleware/auth.js";
 
@@ -19,4 +20,5 @@ router.get(
   getStyleProfile
 );
 
+router.get("/status", authMiddleware, getOnboardingStatus);
 export default router;

@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import { supabase } from "../lib/supabase.js";
 import { prisma } from "../lib/prisma.js";
 
+import type { AuthenticatedRequest } from "../middleware/auth.ts";
+
 export async function signup(req: Request, res: Response) {
   try {
     const { email, password, name } = req.body;
@@ -142,6 +144,84 @@ export async function login(req: Request, res: Response) {
     return res.status(500).json({
       success: false,
       message: "Something went wrong during login",
+    });
+  }
+}
+
+
+// Add this function below your existing login function.
+export async function ensureUserProfile(
+  req: AuthenticatedRequest,
+  res: Response
+) {
+  try {
+    const userId = req.userId;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthenticated user",
+      });
+    }
+
+    const authHeader = req.headers.authorization;
+    const token = authHeader?.startsWith("Bearer ")
+      ? authHeader.slice(7)
+      : null;
+
+    if (!token) {
+      return res.status(401).json({
+        success: false,
+        message: "Access token missing",
+      });
+    }
+
+    // Retrieve the verified Supabase Auth user.
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.getUser(token);
+
+    if (error || !user || user.id !== userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid or expired token",
+      });
+    }
+
+    // Create the profile if missing; otherwise reuse it.
+    const profile = await prisma.user.upsert({
+      where: { id: userId },
+      update: {
+        email: user.email ?? null,
+      },
+      create: {
+        id: userId,
+        email: user.email ?? null,
+        name:
+          user.user_metadata?.name ??
+          user.user_metadata?.full_name ??
+          null,
+      },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        onboardingCompleted: true,
+        onboardingStep: true,
+      },
+    });
+
+    return res.status(200).json({
+      success: true,
+      user: profile,
+    });
+  } catch (error) {
+    console.error("Ensure user profile error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Unable to initialize user profile",
     });
   }
 }

@@ -1,7 +1,9 @@
 import { Router } from "express";
-import { signup, login, } from "../controllers/auth.controller.js";
+import { signup, login, ensureUserProfile, } from "../controllers/auth.controller.js";
+import { authMiddleware } from "../middleware/auth.js";
 const router = Router();
 router.post("/signup", signup);
 router.post("/login", login);
+router.post("/ensure-profile", authMiddleware, ensureUserProfile);
 export default router;
 //# sourceMappingURL=auth.routes.js.map

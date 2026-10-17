@@ -124,3 +124,7 @@ allCompleted === true
 Use returned analysis data
      ↓
 Show wardrobe
+
+
+
+### Since supabase auth works directly, instead of using loginn and signup routes, we will just use ensureProfile route to make sure user is in both supabae and the database

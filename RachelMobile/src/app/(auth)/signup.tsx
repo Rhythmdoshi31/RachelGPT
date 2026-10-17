@@ -15,6 +15,7 @@ import { SvgUri } from "react-native-svg";
 import { router } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 
+import { ensureUserProfile } from "../../lib/ensureUserProfile";
 import { getAuthErrorMessage } from "../../lib/authErrors";
 import { supabase } from "../../lib/supabase";
 
@@ -49,7 +50,7 @@ export default function Signup() {
           easing: Easing.out(Easing.ease),
           useNativeDriver: true,
         }).start();
-      }
+      },
     );
 
     const hideSubscription = Keyboard.addListener(
@@ -63,7 +64,7 @@ export default function Signup() {
           easing: Easing.out(Easing.ease),
           useNativeDriver: true,
         }).start();
-      }
+      },
     );
 
     return () => {
@@ -79,12 +80,7 @@ export default function Signup() {
   const validate = () => {
     setSubmitted(true);
 
-    if (
-      firstName.trim() &&
-      email.trim() &&
-      password.length >= 6 &&
-      agreed
-    ) {
+    if (firstName.trim() && email.trim() && password.length >= 6 && agreed) {
       return true;
     }
 
@@ -98,20 +94,19 @@ export default function Signup() {
   const handleSignup = async () => {
     Keyboard.dismiss();
 
-    if (!validate()) {
-      return;
-    }
+    if (!validate()) return;
 
     setLoading(true);
     setAuthError("");
 
     try {
       const { data, error } = await supabase.auth.signUp({
-        email: email.trim(),
+        email: email.trim().toLowerCase(),
         password,
         options: {
           data: {
             first_name: firstName.trim(),
+            name: firstName.trim(),
           },
         },
       });
@@ -121,13 +116,29 @@ export default function Signup() {
         return;
       }
 
-      if (data.user) {
-        router.replace("/onboarding");
+      if (!data.user) {
+        setAuthError("Unable to create your account. Please try again.");
+        return;
       }
+
+      // Email confirmation may be required before a session exists.
+      if (!data.session) {
+        setAuthError(
+          "Account created. Please check your email to verify your account, then log in.",
+        );
+        return;
+      }
+
+      // Ensure the Prisma User row exists before proceeding.
+      await ensureUserProfile();
+
+      router.replace("/onboarding");
     } catch (error) {
       console.error("SIGNUP ERROR:", error);
 
-      setAuthError(getAuthErrorMessage(error));
+      setAuthError(
+        error instanceof Error ? error.message : getAuthErrorMessage(error),
+      );
     } finally {
       setLoading(false);
     }
@@ -138,38 +149,25 @@ export default function Signup() {
   // --------------------------------------------------
 
   const firstNameError =
-    submitted && !firstName.trim()
-      ? "Please enter your first name."
-      : "";
+    submitted && !firstName.trim() ? "Please enter your first name." : "";
 
   const emailError =
-    submitted && !email.trim()
-      ? "Please enter your email."
-      : "";
+    submitted && !email.trim() ? "Please enter your email." : "";
 
   const passwordError =
     submitted && password.length < 6
       ? "Password must be at least 6 characters."
       : "";
 
-  const termsError =
-    submitted && !agreed
-      ? "Please agree to the terms."
-      : "";
+  const termsError = submitted && !agreed ? "Please agree to the terms." : "";
 
   // --------------------------------------------------
   // UI
   // --------------------------------------------------
 
   return (
-    <SafeAreaView
-      className="flex-1 bg-[#FAF7F2]"
-      edges={["top", "bottom"]}
-    >
-      <Pressable
-        className="flex-1"
-        onPress={Keyboard.dismiss}
-      >
+    <SafeAreaView className="flex-1 bg-[#FAF7F2]" edges={["top", "bottom"]}>
+      <Pressable className="flex-1" onPress={Keyboard.dismiss}>
         {/* Background */}
         <Image
           source={require("../../../assets/images/backgrounds/Quiet_Luxury_Wardrobe_Corner-3.png")}
@@ -184,11 +182,7 @@ export default function Signup() {
             onPress={() => router.back()}
             className="absolute left-[5px] h-[50px] w-[50px] items-center justify-center"
           >
-            <Ionicons
-              name="chevron-back"
-              size={29}
-              color="#65463A"
-            />
+            <Ionicons name="chevron-back" size={29} color="#65463A" />
           </Pressable>
 
           <Text
@@ -232,11 +226,7 @@ export default function Signup() {
               {/* First Name */}
               <View className="mb-[7px]">
                 <View className="h-[50px] flex-row items-center rounded-[14px] border border-[#B49482] bg-[#FAF7F2]/95 px-[15px]">
-                  <Ionicons
-                    name="person-outline"
-                    size={21}
-                    color="#65463A"
-                  />
+                  <Ionicons name="person-outline" size={21} color="#65463A" />
 
                   <TextInput
                     value={firstName}
@@ -270,11 +260,7 @@ export default function Signup() {
               {/* Email */}
               <View className="mb-[7px]">
                 <View className="h-[50px] flex-row items-center rounded-[14px] border border-[#B49482] bg-[#FAF7F2]/95 px-[15px]">
-                  <Ionicons
-                    name="mail-outline"
-                    size={21}
-                    color="#65463A"
-                  />
+                  <Ionicons name="mail-outline" size={21} color="#65463A" />
 
                   <TextInput
                     value={email}
@@ -333,19 +319,11 @@ export default function Signup() {
                   />
 
                   <Pressable
-                    onPress={() =>
-                      setShowPassword(
-                        (previous) => !previous
-                      )
-                    }
+                    onPress={() => setShowPassword((previous) => !previous)}
                     hitSlop={10}
                   >
                     <Ionicons
-                      name={
-                        showPassword
-                          ? "eye-off-outline"
-                          : "eye-outline"
-                      }
+                      name={showPassword ? "eye-off-outline" : "eye-outline"}
                       size={21}
                       color="#65463A"
                     />
@@ -366,9 +344,7 @@ export default function Signup() {
 
               {/* Terms */}
               <Pressable
-                onPress={() =>
-                  setAgreed((previous) => !previous)
-                }
+                onPress={() => setAgreed((previous) => !previous)}
                 className="mt-[2px] flex-row items-center"
               >
                 <View
@@ -379,11 +355,7 @@ export default function Signup() {
                   }`}
                 >
                   {agreed && (
-                    <Ionicons
-                      name="checkmark"
-                      size={14}
-                      color="#FFFFFF"
-                    />
+                    <Ionicons name="checkmark" size={14} color="#FFFFFF" />
                   )}
                 </View>
 
@@ -426,8 +398,7 @@ export default function Signup() {
                 disabled={loading}
                 className="mt-[12px] h-[50px] w-full items-center justify-center rounded-[14px] bg-[#3F5792]"
                 style={({ pressed }) => ({
-                  opacity:
-                    pressed || loading ? 0.85 : 1,
+                  opacity: pressed || loading ? 0.85 : 1,
                 })}
               >
                 <Text
@@ -436,9 +407,7 @@ export default function Signup() {
                     fontFamily: "ManropeMedium",
                   }}
                 >
-                  {loading
-                    ? "Creating account..."
-                    : "Create account"}
+                  {loading ? "Creating account..." : "Create account"}
                 </Text>
               </Pressable>
 
@@ -468,11 +437,7 @@ export default function Signup() {
                       opacity: pressed ? 0.85 : 1,
                     })}
                   >
-                    <Ionicons
-                      name="logo-apple"
-                      size={18}
-                      color="#2B1B16"
-                    />
+                    <Ionicons name="logo-apple" size={18} color="#2B1B16" />
 
                     <Text
                       className="ml-[9px] text-[12.5px] text-[#2B1B16]"
@@ -518,11 +483,7 @@ export default function Signup() {
                       Already have an account?{" "}
                     </Text>
 
-                    <Pressable
-                      onPress={() =>
-                        router.push("/login")
-                      }
-                    >
+                    <Pressable onPress={() => router.push("/login")}>
                       <Text
                         className="text-[11px] text-[#3F5792]"
                         style={{

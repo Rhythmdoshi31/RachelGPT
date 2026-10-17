@@ -15,6 +15,8 @@ import { SvgUri } from "react-native-svg";
 import { router } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 
+import { ensureUserProfile } from "../../lib/ensureUserProfile";
+import { getOnboardingStatus } from "../../lib/onboarding";
 import { getAuthErrorMessage } from "../../lib/authErrors";
 import { supabase } from "../../lib/supabase";
 
@@ -47,7 +49,7 @@ export default function Login() {
           easing: Easing.out(Easing.ease),
           useNativeDriver: true,
         }).start();
-      }
+      },
     );
 
     const hideSubscription = Keyboard.addListener(
@@ -61,7 +63,7 @@ export default function Login() {
           easing: Easing.out(Easing.ease),
           useNativeDriver: true,
         }).start();
-      }
+      },
     );
 
     return () => {
@@ -89,32 +91,42 @@ export default function Login() {
   // --------------------------------------------------
 
   const handleLogin = async () => {
-    if (!validate()) {
-      return;
-    }
+    if (!validate()) return;
 
     Keyboard.dismiss();
-
     setLoading(true);
     setAuthError("");
 
     try {
-      const { error } =
-        await supabase.auth.signInWithPassword({
-          email: email.trim(),
-          password,
-        });
+      const { error } = await supabase.auth.signInWithPassword({
+        email: email.trim().toLowerCase(),
+        password,
+      });
 
       if (error) {
         setAuthError(getAuthErrorMessage(error));
         return;
       }
 
-      router.replace("/home");
-    } catch (error) {
-      console.error("LOGIN ERROR:", error);
+      // Create the Prisma profile if it is missing.
+      await ensureUserProfile();
 
-      setAuthError(getAuthErrorMessage(error));
+      // Only check onboarding after profile provisioning succeeds.
+      const status = await getOnboardingStatus();
+
+      if (status.onboardingCompleted) {
+        router.replace("/home");
+      } else {
+        router.replace("/onboarding");
+      }
+    } catch (error) {
+      console.error("LOGIN / PROFILE ERROR:", error);
+
+      setAuthError(
+        error instanceof Error
+          ? error.message
+          : "Unable to load your profile. Please try again.",
+      );
     } finally {
       setLoading(false);
     }
@@ -125,28 +137,18 @@ export default function Login() {
   // --------------------------------------------------
 
   const emailError =
-    submitted && !email.trim()
-      ? "Please enter your email."
-      : "";
+    submitted && !email.trim() ? "Please enter your email." : "";
 
   const passwordError =
-    submitted && !password
-      ? "Please enter your password."
-      : "";
+    submitted && !password ? "Please enter your password." : "";
 
   // --------------------------------------------------
   // UI
   // --------------------------------------------------
 
   return (
-    <SafeAreaView
-      className="flex-1 bg-[#FAF7F2]"
-      edges={["top", "bottom"]}
-    >
-      <Pressable
-        className="flex-1"
-        onPress={Keyboard.dismiss}
-      >
+    <SafeAreaView className="flex-1 bg-[#FAF7F2]" edges={["top", "bottom"]}>
+      <Pressable className="flex-1" onPress={Keyboard.dismiss}>
         {/* Background */}
         <Image
           source={require("../../../assets/images/backgrounds/Quiet_Luxury_Wardrobe_Corner-3.png")}
@@ -161,11 +163,7 @@ export default function Login() {
             onPress={() => router.back()}
             className="absolute left-[5px] h-[50px] w-[50px] items-center justify-center"
           >
-            <Ionicons
-              name="chevron-back"
-              size={29}
-              color="#65463A"
-            />
+            <Ionicons name="chevron-back" size={29} color="#65463A" />
           </Pressable>
 
           <Text
@@ -209,11 +207,7 @@ export default function Login() {
               {/* Email */}
               <View className="mb-[7px]">
                 <View className="h-[50px] flex-row items-center rounded-[14px] border border-[#B49482] bg-[#FAF7F2]/95 px-[15px]">
-                  <Ionicons
-                    name="mail-outline"
-                    size={21}
-                    color="#65463A"
-                  />
+                  <Ionicons name="mail-outline" size={21} color="#65463A" />
 
                   <TextInput
                     value={email}
@@ -272,19 +266,11 @@ export default function Login() {
                   />
 
                   <Pressable
-                    onPress={() =>
-                      setShowPassword(
-                        (previous) => !previous
-                      )
-                    }
+                    onPress={() => setShowPassword((previous) => !previous)}
                     hitSlop={10}
                   >
                     <Ionicons
-                      name={
-                        showPassword
-                          ? "eye-off-outline"
-                          : "eye-outline"
-                      }
+                      name={showPassword ? "eye-off-outline" : "eye-outline"}
                       size={21}
                       color="#65463A"
                     />
@@ -340,8 +326,7 @@ export default function Login() {
                 disabled={loading}
                 className="mt-[12px] h-[50px] w-full items-center justify-center rounded-[14px] bg-[#3F5792]"
                 style={({ pressed }) => ({
-                  opacity:
-                    pressed || loading ? 0.85 : 1,
+                  opacity: pressed || loading ? 0.85 : 1,
                 })}
               >
                 <Text
@@ -380,11 +365,7 @@ export default function Login() {
                       opacity: pressed ? 0.85 : 1,
                     })}
                   >
-                    <Ionicons
-                      name="logo-apple"
-                      size={18}
-                      color="#2B1B16"
-                    />
+                    <Ionicons name="logo-apple" size={18} color="#2B1B16" />
 
                     <Text
                       className="ml-[9px] text-[12.5px] text-[#2B1B16]"
@@ -430,11 +411,7 @@ export default function Login() {
                       Don&apos;t have an account?{" "}
                     </Text>
 
-                    <Pressable
-                      onPress={() =>
-                        router.push("/signup")
-                      }
-                    >
+                    <Pressable onPress={() => router.push("/signup")}>
                       <Text
                         className="text-[11px] text-[#3F5792]"
                         style={{

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import {
   Image,
+  Alert,
   Pressable,
   ScrollView,
   Text,
@@ -9,6 +10,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
+import { supabase } from "../../lib/supabase";
 
 // ADD YOUR PORTRAIT IMAGE PATHS HERE LATER
 const RACHEL_IMAGE = null;
@@ -31,6 +33,17 @@ const stylists = [
   },
 ];
 
+async function handleLogout() {
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    Alert.alert("Logout failed", error.message);
+    return;
+  }
+
+  router.replace("/welcome");
+}
+
 export default function Onboarding() {
   const [selectedStylist, setSelectedStylist] =
     useState<Stylist>("Rachel");
@@ -51,7 +64,7 @@ export default function Onboarding() {
       {/* HEADER */}
       <View className="h-[64px] flex-row items-center justify-center">
         <Pressable
-          onPress={() => router.back()}
+          onPress={handleLogout}
           className="absolute left-[8px] h-[44px] w-[44px] items-center justify-center"
           accessibilityLabel="Go back"
         >

@@ -21,6 +21,10 @@ export async function getPersonas(_req, res) {
 }
 export async function selectPersona(req, res) {
     try {
+        console.log("🔥 POST /api/personas/select reached", {
+            body: req.body,
+            userId: req.userId,
+        });
         const userId = req.userId;
         if (!userId) {
             return res.status(401).json({
@@ -35,6 +39,10 @@ export async function selectPersona(req, res) {
                 message: "Persona ID is required",
             });
         }
+        console.log("Selecting persona:", {
+            userId,
+            personaId,
+        });
         const persona = await prisma.persona.findUnique({
             where: {
                 id: personaId,

@@ -6,30 +6,44 @@ import {
   ScrollView,
   Text,
   View,
+  useWindowDimensions,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { supabase } from "../../lib/supabase";
 
-// ADD YOUR PORTRAIT IMAGE PATHS HERE LATER
 const RACHEL_IMAGE = null;
 const KJAY_IMAGE = null;
+const MIRA_IMAGE = null;
 
-type Stylist = "Rachel" | "KJay";
+type Stylist = "Rachel" | "KJay" | "Mira";
 
-const stylists = [
+const stylists: {
+  id: Stylist;
+  traits: string[];
+  description: string;
+  image: number | null;
+}[] = [
   {
-    id: "Rachel" as const,
+    id: "Rachel",
     traits: ["Warm", "Practical"],
     description:
       "Polished, reassuring advice that makes your own pieces work harder.",
+    image: RACHEL_IMAGE,
   },
   {
-    id: "KJay" as const,
+    id: "KJay",
     traits: ["Expressive", "Fashion-forward"],
     description:
       "Playful, confident ideas when you want to try something bolder.",
+    image: KJAY_IMAGE,
+  },
+  {
+    id: "Mira",
+    traits: ["Calm", "Refined"],
+    description: "Thoughtful, understated styling with less chatter.",
+    image: MIRA_IMAGE,
   },
 ];
 
@@ -45,52 +59,48 @@ async function handleLogout() {
 }
 
 export default function Onboarding() {
-  const [selectedStylist, setSelectedStylist] =
-    useState<Stylist>("Rachel");
+  const [selectedStylist, setSelectedStylist] = useState<Stylist>("Rachel");
+
+  const { height, width } = useWindowDimensions();
+
+  // Adapt card dimensions to the available phone screen.
+  const compact = height < 780;
+  const cardHeight = Math.max(140, Math.min(176, (height - 370) / 3));
+
+  const imageWidth = Math.round(Math.min(145, width * 0.35));
 
   const handleContinue = () => {
-    // TODO: Save selectedStylist to the user's profile.
+    // Persistence and navigation to step 2 will be connected next.
     console.log("Selected stylist:", selectedStylist);
-
-    // Connect to the next onboarding screen later.
-    // router.push("/next-step");
   };
 
   return (
-    <SafeAreaView
-      className="flex-1 bg-[#FAF7F2]"
-      edges={["top", "bottom"]}
-    >
-      {/* HEADER */}
-      <View className="h-[64px] flex-row items-center justify-center">
+    <SafeAreaView className="flex-1 bg-[#FAF7F2]" edges={["top", "bottom"]}>
+      {/* COMPACT HEADER */}
+      <View className="h-[49px] flex-row items-center justify-center">
         <Pressable
-          onPress={handleLogout}
-          className="absolute left-[8px] h-[44px] w-[44px] items-center justify-center"
+          onPress={() => router.back()}
+          className="absolute left-[12px] h-[36px] w-[36px] items-center justify-center"
+          accessibilityRole="button"
           accessibilityLabel="Go back"
         >
-          <Ionicons
-            name="chevron-back"
-            size={29}
-            color="#2B1B16"
-          />
+          <Ionicons name="chevron-back" size={25} color="#2B1B16" />
         </Pressable>
 
         <View className="items-center">
           <Text
-            className="text-[16px] leading-[22px] text-[#64748B]"
+            className="text-[14px] leading-[19px] text-[#64748B]"
             style={{ fontFamily: "Manrope" }}
           >
             Step 1 of 4
           </Text>
 
-          <View className="mt-[7px] flex-row gap-[9px]">
+          <View className="mt-[5px] flex-row gap-[8px]">
             {[0, 1, 2, 3].map((step) => (
               <View
                 key={step}
-                className={`h-[9px] w-[9px] rounded-full ${
-                  step === 0
-                    ? "bg-[#3F5792]"
-                    : "bg-[#E9DDCF]"
+                className={`h-[8px] w-[8px] rounded-full ${
+                  step === 0 ? "bg-[#3F5792]" : "bg-[#E9DDCF]"
                 }`}
               />
             ))}
@@ -98,17 +108,23 @@ export default function Onboarding() {
         </View>
       </View>
 
-      {/* TITLE */}
-      <View className="px-[20px] pb-[22px] pt-[22px]">
+      {/* TITLE AND SUBTITLE */}
+      <View className="px-[20px] pb-[16px] pt-[12px]">
         <Text
-          className="text-center text-[36px] leading-[44px] text-[#2B1B16]"
+          numberOfLines={1}
+          adjustsFontSizeToFit
+          minimumFontScale={0.8}
+          className="text-center text-[34px] leading-[43px] text-[#2B1B16]"
           style={{ fontFamily: "DMSerifDisplay" }}
         >
           Choose your stylist
         </Text>
 
         <Text
-          className="mt-[12px] text-center text-[16px] leading-[25px] text-[#64748B]"
+          numberOfLines={1}
+          adjustsFontSizeToFit
+          minimumFontScale={0.78}
+          className="mt-[8px] text-center text-[15px] leading-[22px] text-[#64748B]"
           style={{ fontFamily: "Manrope" }}
         >
           Same style intelligence. A voice that feels right to you.
@@ -119,90 +135,82 @@ export default function Onboarding() {
       <ScrollView
         className="flex-1"
         showsVerticalScrollIndicator={false}
+        bounces={false}
         contentContainerStyle={{
-          paddingHorizontal: 20,
-          paddingTop: 2,
-          paddingBottom: 14,
+          paddingHorizontal: 19,
+          paddingTop: 4,
+          paddingBottom: 12,
           gap: 12,
+          flexGrow: 1,
+          justifyContent: "space-evenly",
         }}
       >
         {stylists.map((stylist) => {
-          const selected =
-            selectedStylist === stylist.id;
-
-          const portrait =
-            stylist.id === "Rachel"
-              ? RACHEL_IMAGE
-              : KJAY_IMAGE;
+          const selected = selectedStylist === stylist.id;
 
           return (
             <Pressable
               key={stylist.id}
-              onPress={() =>
-                setSelectedStylist(stylist.id)
-              }
+              onPress={() => setSelectedStylist(stylist.id)}
               accessibilityRole="radio"
               accessibilityState={{ checked: selected }}
               accessibilityLabel={`${stylist.id}, ${stylist.traits.join(", ")}`}
-              className={`min-h-[220px] flex-row items-center rounded-[18px] border bg-[#FAF7F2] p-[14px] ${
-                selected
-                  ? "border-[#3F5792]"
-                  : "border-[#E9DDCF]"
+              className={`flex-row items-center rounded-[17px] border bg-[#FAF7F2] ${
+                selected ? "border-[#3F5792] bg-[#F4F7FB]" : "border-[#E9DDCF]"
               }`}
               style={{
-                borderWidth: selected ? 1.5 : 1,
+                height: cardHeight,
+                padding: 12,
+                borderWidth: selected ? 1.4 : 1,
               }}
             >
-              {/* PORTRAIT PLACEHOLDER */}
-              <View className="h-[190px] w-[44%] overflow-hidden rounded-[14px] bg-[#E9DDCF]">
-                {portrait ? (
+              {/* PORTRAIT */}
+              <View
+                className="overflow-hidden rounded-[12px] bg-[#E9DDCF]"
+                style={{
+                  width: imageWidth,
+                  height: cardHeight - 26,
+                }}
+              >
+                {stylist.image ? (
                   <Image
-                    source={portrait}
+                    source={stylist.image}
                     className="h-full w-full"
                     resizeMode="cover"
                   />
                 ) : (
                   <View className="flex-1 items-center justify-center">
-                    <Ionicons
-                      name="image-outline"
-                      size={30}
-                      color="#B49482"
-                    />
-                    <Text
-                      className="mt-[7px] text-[11px] text-[#65463A]"
-                      style={{ fontFamily: "Manrope" }}
-                    >
-                      Portrait
-                    </Text>
+                    <Ionicons name="person-outline" size={27} color="#B49482" />
                   </View>
                 )}
               </View>
 
               {/* STYLIST DETAILS */}
-              <View className="ml-[18px] flex-1 justify-center pr-[2px]">
+              <View className="ml-[14px] flex-1 justify-center pr-[2px]">
                 <Text
-                  className="text-[28px] leading-[35px] text-[#2B1B16]"
+                  numberOfLines={1}
+                  className="text-[26px] leading-[32px] text-[#2B1B16]"
                   style={{ fontFamily: "DMSerifDisplay" }}
                 >
                   {stylist.id}
                 </Text>
 
-                <View className="mt-[10px] flex-row flex-wrap items-center gap-x-[6px] gap-y-[6px]">
+                <View className="mt-[7px] flex-row flex-nowrap items-center">
                   {stylist.traits.map((trait, index) => (
-                    <View
-                      key={trait}
-                      className="flex-row items-center"
-                    >
+                    <View key={trait} className="flex-row items-center">
                       {index > 0 && (
-                        <Text className="mr-[6px] text-[12px] text-[#65463A]">
+                        <Text className="mx-[5px] text-[11px] text-[#65463A]">
                           ·
                         </Text>
                       )}
 
-                      <View className="rounded-full bg-[#E9DDCF]/70 px-[10px] py-[7px]">
+                      <View className="rounded-full bg-[#E9DDCF]/70 px-[8px] py-[5px]">
                         <Text
-                          className="text-[11px] text-[#2B1B16]"
+                          className="text-[10px] text-[#2B1B16]"
                           style={{ fontFamily: "Manrope" }}
+                          numberOfLines={1}
+                          adjustsFontSizeToFit
+                          minimumFontScale={0.75}
                         >
                           {trait}
                         </Text>
@@ -212,8 +220,11 @@ export default function Onboarding() {
                 </View>
 
                 <Text
-                  className="mt-[12px] text-[14px] leading-[21px] text-[#64748B]"
+                  className="mt-[9px] text-[12px] leading-[18px] text-[#64748B]"
                   style={{ fontFamily: "Manrope" }}
+                  numberOfLines={compact ? 3 : 4}
+                  adjustsFontSizeToFit
+                  minimumFontScale={0.85}
                 >
                   {stylist.description}
                 </Text>
@@ -221,12 +232,8 @@ export default function Onboarding() {
 
               {/* SELECTED CHECKMARK */}
               {selected && (
-                <View className="absolute right-[12px] top-[12px] h-[30px] w-[30px] items-center justify-center rounded-full bg-[#3F5792]">
-                  <Ionicons
-                    name="checkmark"
-                    size={22}
-                    color="#FAF7F2"
-                  />
+                <View className="absolute right-[10px] top-[10px] h-[25px] w-[25px] items-center justify-center rounded-full bg-[#0D3767]">
+                  <Ionicons name="checkmark" size={19} color="#FAF7F2" />
                 </View>
               )}
             </Pressable>
@@ -235,9 +242,9 @@ export default function Onboarding() {
       </ScrollView>
 
       {/* FOOTER */}
-      <View className="px-[22px] pb-[12px] pt-[10px]">
+      <View className="px-[22px] pb-[8px] pt-[7px]">
         <Text
-          className="mb-[18px] text-center text-[12px] leading-[19px] text-[#64748B]"
+          className="mb-[14px] text-center text-[11px] leading-[17px] text-[#64748B]"
           style={{ fontFamily: "Manrope" }}
         >
           You can change your stylist anytime in Settings.
@@ -245,7 +252,8 @@ export default function Onboarding() {
 
         <Pressable
           onPress={handleContinue}
-          className="h-[56px] w-full flex-row items-center justify-center rounded-full bg-[#3F5792]"
+          accessibilityRole="button"
+          className="h-[52px] w-full flex-row items-center justify-center rounded-full bg-[#0D3767]"
           style={({ pressed }) => ({
             opacity: pressed ? 0.88 : 1,
           })}
@@ -259,9 +267,9 @@ export default function Onboarding() {
 
           <Ionicons
             name="arrow-forward"
-            size={24}
+            size={22}
             color="#FAF7F2"
-            style={{ marginLeft: 10 }}
+            style={{ marginLeft: 9 }}
           />
         </Pressable>
       </View>

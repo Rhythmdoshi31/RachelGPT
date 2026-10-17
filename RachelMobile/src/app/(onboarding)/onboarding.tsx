@@ -1,6 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import { useFocusEffect, router } from "expo-router";
-import { ActivityIndicator, Alert, Pressable, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Alert,
+  Pressable,
+  Text,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { supabase } from "../../lib/supabase";
@@ -23,11 +29,12 @@ import {
   Step1ChooseStylist,
   Step2StylePreferences,
   Step3WardrobeSetup,
-  Step4Review,
   type Stylist,
   initialStyleAnswers,
   type StyleQuestionnaireAnswers,
 } from "../../components/onboarding/steps";
+
+import Step4WardrobeSetup from "../../components/onboarding/step4WardrobeSetup";
 
 const TOTAL_STEPS = 4;
 
@@ -36,7 +43,8 @@ const SUPPORTED_STYLISTS: Stylist[] = ["Rachel", "KJay", "Mira"];
 export default function Onboarding() {
   const [step, setStep] = useState(1);
 
-  const [selectedStylist, setSelectedStylist] = useState<Stylist>("Rachel");
+  const [selectedStylist, setSelectedStylist] =
+    useState<Stylist>("Rachel");
 
   const [availablePersonas, setAvailablePersonas] = useState<
     AvailablePersona[]
@@ -46,11 +54,12 @@ export default function Onboarding() {
   const [isLoadingProfile, setIsLoadingProfile] = useState(true);
   const [isLoadingStylist, setIsLoadingStylist] = useState(true);
 
-  const [styleAnswers, setStyleAnswers] = useState<StyleQuestionnaireAnswers>({
-    ...initialStyleAnswers,
-  });
+  const [styleAnswers, setStyleAnswers] =
+    useState<StyleQuestionnaireAnswers>({
+      ...initialStyleAnswers,
+    });
 
-  // Load the saved stylist whenever this screen gains focus.
+  // Restore the saved stylist whenever onboarding gains focus.
   useFocusEffect(
     useCallback(() => {
       let active = true;
@@ -76,7 +85,8 @@ export default function Onboarding() {
             if (matchingPersona) {
               const stylistName = SUPPORTED_STYLISTS.find(
                 (name) =>
-                  name.toLowerCase() === matchingPersona.name.toLowerCase(),
+                  name.toLowerCase() ===
+                  matchingPersona.name.toLowerCase(),
               );
 
               if (stylistName) {
@@ -86,11 +96,16 @@ export default function Onboarding() {
           }
         } catch (error) {
           if (active) {
-            console.error("Failed to restore selected persona:", error);
+            console.error(
+              "Failed to restore selected persona:",
+              error,
+            );
 
             Alert.alert(
               "Couldn't load your stylist",
-              error instanceof Error ? error.message : "Please try again.",
+              error instanceof Error
+                ? error.message
+                : "Please try again.",
             );
           }
         } finally {
@@ -108,7 +123,7 @@ export default function Onboarding() {
     }, []),
   );
 
-  // Load saved Step 2 preferences once when this screen mounts.
+  // Restore saved Step 2 preferences.
   useEffect(() => {
     let active = true;
 
@@ -117,15 +132,22 @@ export default function Onboarding() {
         const profile = await getStyleProfile();
 
         if (active && profile) {
-          setStyleAnswers(fromStyleProfile(profile, initialStyleAnswers));
+          setStyleAnswers(
+            fromStyleProfile(profile, initialStyleAnswers),
+          );
         }
       } catch (error) {
-        console.error("Failed to load saved style profile:", error);
+        console.error(
+          "Failed to load saved style profile:",
+          error,
+        );
 
         if (active) {
           Alert.alert(
             "Couldn't load your saved preferences",
-            error instanceof Error ? error.message : "Please try again.",
+            error instanceof Error
+              ? error.message
+              : "Please try again.",
           );
         }
       } finally {
@@ -142,7 +164,8 @@ export default function Onboarding() {
     };
   }, []);
 
-  const isLoading = isLoadingProfile || (step === 1 && isLoadingStylist);
+  const isLoading =
+    isLoadingProfile || (step === 1 && isLoadingStylist);
 
   const busy = isContinuing || isLoading;
 
@@ -159,24 +182,29 @@ export default function Onboarding() {
   const handleContinue = async () => {
     if (busy) return;
 
-    // STEP 1: Save the selected stylist before advancing.
+    // STEP 1: Save the selected stylist.
     if (step === 1) {
       setIsContinuing(true);
 
       try {
         const persona = availablePersonas.find(
-          (item) => item.name.toLowerCase() === selectedStylist.toLowerCase(),
+          (item) =>
+            item.name.trim().toLowerCase() ===
+            selectedStylist.trim().toLowerCase(),
         );
 
         if (!persona) {
           console.log("Selected stylist:", selectedStylist);
-          console.log("Available personas in app:", availablePersonas);
+          console.log(
+            "Available personas in app:",
+            availablePersonas,
+          );
 
           throw new Error(
-            `Could not find ${selectedStylist}. Check the frontend API response in the logs.`,
+            `Could not find ${selectedStylist} in the available personas.`,
           );
         }
-        
+
         console.log("Saving selected persona:", {
           id: persona.id,
           name: persona.name,
@@ -188,11 +216,16 @@ export default function Onboarding() {
 
         setStep(2);
       } catch (error) {
-        console.error("Failed to save selected persona:", error);
+        console.error(
+          "Failed to save selected persona:",
+          error,
+        );
 
         Alert.alert(
           "Couldn't save your stylist",
-          error instanceof Error ? error.message : "Please try again.",
+          error instanceof Error
+            ? error.message
+            : "Please try again.",
         );
       } finally {
         setIsContinuing(false);
@@ -201,7 +234,7 @@ export default function Onboarding() {
       return;
     }
 
-    // STEP 2: Save style preferences before advancing.
+    // STEP 2: Save style preferences.
     if (step === 2) {
       setIsContinuing(true);
 
@@ -212,7 +245,10 @@ export default function Onboarding() {
 
         setStep(3);
       } catch (error) {
-        console.error("Failed to save style profile:", error);
+        console.error(
+          "Failed to save style profile:",
+          error,
+        );
 
         Alert.alert(
           "Couldn't save your style",
@@ -227,16 +263,15 @@ export default function Onboarding() {
       return;
     }
 
-    // Steps 3 and 4 are not connected to persistence yet.
-    if (step < TOTAL_STEPS) {
-      setStep((current) => current + 1);
+    // STEP 3: Keep the existing Style Mirror step unchanged.
+    if (step === 3) {
+      setStep(4);
       return;
     }
 
-    Alert.alert(
-      "Not finished yet",
-      "Onboarding completion will be connected after all steps are implemented.",
-    );
+    // STEP 4: Wardrobe photo selection is handled inside
+    // Step4WardrobeSetup. Its upload and completion flow
+    // can be connected separately.
   };
 
   const handleLogout = async () => {
@@ -274,7 +309,7 @@ export default function Onboarding() {
         return <Step3WardrobeSetup />;
 
       case 4:
-        return <Step4Review />;
+        return <Step4WardrobeSetup />;
 
       default:
         return null;
@@ -282,7 +317,10 @@ export default function Onboarding() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-[#FAF7F2]" edges={["top", "bottom"]}>
+    <SafeAreaView
+      className="flex-1 bg-[#FAF7F2]"
+      edges={["top", "bottom"]}
+    >
       {/* SHARED HEADER */}
       <View className="h-[49px] flex-row items-center justify-center">
         {step > 1 && (
@@ -293,7 +331,11 @@ export default function Onboarding() {
             accessibilityRole="button"
             accessibilityLabel="Go back"
           >
-            <Ionicons name="chevron-back" size={25} color="#2B1B16" />
+            <Ionicons
+              name="chevron-back"
+              size={25}
+              color="#2B1B16"
+            />
           </Pressable>
         )}
 
@@ -310,7 +352,9 @@ export default function Onboarding() {
               <View
                 key={item}
                 className={`h-[8px] w-[8px] rounded-full ${
-                  item <= step ? "bg-[#3F5792]" : "bg-[#E9DDCF]"
+                  item <= step
+                    ? "bg-[#3F5792]"
+                    : "bg-[#E9DDCF]"
                 }`}
               />
             ))}
@@ -337,7 +381,10 @@ export default function Onboarding() {
       <View className="flex-1">
         {isLoading ? (
           <View className="flex-1 items-center justify-center px-6">
-            <ActivityIndicator size="large" color="#3F5792" />
+            <ActivityIndicator
+              size="large"
+              color="#3F5792"
+            />
 
             <Text
               className="mt-3 text-center text-[13px] text-[#64748B]"
@@ -353,53 +400,53 @@ export default function Onboarding() {
         )}
       </View>
 
-      {/* SHARED FOOTER */}
-      <View className="px-[22px] pb-[8px] pt-[7px]">
-        <Text
-          className="mb-[14px] text-center text-[11px] leading-[17px] text-[#64748B]"
-          style={{ fontFamily: "Manrope" }}
-        >
-          {step === 1
-            ? "You can change your stylist anytime in Settings."
-            : `Step ${step} of ${TOTAL_STEPS} · Your style, your way.`}
-        </Text>
+      {/* SHARED FOOTER: Step 4 has its own actions. */}
+      {step !== 4 && (
+        <View className="px-[22px] pb-[8px] pt-[7px]">
+          <Text
+            className="mb-[14px] text-center text-[11px] leading-[17px] text-[#64748B]"
+            style={{ fontFamily: "Manrope" }}
+          >
+            {step === 1
+              ? "You can change your stylist anytime in Settings."
+              : `Step ${step} of ${TOTAL_STEPS} · Your style, your way.`}
+          </Text>
 
-        <Pressable
-          onPress={handleContinue}
-          disabled={busy}
-          accessibilityRole="button"
-          className="h-[52px] w-full flex-row items-center justify-center rounded-full bg-[#0D3767]"
-          style={({ pressed }) => ({
-            opacity: busy ? 0.65 : pressed ? 0.88 : 1,
-          })}
-        >
-          {busy ? (
-            <ActivityIndicator color="#FAF7F2" />
-          ) : (
-            <>
-              <Text
-                className="text-[17px] text-[#FAF7F2]"
-                style={{ fontFamily: "DMSerifDisplay" }}
-              >
-                {step === 1
-                  ? `Continue with ${selectedStylist}`
-                  : step === 2
-                    ? "Create my Style Snapshot"
-                    : step === TOTAL_STEPS
-                      ? "Finish setup"
+          <Pressable
+            onPress={handleContinue}
+            disabled={busy}
+            accessibilityRole="button"
+            className="h-[52px] w-full flex-row items-center justify-center rounded-full bg-[#0D3767]"
+            style={({ pressed }) => ({
+              opacity: busy ? 0.65 : pressed ? 0.88 : 1,
+            })}
+          >
+            {busy ? (
+              <ActivityIndicator color="#FAF7F2" />
+            ) : (
+              <>
+                <Text
+                  className="text-[17px] text-[#FAF7F2]"
+                  style={{ fontFamily: "DMSerifDisplay" }}
+                >
+                  {step === 1
+                    ? `Continue with ${selectedStylist}`
+                    : step === 2
+                      ? "Create my Style Snapshot"
                       : "Continue"}
-              </Text>
+                </Text>
 
-              <Ionicons
-                name={step === TOTAL_STEPS ? "checkmark" : "arrow-forward"}
-                size={22}
-                color="#FAF7F2"
-                style={{ marginLeft: 9 }}
-              />
-            </>
-          )}
-        </Pressable>
-      </View>
+                <Ionicons
+                  name="arrow-forward"
+                  size={22}
+                  color="#FAF7F2"
+                  style={{ marginLeft: 9 }}
+                />
+              </>
+            )}
+          </Pressable>
+        </View>
+      )}
     </SafeAreaView>
   );
 }

@@ -15,7 +15,7 @@ export default function StepHeading({
         numberOfLines={2}
         adjustsFontSizeToFit
         minimumFontScale={0.8}
-        className="text-center text-[27px] leading-[34px] text-[#2B1B16]"
+        className="text-center text-[27px] leading-[29px] text-[#2B1B16]"
         style={{ fontFamily: "DMSerifDisplay" }}
       >
         {title}

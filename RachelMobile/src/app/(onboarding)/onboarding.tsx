@@ -1,10 +1,5 @@
 import { useState } from "react";
-import {
-  Alert,
-  Pressable,
-  Text,
-  View,
-} from "react-native";
+import { Alert, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
@@ -16,6 +11,8 @@ import {
   Step3WardrobeSetup,
   Step4Review,
   type Stylist,
+  initialStyleAnswers,
+  type StyleQuestionnaireAnswers,
 } from "../../components/onboarding/steps";
 
 const TOTAL_STEPS = 4;
@@ -29,9 +26,11 @@ const stepTitles = [
 
 export default function Onboarding() {
   const [step, setStep] = useState(1);
-  const [selectedStylist, setSelectedStylist] =
-    useState<Stylist>("Rachel");
+  const [selectedStylist, setSelectedStylist] = useState<Stylist>("Rachel");
   const [isContinuing, setIsContinuing] = useState(false);
+
+  const [styleAnswers, setStyleAnswers] =
+    useState<StyleQuestionnaireAnswers>(initialStyleAnswers);
 
   const handleBack = () => {
     if (isContinuing) return;
@@ -55,7 +54,7 @@ export default function Onboarding() {
     // after the required onboarding data and APIs are ready.
     Alert.alert(
       "Not finished yet",
-      "Onboarding completion will be connected after all steps are implemented."
+      "Onboarding completion will be connected after all steps are implemented.",
     );
   };
 
@@ -81,7 +80,12 @@ export default function Onboarding() {
         );
 
       case 2:
-        return <Step2StylePreferences />;
+        return (
+          <Step2StylePreferences
+            answers={styleAnswers}
+            setAnswers={setStyleAnswers}
+          />
+        );
 
       case 3:
         return <Step3WardrobeSetup />;
@@ -95,10 +99,7 @@ export default function Onboarding() {
   };
 
   return (
-    <SafeAreaView
-      className="flex-1 bg-[#FAF7F2]"
-      edges={["top", "bottom"]}
-    >
+    <SafeAreaView className="flex-1 bg-[#FAF7F2]" edges={["top", "bottom"]}>
       {/* SHARED HEADER */}
       <View className="h-[49px] flex-row items-center justify-center">
         <Pressable
@@ -107,11 +108,7 @@ export default function Onboarding() {
           accessibilityRole="button"
           accessibilityLabel="Go back"
         >
-          <Ionicons
-            name="chevron-back"
-            size={25}
-            color="#2B1B16"
-          />
+          <Ionicons name="chevron-back" size={25} color="#2B1B16" />
         </Pressable>
 
         <View className="items-center">
@@ -127,9 +124,7 @@ export default function Onboarding() {
               <View
                 key={item}
                 className={`h-[8px] w-[8px] rounded-full ${
-                  item <= step
-                    ? "bg-[#3F5792]"
-                    : "bg-[#E9DDCF]"
+                  item <= step ? "bg-[#3F5792]" : "bg-[#E9DDCF]"
                 }`}
               />
             ))}
@@ -152,9 +147,7 @@ export default function Onboarding() {
       </View>
 
       {/* ACTIVE STEP */}
-      <View className="flex-1">
-        {renderStep()}
-      </View>
+      <View className="flex-1">{renderStep()}</View>
 
       {/* SHARED FOOTER */}
       <View className="px-[22px] pb-[8px] pt-[7px]">
@@ -182,9 +175,11 @@ export default function Onboarding() {
           >
             {step === 1
               ? `Continue with ${selectedStylist}`
-              : step === TOTAL_STEPS
-                ? "Finish setup"
-                : "Continue"}
+              : step === 2
+                ? "Create my Style Snapshot"
+                : step === TOTAL_STEPS
+                  ? "Finish setup"
+                  : "Continue"}
           </Text>
 
           <Ionicons

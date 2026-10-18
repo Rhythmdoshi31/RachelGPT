@@ -33,7 +33,7 @@ import {
   initialStyleAnswers,
   type StyleQuestionnaireAnswers,
 } from "../../components/onboarding/steps";
-
+import Step3StyleMirror from "../../components/onboarding/step3StyleMirror";
 import Step4WardrobeSetup from "../../components/onboarding/step4WardrobeSetup";
 
 const TOTAL_STEPS = 4;
@@ -306,7 +306,7 @@ export default function Onboarding() {
         );
 
       case 3:
-        return <Step3WardrobeSetup />;
+        return <Step3StyleMirror />;
 
       case 4:
         return <Step4WardrobeSetup />;

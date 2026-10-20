@@ -6,6 +6,7 @@ import authRoutes from "./routes/auth.routes.js";
 import onboardingRoutes from "./routes/onboarding.routes.js";
 import personaRoutes from "./routes/persona.routes.js";
 import wardrobeRoutes from "./routes/wardrobe.routes.js";
+import avatarRoutes from "./routes/avatar.routes.js";
 const app = express();
 app.use(express.json());
 const PORT = process.env.PORT || 3000;
@@ -14,6 +15,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/onboarding", onboardingRoutes);
 app.use("/api/personas", personaRoutes);
 app.use("/api/wardrobe", wardrobeRoutes);
+app.use("/api/avatar", avatarRoutes);
 // Health check
 app.get("/", (_req, res) => {
     res.json({

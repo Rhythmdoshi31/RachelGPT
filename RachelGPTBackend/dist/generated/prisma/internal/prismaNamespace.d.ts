@@ -2071,6 +2071,14 @@ export type SavedProductScalarFieldEnum = (typeof SavedProductScalarFieldEnum)[k
 export declare const AvatarScalarFieldEnum: {
     readonly id: 'id';
     readonly userId: 'userId';
+    readonly gender: 'gender';
+    readonly hairstyle: 'hairstyle';
+    readonly faceShape: 'faceShape';
+    readonly skinTone: 'skinTone';
+    readonly bodyType: 'bodyType';
+    readonly imageCode: 'imageCode';
+    readonly imagePath: 'imagePath';
+    readonly version: 'version';
     readonly metadata: 'metadata';
     readonly createdAt: 'createdAt';
     readonly updatedAt: 'updatedAt';

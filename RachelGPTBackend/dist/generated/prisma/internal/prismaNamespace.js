@@ -282,6 +282,14 @@ export const SavedProductScalarFieldEnum = {
 export const AvatarScalarFieldEnum = {
     id: 'id',
     userId: 'userId',
+    gender: 'gender',
+    hairstyle: 'hairstyle',
+    faceShape: 'faceShape',
+    skinTone: 'skinTone',
+    bodyType: 'bodyType',
+    imageCode: 'imageCode',
+    imagePath: 'imagePath',
+    version: 'version',
     metadata: 'metadata',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'

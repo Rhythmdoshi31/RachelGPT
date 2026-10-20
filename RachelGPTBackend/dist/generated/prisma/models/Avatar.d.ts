@@ -7,44 +7,122 @@ import type * as Prisma from "../internal/prismaNamespace.js";
 export type AvatarModel = runtime.Types.Result.DefaultSelection<Prisma.$AvatarPayload>;
 export type AggregateAvatar = {
     _count: AvatarCountAggregateOutputType | null;
+    _avg: AvatarAvgAggregateOutputType | null;
+    _sum: AvatarSumAggregateOutputType | null;
     _min: AvatarMinAggregateOutputType | null;
     _max: AvatarMaxAggregateOutputType | null;
+};
+export type AvatarAvgAggregateOutputType = {
+    hairstyle: number | null;
+    faceShape: number | null;
+    skinTone: number | null;
+    bodyType: number | null;
+    version: number | null;
+};
+export type AvatarSumAggregateOutputType = {
+    hairstyle: number | null;
+    faceShape: number | null;
+    skinTone: number | null;
+    bodyType: number | null;
+    version: number | null;
 };
 export type AvatarMinAggregateOutputType = {
     id: string | null;
     userId: string | null;
+    gender: string | null;
+    hairstyle: number | null;
+    faceShape: number | null;
+    skinTone: number | null;
+    bodyType: number | null;
+    imageCode: string | null;
+    imagePath: string | null;
+    version: number | null;
     createdAt: Date | null;
     updatedAt: Date | null;
 };
 export type AvatarMaxAggregateOutputType = {
     id: string | null;
     userId: string | null;
+    gender: string | null;
+    hairstyle: number | null;
+    faceShape: number | null;
+    skinTone: number | null;
+    bodyType: number | null;
+    imageCode: string | null;
+    imagePath: string | null;
+    version: number | null;
     createdAt: Date | null;
     updatedAt: Date | null;
 };
 export type AvatarCountAggregateOutputType = {
     id: number;
     userId: number;
+    gender: number;
+    hairstyle: number;
+    faceShape: number;
+    skinTone: number;
+    bodyType: number;
+    imageCode: number;
+    imagePath: number;
+    version: number;
     metadata: number;
     createdAt: number;
     updatedAt: number;
     _all: number;
 };
+export type AvatarAvgAggregateInputType = {
+    hairstyle?: true;
+    faceShape?: true;
+    skinTone?: true;
+    bodyType?: true;
+    version?: true;
+};
+export type AvatarSumAggregateInputType = {
+    hairstyle?: true;
+    faceShape?: true;
+    skinTone?: true;
+    bodyType?: true;
+    version?: true;
+};
 export type AvatarMinAggregateInputType = {
     id?: true;
     userId?: true;
+    gender?: true;
+    hairstyle?: true;
+    faceShape?: true;
+    skinTone?: true;
+    bodyType?: true;
+    imageCode?: true;
+    imagePath?: true;
+    version?: true;
     createdAt?: true;
     updatedAt?: true;
 };
 export type AvatarMaxAggregateInputType = {
     id?: true;
     userId?: true;
+    gender?: true;
+    hairstyle?: true;
+    faceShape?: true;
+    skinTone?: true;
+    bodyType?: true;
+    imageCode?: true;
+    imagePath?: true;
+    version?: true;
     createdAt?: true;
     updatedAt?: true;
 };
 export type AvatarCountAggregateInputType = {
     id?: true;
     userId?: true;
+    gender?: true;
+    hairstyle?: true;
+    faceShape?: true;
+    skinTone?: true;
+    bodyType?: true;
+    imageCode?: true;
+    imagePath?: true;
+    version?: true;
     metadata?: true;
     createdAt?: true;
     updatedAt?: true;
@@ -88,6 +166,18 @@ export type AvatarAggregateArgs<ExtArgs extends runtime.Types.Extensions.Interna
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      *
+     * Select which fields to average
+    **/
+    _avg?: AvatarAvgAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to sum
+    **/
+    _sum?: AvatarSumAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
      * Select which fields to find the minimum value
     **/
     _min?: AvatarMinAggregateInputType;
@@ -109,16 +199,28 @@ export type AvatarGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
     take?: number;
     skip?: number;
     _count?: AvatarCountAggregateInputType | true;
+    _avg?: AvatarAvgAggregateInputType;
+    _sum?: AvatarSumAggregateInputType;
     _min?: AvatarMinAggregateInputType;
     _max?: AvatarMaxAggregateInputType;
 };
 export type AvatarGroupByOutputType = {
     id: string;
     userId: string;
+    gender: string;
+    hairstyle: number | null;
+    faceShape: number | null;
+    skinTone: number | null;
+    bodyType: number | null;
+    imageCode: string;
+    imagePath: string;
+    version: number;
     metadata: runtime.JsonValue | null;
     createdAt: Date;
     updatedAt: Date;
     _count: AvatarCountAggregateOutputType | null;
+    _avg: AvatarAvgAggregateOutputType | null;
+    _sum: AvatarSumAggregateOutputType | null;
     _min: AvatarMinAggregateOutputType | null;
     _max: AvatarMaxAggregateOutputType | null;
 };
@@ -131,6 +233,14 @@ export type AvatarWhereInput = {
     NOT?: Prisma.AvatarWhereInput | Prisma.AvatarWhereInput[];
     id?: Prisma.StringFilter<"Avatar"> | string;
     userId?: Prisma.UuidFilter<"Avatar"> | string;
+    gender?: Prisma.StringFilter<"Avatar"> | string;
+    hairstyle?: Prisma.IntNullableFilter<"Avatar"> | number | null;
+    faceShape?: Prisma.IntNullableFilter<"Avatar"> | number | null;
+    skinTone?: Prisma.IntNullableFilter<"Avatar"> | number | null;
+    bodyType?: Prisma.IntNullableFilter<"Avatar"> | number | null;
+    imageCode?: Prisma.StringFilter<"Avatar"> | string;
+    imagePath?: Prisma.StringFilter<"Avatar"> | string;
+    version?: Prisma.IntFilter<"Avatar"> | number;
     metadata?: Prisma.JsonNullableFilter<"Avatar">;
     createdAt?: Prisma.DateTimeFilter<"Avatar"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Avatar"> | Date | string;
@@ -140,6 +250,14 @@ export type AvatarWhereInput = {
 export type AvatarOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
     userId?: Prisma.SortOrder;
+    gender?: Prisma.SortOrder;
+    hairstyle?: Prisma.SortOrderInput | Prisma.SortOrder;
+    faceShape?: Prisma.SortOrderInput | Prisma.SortOrder;
+    skinTone?: Prisma.SortOrderInput | Prisma.SortOrder;
+    bodyType?: Prisma.SortOrderInput | Prisma.SortOrder;
+    imageCode?: Prisma.SortOrder;
+    imagePath?: Prisma.SortOrder;
+    version?: Prisma.SortOrder;
     metadata?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
@@ -152,6 +270,14 @@ export type AvatarWhereUniqueInput = Prisma.AtLeast<{
     AND?: Prisma.AvatarWhereInput | Prisma.AvatarWhereInput[];
     OR?: Prisma.AvatarWhereInput[];
     NOT?: Prisma.AvatarWhereInput | Prisma.AvatarWhereInput[];
+    gender?: Prisma.StringFilter<"Avatar"> | string;
+    hairstyle?: Prisma.IntNullableFilter<"Avatar"> | number | null;
+    faceShape?: Prisma.IntNullableFilter<"Avatar"> | number | null;
+    skinTone?: Prisma.IntNullableFilter<"Avatar"> | number | null;
+    bodyType?: Prisma.IntNullableFilter<"Avatar"> | number | null;
+    imageCode?: Prisma.StringFilter<"Avatar"> | string;
+    imagePath?: Prisma.StringFilter<"Avatar"> | string;
+    version?: Prisma.IntFilter<"Avatar"> | number;
     metadata?: Prisma.JsonNullableFilter<"Avatar">;
     createdAt?: Prisma.DateTimeFilter<"Avatar"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Avatar"> | Date | string;
@@ -161,12 +287,22 @@ export type AvatarWhereUniqueInput = Prisma.AtLeast<{
 export type AvatarOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
     userId?: Prisma.SortOrder;
+    gender?: Prisma.SortOrder;
+    hairstyle?: Prisma.SortOrderInput | Prisma.SortOrder;
+    faceShape?: Prisma.SortOrderInput | Prisma.SortOrder;
+    skinTone?: Prisma.SortOrderInput | Prisma.SortOrder;
+    bodyType?: Prisma.SortOrderInput | Prisma.SortOrder;
+    imageCode?: Prisma.SortOrder;
+    imagePath?: Prisma.SortOrder;
+    version?: Prisma.SortOrder;
     metadata?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
     _count?: Prisma.AvatarCountOrderByAggregateInput;
+    _avg?: Prisma.AvatarAvgOrderByAggregateInput;
     _max?: Prisma.AvatarMaxOrderByAggregateInput;
     _min?: Prisma.AvatarMinOrderByAggregateInput;
+    _sum?: Prisma.AvatarSumOrderByAggregateInput;
 };
 export type AvatarScalarWhereWithAggregatesInput = {
     AND?: Prisma.AvatarScalarWhereWithAggregatesInput | Prisma.AvatarScalarWhereWithAggregatesInput[];
@@ -174,12 +310,28 @@ export type AvatarScalarWhereWithAggregatesInput = {
     NOT?: Prisma.AvatarScalarWhereWithAggregatesInput | Prisma.AvatarScalarWhereWithAggregatesInput[];
     id?: Prisma.StringWithAggregatesFilter<"Avatar"> | string;
     userId?: Prisma.UuidWithAggregatesFilter<"Avatar"> | string;
+    gender?: Prisma.StringWithAggregatesFilter<"Avatar"> | string;
+    hairstyle?: Prisma.IntNullableWithAggregatesFilter<"Avatar"> | number | null;
+    faceShape?: Prisma.IntNullableWithAggregatesFilter<"Avatar"> | number | null;
+    skinTone?: Prisma.IntNullableWithAggregatesFilter<"Avatar"> | number | null;
+    bodyType?: Prisma.IntNullableWithAggregatesFilter<"Avatar"> | number | null;
+    imageCode?: Prisma.StringWithAggregatesFilter<"Avatar"> | string;
+    imagePath?: Prisma.StringWithAggregatesFilter<"Avatar"> | string;
+    version?: Prisma.IntWithAggregatesFilter<"Avatar"> | number;
     metadata?: Prisma.JsonNullableWithAggregatesFilter<"Avatar">;
     createdAt?: Prisma.DateTimeWithAggregatesFilter<"Avatar"> | Date | string;
     updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Avatar"> | Date | string;
 };
 export type AvatarCreateInput = {
     id?: string;
+    gender?: string;
+    hairstyle?: number | null;
+    faceShape?: number | null;
+    skinTone?: number | null;
+    bodyType?: number | null;
+    imageCode?: string;
+    imagePath?: string;
+    version?: number;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -189,6 +341,14 @@ export type AvatarCreateInput = {
 export type AvatarUncheckedCreateInput = {
     id?: string;
     userId: string;
+    gender?: string;
+    hairstyle?: number | null;
+    faceShape?: number | null;
+    skinTone?: number | null;
+    bodyType?: number | null;
+    imageCode?: string;
+    imagePath?: string;
+    version?: number;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -196,6 +356,14 @@ export type AvatarUncheckedCreateInput = {
 };
 export type AvatarUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
+    gender?: Prisma.StringFieldUpdateOperationsInput | string;
+    hairstyle?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    faceShape?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    skinTone?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    bodyType?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    imageCode?: Prisma.StringFieldUpdateOperationsInput | string;
+    imagePath?: Prisma.StringFieldUpdateOperationsInput | string;
+    version?: Prisma.IntFieldUpdateOperationsInput | number;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -205,6 +373,14 @@ export type AvatarUpdateInput = {
 export type AvatarUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     userId?: Prisma.StringFieldUpdateOperationsInput | string;
+    gender?: Prisma.StringFieldUpdateOperationsInput | string;
+    hairstyle?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    faceShape?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    skinTone?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    bodyType?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    imageCode?: Prisma.StringFieldUpdateOperationsInput | string;
+    imagePath?: Prisma.StringFieldUpdateOperationsInput | string;
+    version?: Prisma.IntFieldUpdateOperationsInput | number;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -213,12 +389,28 @@ export type AvatarUncheckedUpdateInput = {
 export type AvatarCreateManyInput = {
     id?: string;
     userId: string;
+    gender?: string;
+    hairstyle?: number | null;
+    faceShape?: number | null;
+    skinTone?: number | null;
+    bodyType?: number | null;
+    imageCode?: string;
+    imagePath?: string;
+    version?: number;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Date | string;
     updatedAt?: Date | string;
 };
 export type AvatarUpdateManyMutationInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
+    gender?: Prisma.StringFieldUpdateOperationsInput | string;
+    hairstyle?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    faceShape?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    skinTone?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    bodyType?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    imageCode?: Prisma.StringFieldUpdateOperationsInput | string;
+    imagePath?: Prisma.StringFieldUpdateOperationsInput | string;
+    version?: Prisma.IntFieldUpdateOperationsInput | number;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -226,6 +418,14 @@ export type AvatarUpdateManyMutationInput = {
 export type AvatarUncheckedUpdateManyInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     userId?: Prisma.StringFieldUpdateOperationsInput | string;
+    gender?: Prisma.StringFieldUpdateOperationsInput | string;
+    hairstyle?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    faceShape?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    skinTone?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    bodyType?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    imageCode?: Prisma.StringFieldUpdateOperationsInput | string;
+    imagePath?: Prisma.StringFieldUpdateOperationsInput | string;
+    version?: Prisma.IntFieldUpdateOperationsInput | number;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -237,21 +437,59 @@ export type AvatarNullableScalarRelationFilter = {
 export type AvatarCountOrderByAggregateInput = {
     id?: Prisma.SortOrder;
     userId?: Prisma.SortOrder;
+    gender?: Prisma.SortOrder;
+    hairstyle?: Prisma.SortOrder;
+    faceShape?: Prisma.SortOrder;
+    skinTone?: Prisma.SortOrder;
+    bodyType?: Prisma.SortOrder;
+    imageCode?: Prisma.SortOrder;
+    imagePath?: Prisma.SortOrder;
+    version?: Prisma.SortOrder;
     metadata?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
 };
+export type AvatarAvgOrderByAggregateInput = {
+    hairstyle?: Prisma.SortOrder;
+    faceShape?: Prisma.SortOrder;
+    skinTone?: Prisma.SortOrder;
+    bodyType?: Prisma.SortOrder;
+    version?: Prisma.SortOrder;
+};
 export type AvatarMaxOrderByAggregateInput = {
     id?: Prisma.SortOrder;
     userId?: Prisma.SortOrder;
+    gender?: Prisma.SortOrder;
+    hairstyle?: Prisma.SortOrder;
+    faceShape?: Prisma.SortOrder;
+    skinTone?: Prisma.SortOrder;
+    bodyType?: Prisma.SortOrder;
+    imageCode?: Prisma.SortOrder;
+    imagePath?: Prisma.SortOrder;
+    version?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
 };
 export type AvatarMinOrderByAggregateInput = {
     id?: Prisma.SortOrder;
     userId?: Prisma.SortOrder;
+    gender?: Prisma.SortOrder;
+    hairstyle?: Prisma.SortOrder;
+    faceShape?: Prisma.SortOrder;
+    skinTone?: Prisma.SortOrder;
+    bodyType?: Prisma.SortOrder;
+    imageCode?: Prisma.SortOrder;
+    imagePath?: Prisma.SortOrder;
+    version?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
+};
+export type AvatarSumOrderByAggregateInput = {
+    hairstyle?: Prisma.SortOrder;
+    faceShape?: Prisma.SortOrder;
+    skinTone?: Prisma.SortOrder;
+    bodyType?: Prisma.SortOrder;
+    version?: Prisma.SortOrder;
 };
 export type AvatarScalarRelationFilter = {
     is?: Prisma.AvatarWhereInput;
@@ -299,6 +537,14 @@ export type AvatarUpdateOneRequiredWithoutReferenceImagesNestedInput = {
 };
 export type AvatarCreateWithoutUserInput = {
     id?: string;
+    gender?: string;
+    hairstyle?: number | null;
+    faceShape?: number | null;
+    skinTone?: number | null;
+    bodyType?: number | null;
+    imageCode?: string;
+    imagePath?: string;
+    version?: number;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -306,6 +552,14 @@ export type AvatarCreateWithoutUserInput = {
 };
 export type AvatarUncheckedCreateWithoutUserInput = {
     id?: string;
+    gender?: string;
+    hairstyle?: number | null;
+    faceShape?: number | null;
+    skinTone?: number | null;
+    bodyType?: number | null;
+    imageCode?: string;
+    imagePath?: string;
+    version?: number;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -326,6 +580,14 @@ export type AvatarUpdateToOneWithWhereWithoutUserInput = {
 };
 export type AvatarUpdateWithoutUserInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
+    gender?: Prisma.StringFieldUpdateOperationsInput | string;
+    hairstyle?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    faceShape?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    skinTone?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    bodyType?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    imageCode?: Prisma.StringFieldUpdateOperationsInput | string;
+    imagePath?: Prisma.StringFieldUpdateOperationsInput | string;
+    version?: Prisma.IntFieldUpdateOperationsInput | number;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -333,6 +595,14 @@ export type AvatarUpdateWithoutUserInput = {
 };
 export type AvatarUncheckedUpdateWithoutUserInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
+    gender?: Prisma.StringFieldUpdateOperationsInput | string;
+    hairstyle?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    faceShape?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    skinTone?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    bodyType?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    imageCode?: Prisma.StringFieldUpdateOperationsInput | string;
+    imagePath?: Prisma.StringFieldUpdateOperationsInput | string;
+    version?: Prisma.IntFieldUpdateOperationsInput | number;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -340,6 +610,14 @@ export type AvatarUncheckedUpdateWithoutUserInput = {
 };
 export type AvatarCreateWithoutReferenceImagesInput = {
     id?: string;
+    gender?: string;
+    hairstyle?: number | null;
+    faceShape?: number | null;
+    skinTone?: number | null;
+    bodyType?: number | null;
+    imageCode?: string;
+    imagePath?: string;
+    version?: number;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -348,6 +626,14 @@ export type AvatarCreateWithoutReferenceImagesInput = {
 export type AvatarUncheckedCreateWithoutReferenceImagesInput = {
     id?: string;
     userId: string;
+    gender?: string;
+    hairstyle?: number | null;
+    faceShape?: number | null;
+    skinTone?: number | null;
+    bodyType?: number | null;
+    imageCode?: string;
+    imagePath?: string;
+    version?: number;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -367,6 +653,14 @@ export type AvatarUpdateToOneWithWhereWithoutReferenceImagesInput = {
 };
 export type AvatarUpdateWithoutReferenceImagesInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
+    gender?: Prisma.StringFieldUpdateOperationsInput | string;
+    hairstyle?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    faceShape?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    skinTone?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    bodyType?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    imageCode?: Prisma.StringFieldUpdateOperationsInput | string;
+    imagePath?: Prisma.StringFieldUpdateOperationsInput | string;
+    version?: Prisma.IntFieldUpdateOperationsInput | number;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -375,6 +669,14 @@ export type AvatarUpdateWithoutReferenceImagesInput = {
 export type AvatarUncheckedUpdateWithoutReferenceImagesInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     userId?: Prisma.StringFieldUpdateOperationsInput | string;
+    gender?: Prisma.StringFieldUpdateOperationsInput | string;
+    hairstyle?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    faceShape?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    skinTone?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    bodyType?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    imageCode?: Prisma.StringFieldUpdateOperationsInput | string;
+    imagePath?: Prisma.StringFieldUpdateOperationsInput | string;
+    version?: Prisma.IntFieldUpdateOperationsInput | number;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -406,6 +708,14 @@ export type AvatarCountOutputTypeCountReferenceImagesArgs<ExtArgs extends runtim
 export type AvatarSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
     userId?: boolean;
+    gender?: boolean;
+    hairstyle?: boolean;
+    faceShape?: boolean;
+    skinTone?: boolean;
+    bodyType?: boolean;
+    imageCode?: boolean;
+    imagePath?: boolean;
+    version?: boolean;
     metadata?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
@@ -416,6 +726,14 @@ export type AvatarSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
 export type AvatarSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
     userId?: boolean;
+    gender?: boolean;
+    hairstyle?: boolean;
+    faceShape?: boolean;
+    skinTone?: boolean;
+    bodyType?: boolean;
+    imageCode?: boolean;
+    imagePath?: boolean;
+    version?: boolean;
     metadata?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
@@ -424,6 +742,14 @@ export type AvatarSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
 export type AvatarSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
     userId?: boolean;
+    gender?: boolean;
+    hairstyle?: boolean;
+    faceShape?: boolean;
+    skinTone?: boolean;
+    bodyType?: boolean;
+    imageCode?: boolean;
+    imagePath?: boolean;
+    version?: boolean;
     metadata?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
@@ -432,11 +758,19 @@ export type AvatarSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
 export type AvatarSelectScalar = {
     id?: boolean;
     userId?: boolean;
+    gender?: boolean;
+    hairstyle?: boolean;
+    faceShape?: boolean;
+    skinTone?: boolean;
+    bodyType?: boolean;
+    imageCode?: boolean;
+    imagePath?: boolean;
+    version?: boolean;
     metadata?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
 };
-export type AvatarOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "metadata" | "createdAt" | "updatedAt", ExtArgs["result"]["avatar"]>;
+export type AvatarOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "gender" | "hairstyle" | "faceShape" | "skinTone" | "bodyType" | "imageCode" | "imagePath" | "version" | "metadata" | "createdAt" | "updatedAt", ExtArgs["result"]["avatar"]>;
 export type AvatarInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     referenceImages?: boolean | Prisma.Avatar$referenceImagesArgs<ExtArgs>;
@@ -457,9 +791,14 @@ export type $AvatarPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
         userId: string;
-        /**
-         * * General avatar configuration.
-         */
+        gender: string;
+        hairstyle: number | null;
+        faceShape: number | null;
+        skinTone: number | null;
+        bodyType: number | null;
+        imageCode: string;
+        imagePath: string;
+        version: number;
         metadata: runtime.JsonValue | null;
         createdAt: Date;
         updatedAt: Date;
@@ -821,6 +1160,14 @@ export interface Prisma__AvatarClient<T, Null = never, ExtArgs extends runtime.T
 export interface AvatarFieldRefs {
     readonly id: Prisma.FieldRef<"Avatar", 'String'>;
     readonly userId: Prisma.FieldRef<"Avatar", 'String'>;
+    readonly gender: Prisma.FieldRef<"Avatar", 'String'>;
+    readonly hairstyle: Prisma.FieldRef<"Avatar", 'Int'>;
+    readonly faceShape: Prisma.FieldRef<"Avatar", 'Int'>;
+    readonly skinTone: Prisma.FieldRef<"Avatar", 'Int'>;
+    readonly bodyType: Prisma.FieldRef<"Avatar", 'Int'>;
+    readonly imageCode: Prisma.FieldRef<"Avatar", 'String'>;
+    readonly imagePath: Prisma.FieldRef<"Avatar", 'String'>;
+    readonly version: Prisma.FieldRef<"Avatar", 'Int'>;
     readonly metadata: Prisma.FieldRef<"Avatar", 'Json'>;
     readonly createdAt: Prisma.FieldRef<"Avatar", 'DateTime'>;
     readonly updatedAt: Prisma.FieldRef<"Avatar", 'DateTime'>;

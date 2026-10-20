@@ -9,6 +9,7 @@ import {
   useWindowDimensions,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import type { AvatarSelection } from "../../lib/onboarding";
 
 const studioBackground = require("../../../assets/images/backgrounds/Sunlit_ivory_studio_with_olive_tree.png");
 const femaleAvatar = require("../../../assets/images/backgrounds/avatars/avatar1.png");
@@ -94,23 +95,38 @@ function OptionTile({
   );
 }
 
-export default function Step3StyleMirror() {
+type Step3StyleMirrorProps = {
+  value: AvatarSelection;
+  onChange: (value: AvatarSelection) => void;
+};
+
+export default function Step3StyleMirror({
+  value,
+  onChange,
+}: Step3StyleMirrorProps) {
   const { height: screenHeight, width: screenWidth } = useWindowDimensions();
 
   const compact = screenHeight < 750;
   const horizontalPadding = screenWidth < 390 ? 20 : 24;
-
-  // Studio height stays the same as the previous version.
   const studioHeight = compact ? 245 : 280;
 
   const [section, setSection] = useState<Section>("Face");
-  const [avatarGender, setAvatarGender] = useState<Gender>("female");
-  const [face, setFace] = useState("Soft");
-  const [skinTone, setSkinTone] = useState(1);
-  const [hair, setHair] = useState("Waves");
-  const [body, setBody] = useState("Lean");
+
+  const avatarGender: Gender =
+    value.gender === "FEMALE" ? "female" : "male";
+
+  const face = FACE_OPTIONS[(value.faceShape ?? 1) - 1] ?? "Soft";
+  const hair = HAIR_OPTIONS[(value.hairstyle ?? 1) - 1] ?? "Waves";
+  const body = BODY_OPTIONS[(value.bodyType ?? 2) - 1] ?? "Lean";
 
   const avatar = avatarGender === "female" ? femaleAvatar : maleAvatar;
+
+  const updateSelection = (updates: Partial<AvatarSelection>) => {
+    onChange({
+      ...value,
+      ...updates,
+    });
+  };
 
   return (
     <View className="flex-1 bg-[#FAF7F2]">
@@ -130,7 +146,7 @@ export default function Step3StyleMirror() {
           }}
         />
 
-        {/* Slightly smaller model with space around the head and feet. */}
+        {/* Slightly smaller model with breathing room above and below. */}
         <View className="absolute inset-0 overflow-hidden">
           <Image
             source={avatar}
@@ -152,7 +168,11 @@ export default function Step3StyleMirror() {
             return (
               <Pressable
                 key={gender}
-                onPress={() => setAvatarGender(gender)}
+                onPress={() =>
+                  updateSelection({
+                    gender: gender === "female" ? "FEMALE" : "MALE",
+                  })
+                }
                 className="rounded-full border px-[12px] py-[6px]"
                 style={{
                   backgroundColor: selected ? NAVY : "#FAF7F2E8",
@@ -233,12 +253,14 @@ export default function Step3StyleMirror() {
 
               <View className="flex-row items-center justify-between px-[2px]">
                 {SKIN_TONES.map((tone, index) => {
-                  const selected = skinTone === index;
+                  const selected = value.skinTone === index + 1;
 
                   return (
                     <Pressable
                       key={tone}
-                      onPress={() => setSkinTone(index)}
+                      onPress={() =>
+                        updateSelection({ skinTone: index + 1 })
+                      }
                       className="items-center justify-center rounded-full"
                       style={{
                         width: 35,
@@ -272,12 +294,14 @@ export default function Step3StyleMirror() {
                   paddingBottom: 2,
                 }}
               >
-                {FACE_OPTIONS.map((item) => (
+                {FACE_OPTIONS.map((item, index) => (
                   <OptionTile
                     key={item}
                     label={item}
-                    selected={face === item}
-                    onPress={() => setFace(item)}
+                    selected={value.faceShape === index + 1}
+                    onPress={() =>
+                      updateSelection({ faceShape: index + 1 })
+                    }
                   />
                 ))}
               </ScrollView>
@@ -326,12 +350,14 @@ export default function Step3StyleMirror() {
                 paddingBottom: 2,
               }}
             >
-              {HAIR_OPTIONS.map((item) => (
+              {HAIR_OPTIONS.map((item, index) => (
                 <OptionTile
                   key={item}
                   label={item}
-                  selected={hair === item}
-                  onPress={() => setHair(item)}
+                  selected={value.hairstyle === index + 1}
+                  onPress={() =>
+                    updateSelection({ hairstyle: index + 1 })
+                  }
                 />
               ))}
             </ScrollView>
@@ -351,12 +377,14 @@ export default function Step3StyleMirror() {
                 paddingBottom: 2,
               }}
             >
-              {BODY_OPTIONS.map((item) => (
+              {BODY_OPTIONS.map((item, index) => (
                 <OptionTile
                   key={item}
                   label={item}
-                  selected={body === item}
-                  onPress={() => setBody(item)}
+                  selected={value.bodyType === index + 1}
+                  onPress={() =>
+                    updateSelection({ bodyType: index + 1 })
+                  }
                 />
               ))}
             </ScrollView>

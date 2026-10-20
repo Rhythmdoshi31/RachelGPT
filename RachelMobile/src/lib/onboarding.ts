@@ -255,3 +255,74 @@ export async function selectPersona(personaId: string): Promise<void> {
   });
 }
 
+
+export type AvatarGender = "FEMALE" | "MALE";
+
+export type AvatarSelection = {
+  gender: AvatarGender;
+  hairstyle: number | null;
+  faceShape: number | null;
+  skinTone: number | null;
+  bodyType: number | null;
+};
+
+export type SavedAvatar = AvatarSelection & {
+  id: string;
+  userId: string;
+  imageCode: string;
+  imagePath: string;
+  version: number;
+  metadata: Record<string, unknown> | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export async function getAvatar(): Promise<SavedAvatar | null> {
+  const token = await getAccessToken();
+
+  const response = await fetch(`${API_URL}/api/avatar`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
+    },
+  });
+
+  const result = await response.json().catch(() => null);
+
+  if (!response.ok || !result?.success) {
+    throw new Error(
+      result?.message ||
+        `Unable to load your Style Mirror (HTTP ${response.status}).`,
+    );
+  }
+
+  return result.avatar ?? null;
+}
+
+export async function saveAvatar(
+  payload: AvatarSelection,
+): Promise<SavedAvatar> {
+  const token = await getAccessToken();
+
+  const response = await fetch(`${API_URL}/api/avatar`, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  const result = await response.json().catch(() => null);
+
+  if (!response.ok || !result?.success || !result.avatar) {
+    throw new Error(
+      result?.message ||
+        `Unable to save your Style Mirror (HTTP ${response.status}).`,
+    );
+  }
+
+  return result.avatar as SavedAvatar;
+}

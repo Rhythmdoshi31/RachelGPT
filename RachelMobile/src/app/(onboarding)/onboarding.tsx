@@ -17,7 +17,10 @@ import {
   getAvailablePersonas,
   getActivePersona,
   selectPersona,
+  getAvatar,
+  saveAvatar,
   type AvailablePersona,
+  type AvatarSelection,
 } from "../../lib/onboarding";
 
 import {
@@ -28,17 +31,25 @@ import {
 import {
   Step1ChooseStylist,
   Step2StylePreferences,
-  Step3WardrobeSetup,
   type Stylist,
   initialStyleAnswers,
   type StyleQuestionnaireAnswers,
 } from "../../components/onboarding/steps";
+
 import Step3StyleMirror from "../../components/onboarding/step3StyleMirror";
 import Step4WardrobeSetup from "../../components/onboarding/step4WardrobeSetup";
 
 const TOTAL_STEPS = 4;
 
 const SUPPORTED_STYLISTS: Stylist[] = ["Rachel", "KJay", "Mira"];
+
+const INITIAL_AVATAR_SELECTION: AvatarSelection = {
+  gender: "FEMALE",
+  hairstyle: 1,
+  faceShape: 1,
+  skinTone: 2,
+  bodyType: 2,
+};
 
 export default function Onboarding() {
   const [step, setStep] = useState(1);
@@ -53,13 +64,17 @@ export default function Onboarding() {
   const [isContinuing, setIsContinuing] = useState(false);
   const [isLoadingProfile, setIsLoadingProfile] = useState(true);
   const [isLoadingStylist, setIsLoadingStylist] = useState(true);
+  const [isLoadingAvatar, setIsLoadingAvatar] = useState(false);
 
   const [styleAnswers, setStyleAnswers] =
     useState<StyleQuestionnaireAnswers>({
       ...initialStyleAnswers,
     });
 
-  // Restore the saved stylist whenever onboarding gains focus.
+  const [avatarSelection, setAvatarSelection] =
+    useState<AvatarSelection>(INITIAL_AVATAR_SELECTION);
+
+  // Restore the selected stylist whenever onboarding gains focus.
   useFocusEffect(
     useCallback(() => {
       let active = true;
@@ -164,8 +179,60 @@ export default function Onboarding() {
     };
   }, []);
 
+  // Load the avatar whenever the user enters Step 3.
+  useEffect(() => {
+    if (step !== 3) return;
+
+    let active = true;
+
+    async function loadSavedAvatar() {
+      setIsLoadingAvatar(true);
+
+      try {
+        const avatar = await getAvatar();
+
+        if (!active) return;
+
+        if (avatar) {
+          setAvatarSelection({
+            gender: avatar.gender,
+            hairstyle: avatar.hairstyle,
+            faceShape: avatar.faceShape,
+            skinTone: avatar.skinTone,
+            bodyType: avatar.bodyType,
+          });
+        } else {
+          setAvatarSelection(INITIAL_AVATAR_SELECTION);
+        }
+      } catch (error) {
+        console.error("Failed to load saved avatar:", error);
+
+        if (active) {
+          Alert.alert(
+            "Couldn't load your Style Mirror",
+            error instanceof Error
+              ? error.message
+              : "Please try again.",
+          );
+        }
+      } finally {
+        if (active) {
+          setIsLoadingAvatar(false);
+        }
+      }
+    }
+
+    void loadSavedAvatar();
+
+    return () => {
+      active = false;
+    };
+  }, [step]);
+
   const isLoading =
-    isLoadingProfile || (step === 1 && isLoadingStylist);
+    isLoadingProfile ||
+    (step === 1 && isLoadingStylist) ||
+    (step === 3 && isLoadingAvatar);
 
   const busy = isContinuing || isLoading;
 
@@ -194,25 +261,12 @@ export default function Onboarding() {
         );
 
         if (!persona) {
-          console.log("Selected stylist:", selectedStylist);
-          console.log(
-            "Available personas in app:",
-            availablePersonas,
-          );
-
           throw new Error(
             `Could not find ${selectedStylist} in the available personas.`,
           );
         }
 
-        console.log("Saving selected persona:", {
-          id: persona.id,
-          name: persona.name,
-        });
-
         await selectPersona(persona.id);
-
-        console.log("Persona saved successfully.");
 
         setStep(2);
       } catch (error) {
@@ -263,15 +317,42 @@ export default function Onboarding() {
       return;
     }
 
-    // STEP 3: Keep the existing Style Mirror step unchanged.
+    // STEP 3: Persist Style Mirror before advancing.
     if (step === 3) {
-      setStep(4);
+      setIsContinuing(true);
+
+      try {
+        const savedAvatar = await saveAvatar(avatarSelection);
+
+        setAvatarSelection({
+          gender: savedAvatar.gender,
+          hairstyle: savedAvatar.hairstyle,
+          faceShape: savedAvatar.faceShape,
+          skinTone: savedAvatar.skinTone,
+          bodyType: savedAvatar.bodyType,
+        });
+
+        setStep(4);
+      } catch (error) {
+        console.error(
+          "Failed to save Style Mirror:",
+          error,
+        );
+
+        Alert.alert(
+          "Couldn't save your Style Mirror",
+          error instanceof Error
+            ? error.message
+            : "Your selections are still here. Please try again.",
+        );
+      } finally {
+        setIsContinuing(false);
+      }
+
       return;
     }
 
-    // STEP 4: Wardrobe photo selection is handled inside
-    // Step4WardrobeSetup. Its upload and completion flow
-    // can be connected separately.
+    // Step 4 is handled by Step4WardrobeSetup.
   };
 
   const handleLogout = async () => {
@@ -306,7 +387,12 @@ export default function Onboarding() {
         );
 
       case 3:
-        return <Step3StyleMirror />;
+        return (
+          <Step3StyleMirror
+            value={avatarSelection}
+            onChange={setAvatarSelection}
+          />
+        );
 
       case 4:
         return <Step4WardrobeSetup />;
@@ -321,7 +407,7 @@ export default function Onboarding() {
       className="flex-1 bg-[#FAF7F2]"
       edges={["top", "bottom"]}
     >
-      {/* SHARED HEADER */}
+      {/* Shared onboarding header */}
       <View className="h-[49px] flex-row items-center justify-center">
         {step > 1 && (
           <Pressable
@@ -377,7 +463,7 @@ export default function Onboarding() {
         </Pressable>
       </View>
 
-      {/* ACTIVE STEP */}
+      {/* Active onboarding step */}
       <View className="flex-1">
         {isLoading ? (
           <View className="flex-1 items-center justify-center px-6">
@@ -392,7 +478,9 @@ export default function Onboarding() {
             >
               {step === 1
                 ? "Loading your stylist..."
-                : "Loading your saved preferences..."}
+                : step === 3
+                  ? "Loading your Style Mirror..."
+                  : "Loading your saved preferences..."}
             </Text>
           </View>
         ) : (
@@ -400,7 +488,7 @@ export default function Onboarding() {
         )}
       </View>
 
-      {/* SHARED FOOTER: Step 4 has its own actions. */}
+      {/* Shared footer. Step 4 manages its own actions. */}
       {step !== 4 && (
         <View className="px-[22px] pb-[8px] pt-[7px]">
           <Text

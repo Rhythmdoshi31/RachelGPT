@@ -1,0 +1,11 @@
+ALTER TABLE "Avatar"
+ADD COLUMN "gender" TEXT NOT NULL DEFAULT 'FEMALE',
+ADD COLUMN "hairstyle" INTEGER,
+ADD COLUMN "faceShape" INTEGER,
+ADD COLUMN "skinTone" INTEGER,
+ADD COLUMN "bodyType" INTEGER,
+ADD COLUMN "imageCode" TEXT NOT NULL DEFAULT 'image1',
+ADD COLUMN "imagePath" TEXT NOT NULL DEFAULT 'defaults/image1.png',
+ADD COLUMN "version" INTEGER NOT NULL DEFAULT 1;
+
+CREATE INDEX "Avatar_gender_idx" ON "Avatar"("gender");

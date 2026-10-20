@@ -128,3 +128,27 @@ Show wardrobe
 
 
 ### Since supabase auth works directly, instead of using loginn and signup routes, we will just use ensureProfile route to make sure user is in both supabae and the database
+
+
+### IMAGE BUCKET STORAGE FOR avatar-images 
+
+generated/female/image12145.webp	Female avatar with a particular combination of customizations
+generated/male/image22145.webp	Male avatar with a particular combination of customizations
+
+For generated images, we'll use this digit order:
+1. Gender: 1 = female, 2 = male.
+2. Hairstyle: 1–5.
+3. Face shape: 1–5.
+4. Skin tone: 1–5.
+5. Body type: 1–5.
+
+{
+  "gender": "FEMALE",
+  "hairstyle": null,
+  "faceShape": null,
+  "skinTone": null,
+  "bodyType": null,
+  "imageCode": "image1",
+  "imagePath": "defaults/image1.png",
+  "version": 1
+}

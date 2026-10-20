@@ -1,3 +1,4 @@
+import { Image as ExpoImage } from "expo-image";
 import { useState } from "react";
 import {
   Image,
@@ -10,6 +11,9 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import type { AvatarSelection } from "../../lib/onboarding";
+import { supabase } from "../../lib/supabase";
+
+const AVATAR_BUCKET = "avatar-images";
 
 const studioBackground = require("../../../assets/images/backgrounds/Sunlit_ivory_studio_with_olive_tree.png");
 const femaleAvatar = require("../../../assets/images/backgrounds/avatars/avatar1.png");
@@ -17,14 +21,9 @@ const maleAvatar = require("../../../assets/images/backgrounds/avatars/avatar2.p
 
 type Section = "Face" | "Hair" | "Body";
 type Gender = "female" | "male";
+type OptionCategory = "face-shape" | "hairstyle" | "body-type";
 
-const SKIN_TONES = [
-  "#F4D8C1",
-  "#DDBA9E",
-  "#BD9271",
-  "#AD7956",
-  "#88583D",
-];
+const SKIN_TONES = ["#F4D8C1", "#DDBA9E", "#BD9271", "#AD7956", "#88583D"];
 
 const FACE_OPTIONS = ["Soft", "Defined", "Balanced", "Angular", "Oval"];
 const HAIR_OPTIONS = ["Waves", "Straight", "Curly", "Bob", "Long"];
@@ -32,6 +31,45 @@ const BODY_OPTIONS = ["Petite", "Lean", "Athletic", "Curvy", "Full"];
 
 const NAVY = "#0D3767";
 const MUTED = "#64748B";
+
+function getStorageUrl(path: string) {
+  const { data } = supabase.storage.from(AVATAR_BUCKET).getPublicUrl(path);
+
+  return data.publicUrl;
+}
+
+/**
+ * Generated image naming:
+ * gender + hairstyle + faceShape + skinTone + bodyType
+ *
+ * Example:
+ * FEMALE, 2, 1, 4, 5 -> generated/female/image12145.webp
+ * MALE,   2, 1, 4, 5 -> generated/male/image22145.webp
+ *
+ * A generated image is only selected when all customization values exist.
+ */
+function getGeneratedAvatarPath(value: AvatarSelection): string | null {
+  const { gender, hairstyle, faceShape, skinTone, bodyType } = value;
+
+  if (
+    !hairstyle ||
+    !faceShape ||
+    !skinTone ||
+    !bodyType ||
+    ![hairstyle, faceShape, skinTone, bodyType].every(
+      (selection) =>
+        Number.isInteger(selection) && selection >= 1 && selection <= 5,
+    )
+  ) {
+    return null;
+  }
+
+  const genderFolder = gender === "FEMALE" ? "female" : "male";
+  const genderDigit = gender === "FEMALE" ? "1" : "2";
+  const imageCode = `image${genderDigit}${hairstyle}${faceShape}${skinTone}${bodyType}`;
+
+  return `generated/${genderFolder}/${imageCode}.webp`;
+}
 
 function SectionLabel({ children }: { children: string }) {
   return (
@@ -44,15 +82,95 @@ function SectionLabel({ children }: { children: string }) {
   );
 }
 
+/**
+ * Tries the generated avatar first, then the gender-specific Storage default,
+ * then the bundled local avatar if the Storage default is also unavailable.
+ *
+ * This handles missing files without affecting saved selections.
+ */
+function AvatarPreview({
+  gender,
+  generatedPath,
+}: {
+  gender: Gender;
+  generatedPath: string | null;
+}) {
+  const [generatedFailed, setGeneratedFailed] = useState(false);
+  const [defaultFailed, setDefaultFailed] = useState(false);
+
+  const defaultPath =
+    gender === "female" ? "defaults/image1.png" : "defaults/image2.png";
+
+  const localFallback = gender === "female" ? femaleAvatar : maleAvatar;
+
+  if (generatedPath && !generatedFailed) {
+    return (
+      <Image
+        source={{ uri: getStorageUrl(generatedPath) }}
+        resizeMode="contain"
+        onError={() => setGeneratedFailed(true)}
+        style={{
+          position: "absolute",
+          top: "4%",
+          left: "9%",
+          width: "82%",
+          height: "92%",
+        }}
+      />
+    );
+  }
+
+  if (!defaultFailed) {
+    return (
+      <Image
+        source={{ uri: getStorageUrl(defaultPath) }}
+        resizeMode="contain"
+        onError={() => setDefaultFailed(true)}
+        style={{
+          position: "absolute",
+          top: "4%",
+          left: "9%",
+          width: "82%",
+          height: "92%",
+        }}
+      />
+    );
+  }
+
+  return (
+    <Image
+      source={localFallback}
+      resizeMode="contain"
+      style={{
+        position: "absolute",
+        top: "4%",
+        left: "9%",
+        width: "82%",
+        height: "92%",
+      }}
+    />
+  );
+}
+
+/**
+ * Option images use:
+ * options/{category}/{optionId}.png
+ *
+ * Missing images fall back to the existing placeholder tile.
+ */
 function OptionTile({
   label,
   selected,
+  imagePath,
   onPress,
 }: {
   label: string;
   selected: boolean;
+  imagePath: string;
   onPress: () => void;
 }) {
+  const [imageFailed, setImageFailed] = useState(false);
+
   return (
     <Pressable
       onPress={onPress}
@@ -70,9 +188,21 @@ function OptionTile({
           borderColor: selected ? NAVY : "#E5D9CE",
         }}
       >
-        <View className="h-full w-full items-center justify-center bg-[#E7DCD0]">
-          <Ionicons name="person-outline" size={42} color="#9C8878" />
-        </View>
+        {!imageFailed ? (
+          // Remote option image
+          <ExpoImage
+            source={{ uri: getStorageUrl(imagePath) }}
+            contentFit="cover"
+            cachePolicy="memory-disk"
+            onError={() => setImageFailed(true)}
+            style={{ width: "100%", height: "100%" }}
+          />
+        ) : (
+          // Default placeholder when the image isn't uploaded
+          <View className="h-full w-full items-center justify-center bg-[#E7DCD0]">
+            <Ionicons name="person-outline" size={42} color="#9C8878" />
+          </View>
+        )}
 
         {selected && (
           <View className="absolute right-[6px] top-[6px] h-[22px] w-[22px] items-center justify-center rounded-full bg-[#0D3767]">
@@ -112,14 +242,9 @@ export default function Step3StyleMirror({
 
   const [section, setSection] = useState<Section>("Face");
 
-  const avatarGender: Gender =
-    value.gender === "FEMALE" ? "female" : "male";
+  const avatarGender: Gender = value.gender === "FEMALE" ? "female" : "male";
 
-  const face = FACE_OPTIONS[(value.faceShape ?? 1) - 1] ?? "Soft";
-  const hair = HAIR_OPTIONS[(value.hairstyle ?? 1) - 1] ?? "Waves";
-  const body = BODY_OPTIONS[(value.bodyType ?? 2) - 1] ?? "Lean";
-
-  const avatar = avatarGender === "female" ? femaleAvatar : maleAvatar;
+  const generatedAvatarPath = getGeneratedAvatarPath(value);
 
   const updateSelection = (updates: Partial<AvatarSelection>) => {
     onChange({
@@ -130,11 +255,7 @@ export default function Step3StyleMirror({
 
   return (
     <View className="flex-1 bg-[#FAF7F2]">
-      {/* Fixed studio with more wall visible and less floor. */}
-      <View
-        className="w-full overflow-hidden"
-        style={{ height: studioHeight }}
-      >
+      <View className="w-full overflow-hidden" style={{ height: studioHeight }}>
         <ImageBackground
           source={studioBackground}
           resizeMode="cover"
@@ -146,18 +267,11 @@ export default function Step3StyleMirror({
           }}
         />
 
-        {/* Slightly smaller model with breathing room above and below. */}
         <View className="absolute inset-0 overflow-hidden">
-          <Image
-            source={avatar}
-            resizeMode="contain"
-            style={{
-              position: "absolute",
-              top: "4%",
-              left: "9%",
-              width: "82%",
-              height: "92%",
-            }}
+          <AvatarPreview
+            key={`${avatarGender}-${generatedAvatarPath ?? "default"}`}
+            gender={avatarGender}
+            generatedPath={generatedAvatarPath}
           />
         </View>
 
@@ -197,7 +311,6 @@ export default function Step3StyleMirror({
         </View>
       </View>
 
-      {/* Independently scrollable customization panel. */}
       <ScrollView
         className="flex-1"
         showsVerticalScrollIndicator={false}
@@ -215,7 +328,6 @@ export default function Step3StyleMirror({
           Make it feel like you
         </Text>
 
-        {/* Face / Hair / Body tabs */}
         <View className="h-[35px] flex-row rounded-full border border-[#E5D9CE] bg-[#F7F1EA] p-[3px]">
           {(["Face", "Hair", "Body"] as const).map((item) => {
             const selected = section === item;
@@ -258,9 +370,7 @@ export default function Step3StyleMirror({
                   return (
                     <Pressable
                       key={tone}
-                      onPress={() =>
-                        updateSelection({ skinTone: index + 1 })
-                      }
+                      onPress={() => updateSelection({ skinTone: index + 1 })}
                       className="items-center justify-center rounded-full"
                       style={{
                         width: 35,
@@ -298,10 +408,9 @@ export default function Step3StyleMirror({
                   <OptionTile
                     key={item}
                     label={item}
+                    imagePath={`options/${avatarGender}/face-shape/${index + 1}.png`}
                     selected={value.faceShape === index + 1}
-                    onPress={() =>
-                      updateSelection({ faceShape: index + 1 })
-                    }
+                    onPress={() => updateSelection({ faceShape: index + 1 })}
                   />
                 ))}
               </ScrollView>
@@ -354,10 +463,9 @@ export default function Step3StyleMirror({
                 <OptionTile
                   key={item}
                   label={item}
+                  imagePath={`options/${avatarGender}/hairstyle/${index + 1}.png`}
                   selected={value.hairstyle === index + 1}
-                  onPress={() =>
-                    updateSelection({ hairstyle: index + 1 })
-                  }
+                  onPress={() => updateSelection({ hairstyle: index + 1 })}
                 />
               ))}
             </ScrollView>
@@ -381,10 +489,9 @@ export default function Step3StyleMirror({
                 <OptionTile
                   key={item}
                   label={item}
+                  imagePath={`options/${avatarGender}/body-type/${index + 1}.png`}
                   selected={value.bodyType === index + 1}
-                  onPress={() =>
-                    updateSelection({ bodyType: index + 1 })
-                  }
+                  onPress={() => updateSelection({ bodyType: index + 1 })}
                 />
               ))}
             </ScrollView>

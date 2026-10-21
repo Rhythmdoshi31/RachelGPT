@@ -326,3 +326,31 @@ export async function saveAvatar(
 
   return result.avatar as SavedAvatar;
 }
+
+
+export async function completeOnboarding(): Promise<OnboardingStatus> {
+  const token = await getAccessToken();
+
+  const response = await fetch(`${API_URL}/api/onboarding/complete`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
+    },
+  });
+
+  const result = await response.json().catch(() => null);
+
+  if (!response.ok || !result?.success) {
+    throw new Error(
+      result?.message ||
+        `Unable to complete onboarding (HTTP ${response.status}).`,
+    );
+  }
+
+  return {
+    onboardingCompleted: result.onboardingCompleted,
+    onboardingStep: result.onboardingStep,
+    onboardingCompletedAt: result.onboardingCompletedAt,
+  };
+}

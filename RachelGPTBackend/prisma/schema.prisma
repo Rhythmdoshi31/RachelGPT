@@ -142,19 +142,24 @@ model WardrobeItem {
   @@index([userId, lastWornAt])
 }
 
+
 model WardrobeImage {
   id             String       @id @default(uuid())
   userId         String       @db.Uuid
   wardrobeItemId String
   storagePath    String
+  contentHash    String?
   isPrimary      Boolean      @default(false)
   createdAt      DateTime     @default(now())
+
   user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   wardrobeItem   WardrobeItem @relation(fields: [wardrobeItemId], references: [id], onDelete: Cascade)
 
+  @@unique([userId, contentHash])
   @@index([userId])
   @@index([wardrobeItemId])
 }
+
 
 model Outfit {
   id           String            @id @default(uuid())

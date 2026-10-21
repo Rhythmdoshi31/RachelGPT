@@ -15,6 +15,7 @@ export type WardrobeImageMinAggregateOutputType = {
     userId: string | null;
     wardrobeItemId: string | null;
     storagePath: string | null;
+    contentHash: string | null;
     isPrimary: boolean | null;
     createdAt: Date | null;
 };
@@ -23,6 +24,7 @@ export type WardrobeImageMaxAggregateOutputType = {
     userId: string | null;
     wardrobeItemId: string | null;
     storagePath: string | null;
+    contentHash: string | null;
     isPrimary: boolean | null;
     createdAt: Date | null;
 };
@@ -31,6 +33,7 @@ export type WardrobeImageCountAggregateOutputType = {
     userId: number;
     wardrobeItemId: number;
     storagePath: number;
+    contentHash: number;
     isPrimary: number;
     createdAt: number;
     _all: number;
@@ -40,6 +43,7 @@ export type WardrobeImageMinAggregateInputType = {
     userId?: true;
     wardrobeItemId?: true;
     storagePath?: true;
+    contentHash?: true;
     isPrimary?: true;
     createdAt?: true;
 };
@@ -48,6 +52,7 @@ export type WardrobeImageMaxAggregateInputType = {
     userId?: true;
     wardrobeItemId?: true;
     storagePath?: true;
+    contentHash?: true;
     isPrimary?: true;
     createdAt?: true;
 };
@@ -56,6 +61,7 @@ export type WardrobeImageCountAggregateInputType = {
     userId?: true;
     wardrobeItemId?: true;
     storagePath?: true;
+    contentHash?: true;
     isPrimary?: true;
     createdAt?: true;
     _all?: true;
@@ -127,6 +133,7 @@ export type WardrobeImageGroupByOutputType = {
     userId: string;
     wardrobeItemId: string;
     storagePath: string;
+    contentHash: string | null;
     isPrimary: boolean;
     createdAt: Date;
     _count: WardrobeImageCountAggregateOutputType | null;
@@ -144,6 +151,7 @@ export type WardrobeImageWhereInput = {
     userId?: Prisma.UuidFilter<"WardrobeImage"> | string;
     wardrobeItemId?: Prisma.StringFilter<"WardrobeImage"> | string;
     storagePath?: Prisma.StringFilter<"WardrobeImage"> | string;
+    contentHash?: Prisma.StringNullableFilter<"WardrobeImage"> | string | null;
     isPrimary?: Prisma.BoolFilter<"WardrobeImage"> | boolean;
     createdAt?: Prisma.DateTimeFilter<"WardrobeImage"> | Date | string;
     user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
@@ -154,6 +162,7 @@ export type WardrobeImageOrderByWithRelationInput = {
     userId?: Prisma.SortOrder;
     wardrobeItemId?: Prisma.SortOrder;
     storagePath?: Prisma.SortOrder;
+    contentHash?: Prisma.SortOrderInput | Prisma.SortOrder;
     isPrimary?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     user?: Prisma.UserOrderByWithRelationInput;
@@ -161,22 +170,25 @@ export type WardrobeImageOrderByWithRelationInput = {
 };
 export type WardrobeImageWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
+    userId_contentHash?: Prisma.WardrobeImageUserIdContentHashCompoundUniqueInput;
     AND?: Prisma.WardrobeImageWhereInput | Prisma.WardrobeImageWhereInput[];
     OR?: Prisma.WardrobeImageWhereInput[];
     NOT?: Prisma.WardrobeImageWhereInput | Prisma.WardrobeImageWhereInput[];
     userId?: Prisma.UuidFilter<"WardrobeImage"> | string;
     wardrobeItemId?: Prisma.StringFilter<"WardrobeImage"> | string;
     storagePath?: Prisma.StringFilter<"WardrobeImage"> | string;
+    contentHash?: Prisma.StringNullableFilter<"WardrobeImage"> | string | null;
     isPrimary?: Prisma.BoolFilter<"WardrobeImage"> | boolean;
     createdAt?: Prisma.DateTimeFilter<"WardrobeImage"> | Date | string;
     user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
     wardrobeItem?: Prisma.XOR<Prisma.WardrobeItemScalarRelationFilter, Prisma.WardrobeItemWhereInput>;
-}, "id">;
+}, "id" | "userId_contentHash">;
 export type WardrobeImageOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
     userId?: Prisma.SortOrder;
     wardrobeItemId?: Prisma.SortOrder;
     storagePath?: Prisma.SortOrder;
+    contentHash?: Prisma.SortOrderInput | Prisma.SortOrder;
     isPrimary?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     _count?: Prisma.WardrobeImageCountOrderByAggregateInput;
@@ -191,12 +203,14 @@ export type WardrobeImageScalarWhereWithAggregatesInput = {
     userId?: Prisma.UuidWithAggregatesFilter<"WardrobeImage"> | string;
     wardrobeItemId?: Prisma.StringWithAggregatesFilter<"WardrobeImage"> | string;
     storagePath?: Prisma.StringWithAggregatesFilter<"WardrobeImage"> | string;
+    contentHash?: Prisma.StringNullableWithAggregatesFilter<"WardrobeImage"> | string | null;
     isPrimary?: Prisma.BoolWithAggregatesFilter<"WardrobeImage"> | boolean;
     createdAt?: Prisma.DateTimeWithAggregatesFilter<"WardrobeImage"> | Date | string;
 };
 export type WardrobeImageCreateInput = {
     id?: string;
     storagePath: string;
+    contentHash?: string | null;
     isPrimary?: boolean;
     createdAt?: Date | string;
     user: Prisma.UserCreateNestedOneWithoutWardrobeImagesInput;
@@ -207,12 +221,14 @@ export type WardrobeImageUncheckedCreateInput = {
     userId: string;
     wardrobeItemId: string;
     storagePath: string;
+    contentHash?: string | null;
     isPrimary?: boolean;
     createdAt?: Date | string;
 };
 export type WardrobeImageUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     storagePath?: Prisma.StringFieldUpdateOperationsInput | string;
+    contentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     user?: Prisma.UserUpdateOneRequiredWithoutWardrobeImagesNestedInput;
@@ -223,6 +239,7 @@ export type WardrobeImageUncheckedUpdateInput = {
     userId?: Prisma.StringFieldUpdateOperationsInput | string;
     wardrobeItemId?: Prisma.StringFieldUpdateOperationsInput | string;
     storagePath?: Prisma.StringFieldUpdateOperationsInput | string;
+    contentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -231,12 +248,14 @@ export type WardrobeImageCreateManyInput = {
     userId: string;
     wardrobeItemId: string;
     storagePath: string;
+    contentHash?: string | null;
     isPrimary?: boolean;
     createdAt?: Date | string;
 };
 export type WardrobeImageUpdateManyMutationInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     storagePath?: Prisma.StringFieldUpdateOperationsInput | string;
+    contentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -245,6 +264,7 @@ export type WardrobeImageUncheckedUpdateManyInput = {
     userId?: Prisma.StringFieldUpdateOperationsInput | string;
     wardrobeItemId?: Prisma.StringFieldUpdateOperationsInput | string;
     storagePath?: Prisma.StringFieldUpdateOperationsInput | string;
+    contentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -256,11 +276,16 @@ export type WardrobeImageListRelationFilter = {
 export type WardrobeImageOrderByRelationAggregateInput = {
     _count?: Prisma.SortOrder;
 };
+export type WardrobeImageUserIdContentHashCompoundUniqueInput = {
+    userId: string;
+    contentHash: string;
+};
 export type WardrobeImageCountOrderByAggregateInput = {
     id?: Prisma.SortOrder;
     userId?: Prisma.SortOrder;
     wardrobeItemId?: Prisma.SortOrder;
     storagePath?: Prisma.SortOrder;
+    contentHash?: Prisma.SortOrder;
     isPrimary?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
 };
@@ -269,6 +294,7 @@ export type WardrobeImageMaxOrderByAggregateInput = {
     userId?: Prisma.SortOrder;
     wardrobeItemId?: Prisma.SortOrder;
     storagePath?: Prisma.SortOrder;
+    contentHash?: Prisma.SortOrder;
     isPrimary?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
 };
@@ -277,6 +303,7 @@ export type WardrobeImageMinOrderByAggregateInput = {
     userId?: Prisma.SortOrder;
     wardrobeItemId?: Prisma.SortOrder;
     storagePath?: Prisma.SortOrder;
+    contentHash?: Prisma.SortOrder;
     isPrimary?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
 };
@@ -359,6 +386,7 @@ export type WardrobeImageUncheckedUpdateManyWithoutWardrobeItemNestedInput = {
 export type WardrobeImageCreateWithoutUserInput = {
     id?: string;
     storagePath: string;
+    contentHash?: string | null;
     isPrimary?: boolean;
     createdAt?: Date | string;
     wardrobeItem: Prisma.WardrobeItemCreateNestedOneWithoutImagesInput;
@@ -367,6 +395,7 @@ export type WardrobeImageUncheckedCreateWithoutUserInput = {
     id?: string;
     wardrobeItemId: string;
     storagePath: string;
+    contentHash?: string | null;
     isPrimary?: boolean;
     createdAt?: Date | string;
 };
@@ -399,12 +428,14 @@ export type WardrobeImageScalarWhereInput = {
     userId?: Prisma.UuidFilter<"WardrobeImage"> | string;
     wardrobeItemId?: Prisma.StringFilter<"WardrobeImage"> | string;
     storagePath?: Prisma.StringFilter<"WardrobeImage"> | string;
+    contentHash?: Prisma.StringNullableFilter<"WardrobeImage"> | string | null;
     isPrimary?: Prisma.BoolFilter<"WardrobeImage"> | boolean;
     createdAt?: Prisma.DateTimeFilter<"WardrobeImage"> | Date | string;
 };
 export type WardrobeImageCreateWithoutWardrobeItemInput = {
     id?: string;
     storagePath: string;
+    contentHash?: string | null;
     isPrimary?: boolean;
     createdAt?: Date | string;
     user: Prisma.UserCreateNestedOneWithoutWardrobeImagesInput;
@@ -413,6 +444,7 @@ export type WardrobeImageUncheckedCreateWithoutWardrobeItemInput = {
     id?: string;
     userId: string;
     storagePath: string;
+    contentHash?: string | null;
     isPrimary?: boolean;
     createdAt?: Date | string;
 };
@@ -441,12 +473,14 @@ export type WardrobeImageCreateManyUserInput = {
     id?: string;
     wardrobeItemId: string;
     storagePath: string;
+    contentHash?: string | null;
     isPrimary?: boolean;
     createdAt?: Date | string;
 };
 export type WardrobeImageUpdateWithoutUserInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     storagePath?: Prisma.StringFieldUpdateOperationsInput | string;
+    contentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     wardrobeItem?: Prisma.WardrobeItemUpdateOneRequiredWithoutImagesNestedInput;
@@ -455,6 +489,7 @@ export type WardrobeImageUncheckedUpdateWithoutUserInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     wardrobeItemId?: Prisma.StringFieldUpdateOperationsInput | string;
     storagePath?: Prisma.StringFieldUpdateOperationsInput | string;
+    contentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -462,6 +497,7 @@ export type WardrobeImageUncheckedUpdateManyWithoutUserInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     wardrobeItemId?: Prisma.StringFieldUpdateOperationsInput | string;
     storagePath?: Prisma.StringFieldUpdateOperationsInput | string;
+    contentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -469,12 +505,14 @@ export type WardrobeImageCreateManyWardrobeItemInput = {
     id?: string;
     userId: string;
     storagePath: string;
+    contentHash?: string | null;
     isPrimary?: boolean;
     createdAt?: Date | string;
 };
 export type WardrobeImageUpdateWithoutWardrobeItemInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     storagePath?: Prisma.StringFieldUpdateOperationsInput | string;
+    contentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     user?: Prisma.UserUpdateOneRequiredWithoutWardrobeImagesNestedInput;
@@ -483,6 +521,7 @@ export type WardrobeImageUncheckedUpdateWithoutWardrobeItemInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     userId?: Prisma.StringFieldUpdateOperationsInput | string;
     storagePath?: Prisma.StringFieldUpdateOperationsInput | string;
+    contentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -490,6 +529,7 @@ export type WardrobeImageUncheckedUpdateManyWithoutWardrobeItemInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     userId?: Prisma.StringFieldUpdateOperationsInput | string;
     storagePath?: Prisma.StringFieldUpdateOperationsInput | string;
+    contentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -498,6 +538,7 @@ export type WardrobeImageSelect<ExtArgs extends runtime.Types.Extensions.Interna
     userId?: boolean;
     wardrobeItemId?: boolean;
     storagePath?: boolean;
+    contentHash?: boolean;
     isPrimary?: boolean;
     createdAt?: boolean;
     user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
@@ -508,6 +549,7 @@ export type WardrobeImageSelectCreateManyAndReturn<ExtArgs extends runtime.Types
     userId?: boolean;
     wardrobeItemId?: boolean;
     storagePath?: boolean;
+    contentHash?: boolean;
     isPrimary?: boolean;
     createdAt?: boolean;
     user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
@@ -518,6 +560,7 @@ export type WardrobeImageSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
     userId?: boolean;
     wardrobeItemId?: boolean;
     storagePath?: boolean;
+    contentHash?: boolean;
     isPrimary?: boolean;
     createdAt?: boolean;
     user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
@@ -528,10 +571,11 @@ export type WardrobeImageSelectScalar = {
     userId?: boolean;
     wardrobeItemId?: boolean;
     storagePath?: boolean;
+    contentHash?: boolean;
     isPrimary?: boolean;
     createdAt?: boolean;
 };
-export type WardrobeImageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "wardrobeItemId" | "storagePath" | "isPrimary" | "createdAt", ExtArgs["result"]["wardrobeImage"]>;
+export type WardrobeImageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "wardrobeItemId" | "storagePath" | "contentHash" | "isPrimary" | "createdAt", ExtArgs["result"]["wardrobeImage"]>;
 export type WardrobeImageInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     wardrobeItem?: boolean | Prisma.WardrobeItemDefaultArgs<ExtArgs>;
@@ -555,6 +599,7 @@ export type $WardrobeImagePayload<ExtArgs extends runtime.Types.Extensions.Inter
         userId: string;
         wardrobeItemId: string;
         storagePath: string;
+        contentHash: string | null;
         isPrimary: boolean;
         createdAt: Date;
     }, ExtArgs["result"]["wardrobeImage"]>;
@@ -917,6 +962,7 @@ export interface WardrobeImageFieldRefs {
     readonly userId: Prisma.FieldRef<"WardrobeImage", 'String'>;
     readonly wardrobeItemId: Prisma.FieldRef<"WardrobeImage", 'String'>;
     readonly storagePath: Prisma.FieldRef<"WardrobeImage", 'String'>;
+    readonly contentHash: Prisma.FieldRef<"WardrobeImage", 'String'>;
     readonly isPrimary: Prisma.FieldRef<"WardrobeImage", 'Boolean'>;
     readonly createdAt: Prisma.FieldRef<"WardrobeImage", 'DateTime'>;
 }

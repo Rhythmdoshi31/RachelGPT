@@ -131,6 +131,7 @@ export const WardrobeImageScalarFieldEnum = {
     userId: 'userId',
     wardrobeItemId: 'wardrobeItemId',
     storagePath: 'storagePath',
+    contentHash: 'contentHash',
     isPrimary: 'isPrimary',
     createdAt: 'createdAt'
 };

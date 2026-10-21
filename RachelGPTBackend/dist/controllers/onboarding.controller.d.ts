@@ -4,3 +4,4 @@ export declare function saveStyleProfile(req: AuthenticatedRequest, res: Respons
 export declare function getStyleProfile(req: AuthenticatedRequest, res: Response): Promise<Response<any, Record<string, any>>>;
 export declare function getOnboardingStatus(req: AuthenticatedRequest, res: Response): Promise<Response<any, Record<string, any>>>;
 export declare function updateOnboardingProgress(req: AuthenticatedRequest, res: Response): Promise<Response<any, Record<string, any>>>;
+export declare function completeOnboarding(req: AuthenticatedRequest, res: Response): Promise<Response<any, Record<string, any>>>;

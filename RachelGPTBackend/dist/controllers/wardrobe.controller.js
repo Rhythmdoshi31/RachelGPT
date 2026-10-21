@@ -3,6 +3,7 @@ import crypto from "node:crypto";
 import { prisma } from "../lib/prisma.js";
 import { supabaseAdmin } from "../lib/supabaseAdmin.js";
 import { analyzeClothingImage } from "../services/vision/gemini.service.js";
+import { createHash } from "node:crypto";
 export async function createWardrobeUploadUrl(req, res) {
     try {
         const userId = req.userId;
@@ -314,207 +315,216 @@ export async function completeWardrobeUploads(req, res) {
             });
         }
         const { uploads } = req.body;
-        if (!Array.isArray(uploads) || uploads.length === 0) {
-            return res.status(400).json({
-                success: false,
-                message: "uploads must be a non-empty array",
-            });
-        }
         const MAX_FILES = 50;
-        if (uploads.length > MAX_FILES) {
+        if (!Array.isArray(uploads) ||
+            uploads.length === 0 ||
+            uploads.length > MAX_FILES) {
             return res.status(400).json({
                 success: false,
-                message: `Maximum ${MAX_FILES} files are allowed per request`,
+                message: `uploads must contain between 1 and ${MAX_FILES} files`,
             });
         }
-        /*
-         * ---------------------------------------------------------
-         * 1. Validate request structure
-         * ---------------------------------------------------------
-         */
-        for (let i = 0; i < uploads.length; i++) {
-            const upload = uploads[i];
-            if (!upload?.wardrobeItemId || !upload?.storagePath) {
-                return res.status(400).json({
-                    success: false,
-                    message: `wardrobeItemId and storagePath are required for upload at index ${i}`,
-                });
-            }
-        }
-        /*
-         * ---------------------------------------------------------
-         * 2. Validate ownership of every storage path
-         *
-         * Expected:
-         *
-         * userId/
-         *   wardrobeItemId/
-         *     filename.jpg
-         * ---------------------------------------------------------
-         */
+        // 1. Validate IDs and Storage paths.
+        const seenIds = new Set();
         const expectedPrefix = `${userId}/`;
-        const seenWardrobeItemIds = new Set();
-        for (let i = 0; i < uploads.length; i++) {
-            const upload = uploads[i];
+        for (let index = 0; index < uploads.length; index++) {
+            const upload = uploads[index];
+            if (typeof upload?.wardrobeItemId !== "string" ||
+                typeof upload?.storagePath !== "string" ||
+                !upload.wardrobeItemId ||
+                !upload.storagePath) {
+                return res.status(400).json({
+                    success: false,
+                    message: `Invalid upload at index ${index}`,
+                });
+            }
             const { wardrobeItemId, storagePath } = upload;
-            // Prevent duplicate wardrobe item IDs in the same request
-            if (seenWardrobeItemIds.has(wardrobeItemId)) {
+            if (seenIds.has(wardrobeItemId)) {
                 return res.status(400).json({
                     success: false,
-                    message: `Duplicate wardrobeItemId at index ${i}`,
+                    message: `Duplicate wardrobeItemId at index ${index}`,
                 });
             }
-            seenWardrobeItemIds.add(wardrobeItemId);
-            // Storage path must belong to the authenticated user
-            if (!storagePath.startsWith(expectedPrefix)) {
-                return res.status(400).json({
-                    success: false,
-                    message: `Invalid storage path at index ${i}`,
-                });
-            }
-            // The path must specifically contain:
-            // userId/wardrobeItemId/
+            seenIds.add(wardrobeItemId);
             const itemPrefix = `${userId}/${wardrobeItemId}/`;
-            if (!storagePath.startsWith(itemPrefix)) {
+            if (!storagePath.startsWith(expectedPrefix) ||
+                !storagePath.startsWith(itemPrefix)) {
                 return res.status(400).json({
                     success: false,
-                    message: `Storage path does not match wardrobeItemId at index ${i}`,
+                    message: `Invalid storage path at index ${index}`,
                 });
             }
-            // Make sure there is actually a filename after the item folder
-            const fileName = storagePath.substring(itemPrefix.length);
-            if (!fileName || fileName.includes("/")) {
+            const fileName = storagePath.slice(itemPrefix.length);
+            if (!fileName ||
+                fileName.includes("/") ||
+                fileName === "." ||
+                fileName === "..") {
                 return res.status(400).json({
                     success: false,
-                    message: `Invalid storage filename at index ${i}`,
+                    message: `Invalid storage filename at index ${index}`,
                 });
             }
         }
-        /*
-         * ---------------------------------------------------------
-         * 3. Check whether these wardrobe IDs already exist
-         * ---------------------------------------------------------
-         */
-        const wardrobeItemIds = uploads.map((upload) => upload.wardrobeItemId);
+        // 2. Reject IDs that already belong to existing DB records.
+        const requestedIds = uploads.map((upload) => upload.wardrobeItemId);
         const existingItems = await prisma.wardrobeItem.findMany({
             where: {
-                id: {
-                    in: wardrobeItemIds,
-                },
+                id: { in: requestedIds },
                 userId,
             },
-            select: {
-                id: true,
-            },
+            select: { id: true },
         });
         if (existingItems.length > 0) {
             return res.status(409).json({
                 success: false,
-                message: "One or more wardrobe items already exist",
+                message: "One or more wardrobe item IDs already exist",
                 existingWardrobeItemIds: existingItems.map((item) => item.id),
             });
         }
-        /*
-         * ---------------------------------------------------------
-         * 4. VERIFY THAT EVERY STORAGE OBJECT ACTUALLY EXISTS
-         *
-         * We use Storage.list() instead of download().
-         *
-         * download() would download the entire image just to check
-         * whether it exists, which is unnecessary.
-         * ---------------------------------------------------------
-         */
+        // 3. Verify that every uploaded Storage object exists.
         const storageChecks = await Promise.all(uploads.map(async (upload) => {
-            const lastSlashIndex = upload.storagePath.lastIndexOf("/");
-            const folderPath = upload.storagePath.substring(0, lastSlashIndex);
-            const fileName = upload.storagePath.substring(lastSlashIndex + 1);
+            const lastSlash = upload.storagePath.lastIndexOf("/");
+            const folderPath = upload.storagePath.slice(0, lastSlash);
+            const fileName = upload.storagePath.slice(lastSlash + 1);
             const { data, error } = await supabaseAdmin.storage
                 .from("Wardrobe")
                 .list(folderPath, {
                 limit: 100,
                 search: fileName,
             });
-            if (error) {
-                return {
-                    wardrobeItemId: upload.wardrobeItemId,
-                    storagePath: upload.storagePath,
-                    exists: false,
-                    error: error.message,
-                };
-            }
-            const exists = (data ?? []).some((file) => file.name === fileName);
             return {
                 wardrobeItemId: upload.wardrobeItemId,
                 storagePath: upload.storagePath,
-                exists,
-                error: null,
+                exists: !error &&
+                    (data ?? []).some((file) => file.name === fileName),
+                error: error?.message ?? null,
             };
         }));
-        /*
-         * ---------------------------------------------------------
-         * 5. Reject the ENTIRE batch if even one image is missing
-         *
-         * This is important.
-         *
-         * We don't want:
-         *
-         * 3 images uploaded
-         * 2 DB records created
-         * 1 missing image silently ignored
-         *
-         * Instead, the database remains untouched.
-         * ---------------------------------------------------------
-         */
         const missingUploads = storageChecks.filter((check) => !check.exists);
         if (missingUploads.length > 0) {
-            console.error("Missing wardrobe storage objects:", missingUploads);
+            console.error("Missing wardrobe Storage objects:", missingUploads);
             return res.status(400).json({
                 success: false,
                 message: "One or more uploaded images were not found in Supabase Storage",
-                missingUploads: missingUploads.map((upload) => ({
-                    wardrobeItemId: upload.wardrobeItemId,
-                    storagePath: upload.storagePath,
-                    error: upload.error,
-                })),
+                missingUploads,
             });
         }
-        /*
-         * ---------------------------------------------------------
-         * 6. Everything is valid.
-         *
-         * Now create the DB records.
-         * ---------------------------------------------------------
-         */
-        const createdItems = await prisma.$transaction(uploads.map((upload) => prisma.wardrobeItem.create({
-            data: {
-                id: upload.wardrobeItemId,
+        // 4. Download each uploaded image and calculate its real SHA-256 hash.
+        const hashedUploads = await Promise.all(uploads.map(async (upload, index) => {
+            const { data, error } = await supabaseAdmin.storage
+                .from("Wardrobe")
+                .download(upload.storagePath);
+            if (error || !data) {
+                throw new Error(`Could not read uploaded image ${index + 1}: ${error?.message ?? "Image data is missing"}`);
+            }
+            const bytes = Buffer.from(await data.arrayBuffer());
+            const contentHash = createHash("sha256")
+                .update(bytes)
+                .digest("hex");
+            return {
+                ...upload,
+                index,
+                contentHash,
+            };
+        }));
+        // 5. Match against existing images belonging to this user.
+        const uniqueHashes = [
+            ...new Set(hashedUploads.map((upload) => upload.contentHash)),
+        ];
+        const existingImages = await prisma.wardrobeImage.findMany({
+            where: {
                 userId,
-                category: "unknown",
-                subcategory: null,
-                attributes: {},
-                analysisStatus: "pending",
-                primaryImagePath: upload.storagePath,
-                images: {
-                    create: {
-                        userId,
-                        storagePath: upload.storagePath,
-                        isPrimary: true,
+                contentHash: { in: uniqueHashes },
+            },
+            select: {
+                contentHash: true,
+                wardrobeItemId: true,
+            },
+        });
+        const existingHashToItemId = new Map();
+        for (const image of existingImages) {
+            if (image.contentHash &&
+                !existingHashToItemId.has(image.contentHash)) {
+                existingHashToItemId.set(image.contentHash, image.wardrobeItemId);
+            }
+        }
+        // 6. Detect duplicates both against existing records and
+        // within this upload batch.
+        const seenHashes = new Map();
+        const uploadsToCreate = [];
+        const duplicates = [];
+        for (const upload of hashedUploads) {
+            const existingItemId = existingHashToItemId.get(upload.contentHash);
+            if (existingItemId) {
+                duplicates.push({
+                    index: upload.index,
+                    matchedWardrobeItemId: existingItemId,
+                });
+                continue;
+            }
+            const firstItemId = seenHashes.get(upload.contentHash);
+            if (firstItemId) {
+                duplicates.push({
+                    index: upload.index,
+                    matchedWardrobeItemId: firstItemId,
+                });
+                continue;
+            }
+            seenHashes.set(upload.contentHash, upload.wardrobeItemId);
+            uploadsToCreate.push(upload);
+        }
+        // 7. Create records only for new images.
+        // Avoid calling the transaction when every image is a duplicate.
+        const createdItems = uploadsToCreate.length > 0
+            ? await prisma.$transaction(uploadsToCreate.map((upload) => prisma.wardrobeItem.create({
+                data: {
+                    id: upload.wardrobeItemId,
+                    userId,
+                    category: "unknown",
+                    subcategory: null,
+                    attributes: {},
+                    analysisStatus: "pending",
+                    primaryImagePath: upload.storagePath,
+                    images: {
+                        create: {
+                            userId,
+                            storagePath: upload.storagePath,
+                            contentHash: upload.contentHash,
+                            isPrimary: true,
+                        },
                     },
                 },
-            },
-            include: {
-                images: true,
-            },
-        })));
-        /*
-         * ---------------------------------------------------------
-         * 7. Success
-         * ---------------------------------------------------------
-         */
+                include: {
+                    images: true,
+                },
+            })))
+            : [];
+        // 8. Remove only newly uploaded duplicate objects.
+        // Never delete the original Storage objects.
+        const duplicatePaths = [
+            ...new Set(duplicates.map((duplicate) => hashedUploads[duplicate.index].storagePath)),
+        ];
+        if (duplicatePaths.length > 0) {
+            const { error } = await supabaseAdmin.storage
+                .from("Wardrobe")
+                .remove(duplicatePaths);
+            if (error) {
+                // The DB duplicate is still prevented. Log cleanup failure
+                // so the leftover Storage objects can be investigated.
+                console.error("Failed to remove duplicate Storage objects:", error);
+            }
+        }
+        const createdUploads = uploadsToCreate.map((upload) => ({
+            index: upload.index,
+            wardrobeItemId: upload.wardrobeItemId,
+            storagePath: upload.storagePath,
+        }));
         return res.status(201).json({
             success: true,
-            message: `${createdItems.length} wardrobe items created successfully`,
+            message: `${createdUploads.length} new items created; ${duplicates.length} duplicates detected`,
             items: createdItems,
+            createdUploads,
+            duplicates,
         });
     }
     catch (error) {
@@ -764,8 +774,7 @@ export async function analyzeWardrobeItem(req, res) {
                 .from("Wardrobe")
                 .download(wardrobeItem.primaryImagePath);
             if (downloadError || !imageBlob) {
-                throw new Error(downloadError?.message ||
-                    "Failed to download wardrobe image");
+                throw new Error(downloadError?.message || "Failed to download wardrobe image");
             }
             const arrayBuffer = await imageBlob.arrayBuffer();
             const buffer = Buffer.from(arrayBuffer);
@@ -840,8 +849,7 @@ export async function analyzeWardrobeBatch(req, res) {
          * 1. Validate request
          * ---------------------------------------------------------
          */
-        if (!Array.isArray(wardrobeItemIds) ||
-            wardrobeItemIds.length === 0) {
+        if (!Array.isArray(wardrobeItemIds) || wardrobeItemIds.length === 0) {
             return res.status(400).json({
                 success: false,
                 message: "wardrobeItemIds must be a non-empty array",
@@ -917,10 +925,8 @@ export async function analyzeWardrobeBatch(req, res) {
          * requests cannot intentionally start the same analysis.
          * ---------------------------------------------------------
          */
-        const itemsToAnalyze = wardrobeItems.filter((item) => item.analysisStatus === "pending" ||
-            item.analysisStatus === "failed");
-        const skippedItems = wardrobeItems.filter((item) => item.analysisStatus !== "pending" &&
-            item.analysisStatus !== "failed");
+        const itemsToAnalyze = wardrobeItems.filter((item) => item.analysisStatus === "pending" || item.analysisStatus === "failed");
+        const skippedItems = wardrobeItems.filter((item) => item.analysisStatus !== "pending" && item.analysisStatus !== "failed");
         if (itemsToAnalyze.length === 0) {
             return res.status(200).json({
                 success: true,
@@ -1018,8 +1024,7 @@ async function processWardrobeAnalysisBatch(items) {
                     .from("Wardrobe")
                     .download(item.primaryImagePath);
                 if (error || !data) {
-                    throw new Error(error?.message ||
-                        "Failed to download wardrobe image");
+                    throw new Error(error?.message || "Failed to download wardrobe image");
                 }
                 /*
                  * -----------------------------------------------------
@@ -1032,9 +1037,7 @@ async function processWardrobeAnalysisBatch(items) {
                  * Determine MIME type
                  * -----------------------------------------------------
                  */
-                const extension = path
-                    .extname(item.primaryImagePath)
-                    .toLowerCase();
+                const extension = path.extname(item.primaryImagePath).toLowerCase();
                 let mimeType = "image/jpeg";
                 if (extension === ".png") {
                     mimeType = "image/png";
@@ -1171,8 +1174,7 @@ export async function getWardrobeAnalysisStatus(req, res) {
                 attributes: item.attributes,
             };
         });
-        const allCompleted = result.every((item) => item.analysisStatus === "completed" ||
-            item.analysisStatus === "failed");
+        const allCompleted = result.every((item) => item.analysisStatus === "completed" || item.analysisStatus === "failed");
         return res.json({
             success: true,
             allCompleted,

@@ -1935,6 +1935,7 @@ export declare const WardrobeImageScalarFieldEnum: {
     readonly userId: 'userId';
     readonly wardrobeItemId: 'wardrobeItemId';
     readonly storagePath: 'storagePath';
+    readonly contentHash: 'contentHash';
     readonly isPrimary: 'isPrimary';
     readonly createdAt: 'createdAt';
 };

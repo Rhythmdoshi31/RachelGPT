@@ -23,6 +23,24 @@ type UploadUrl = {
   token: string;
 };
 
+type CreatedUpload = {
+  index: number;
+  wardrobeItemId: string;
+  storagePath: string;
+};
+
+type DuplicateUpload = {
+  index: number;
+  matchedWardrobeItemId: string;
+};
+
+type CompleteBatchResult = {
+  success: true;
+  items: unknown[];
+  createdUploads: CreatedUpload[];
+  duplicates: DuplicateUpload[];
+};
+
 type AnalysisStatusItem = {
   id: string;
   analysisStatus:
@@ -40,6 +58,7 @@ export type WardrobeUploadResult = {
   failed: number;
   completed: number;
   analysisFailed: number;
+  duplicates: number;
   uploadedUris: string[];
 };
 
@@ -48,7 +67,7 @@ function getApiUrl(): string {
     throw new Error("Missing EXPO_PUBLIC_API_URL.");
   }
 
-  return API_URL;
+  return API_URL.replace(/\/+$/, "");
 }
 
 async function readResponse(response: Response) {
@@ -72,6 +91,10 @@ async function readResponse(response: Response) {
 
 async function apiRequest(endpoint: string, body?: unknown) {
   const token = await getAccessToken();
+
+  if (!token) {
+    throw new Error("Your session has expired. Please sign in again.");
+  }
 
   const response = await fetch(`${getApiUrl()}${endpoint}`, {
     method: body === undefined ? "GET" : "POST",
@@ -140,7 +163,9 @@ async function runWithConcurrency<T>(
     while (true) {
       const index = nextIndex++;
 
-      if (index >= items.length) return;
+      if (index >= items.length) {
+        return;
+      }
 
       await task(items[index], index);
     }
@@ -175,12 +200,11 @@ export async function uploadAndAnalyzeWardrobe(
     throw new Error("You can upload up to 50 photos at a time.");
   }
 
-  // Validate all selected file types before requesting upload URLs.
   const fileDetails = photos.map(getFileDetails);
 
   onProgress?.("Preparing secure uploads...", 0, photos.length);
 
-  // 1. Request signed upload URLs from the backend.
+  // 1. Request signed upload URLs.
   const urlResult = await apiRequest("/api/wardrobe/upload-urls", {
     files: fileDetails,
   });
@@ -201,7 +225,7 @@ export async function uploadAndAnalyzeWardrobe(
     }
   }
 
-  // 2. Upload image bytes directly to Supabase, three at a time.
+  // 2. Upload images directly to Supabase Storage.
   const successfulUploads: UploadUrl[] = [];
   const failures: string[] = [];
   let finishedUploads = 0;
@@ -263,41 +287,73 @@ export async function uploadAndAnalyzeWardrobe(
     );
   }
 
-  // Preserve the original selection order when associating saved URIs.
   successfulUploads.sort((a, b) => a.index - b.index);
 
-  // 3. Create database records for successful Storage uploads.
+  // 3. The backend hashes each image, detects duplicates, and
+  // creates database records only for genuinely new images.
   onProgress?.(
-    "Saving your wardrobe...",
+    "Checking for duplicate images...",
     finishedUploads,
     photos.length,
   );
 
-  await apiRequest("/api/wardrobe/complete-batch", {
-    uploads: successfulUploads.map((upload) => ({
-      wardrobeItemId: upload.wardrobeItemId,
-      storagePath: upload.storagePath,
-    })),
-  });
+  const completionResult = (await apiRequest(
+    "/api/wardrobe/complete-batch",
+    {
+      uploads: successfulUploads.map((upload) => ({
+        wardrobeItemId: upload.wardrobeItemId,
+        storagePath: upload.storagePath,
+      })),
+    },
+  )) as CompleteBatchResult;
 
-  // The images and their database records are now saved.
-  // Notify the UI before starting or polling AI analysis.
+  if (
+    !Array.isArray(completionResult.createdUploads) ||
+    !Array.isArray(completionResult.duplicates)
+  ) {
+    throw new Error(
+      "The server did not return valid duplicate-detection results.",
+    );
+  }
+
+  const createdUploads = completionResult.createdUploads;
+  const duplicates = completionResult.duplicates;
+
+  // All successfully processed selections are now either saved
+  // as new items or identified as existing duplicates.
   const uploadedUris = successfulUploads.map(
     (upload) => photos[upload.index].uri,
   );
 
   onSaved?.(uploadedUris);
 
-  // 4. Start background AI analysis for saved records.
-  const ids = successfulUploads.map(
-    (upload) => upload.wardrobeItemId,
-  );
+  // 4. If all images were duplicates, do not start analysis
+  // and do not poll for IDs that were never created.
+  if (createdUploads.length === 0) {
+    onProgress?.(
+      "These images are already in your wardrobe.",
+      photos.length,
+      photos.length,
+    );
+
+    return {
+      uploaded: 0,
+      failed: failures.length,
+      completed: 0,
+      analysisFailed: 0,
+      duplicates: duplicates.length,
+      uploadedUris,
+    };
+  }
+
+  // 5. Analyze only newly created wardrobe items.
+  const ids = createdUploads.map((upload) => upload.wardrobeItemId);
 
   await apiRequest("/api/wardrobe/analyze-batch", {
     wardrobeItemIds: ids,
   });
 
-  // 5. Poll until all saved items reach a terminal analysis state.
+  // 6. Poll analysis status for newly created items only.
   let completed = 0;
   let analysisFailed = 0;
 
@@ -312,7 +368,7 @@ export async function uploadAndAnalyzeWardrobe(
 
     if (!Array.isArray(items)) {
       throw new Error(
-        "Your photos are saved, but the server returned invalid analysis statuses.",
+        "Your images are saved, but the server returned invalid analysis statuses.",
       );
     }
 
@@ -322,7 +378,7 @@ export async function uploadAndAnalyzeWardrobe(
 
     if (missing.length > 0) {
       throw new Error(
-        `Your photos are saved, but ${missing.length} wardrobe item(s) could not be found while checking analysis status.`,
+        `${missing.length} newly created wardrobe item(s) could not be found during analysis.`,
       );
     }
 
@@ -337,24 +393,24 @@ export async function uploadAndAnalyzeWardrobe(
     const finished = completed + analysisFailed;
 
     onProgress?.(
-      `Analysing your wardrobe (${finished}/${ids.length})...`,
+      `Analysing new items (${finished}/${ids.length})...`,
       finished,
       ids.length,
     );
 
     if (finished === ids.length) {
       return {
-        uploaded: successfulUploads.length,
+        uploaded: createdUploads.length,
         failed: failures.length,
         completed,
         analysisFailed,
+        duplicates: duplicates.length,
         uploadedUris,
       };
     }
   }
 
-  // The saved items remain saved even if analysis takes too long.
   throw new Error(
-    "Your photos have been saved, but AI analysis is taking longer than expected. You can continue onboarding and check the analysis later.",
+    "Your images are saved, but AI analysis is taking longer than expected. You can continue onboarding and check the analysis later.",
   );
 }

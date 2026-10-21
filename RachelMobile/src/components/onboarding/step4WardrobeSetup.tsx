@@ -80,11 +80,12 @@ export default function Step4WardrobeSetup({
     if (limitReached) {
       Alert.alert(
         "Photo limit reached",
-        `You can select up to ${MAX_PHOTOS} unique photos. Duplicate photos are ignored.`,
+        `You can select up to ${MAX_PHOTOS} unique photos.`,
       );
     }
 
     setUploadError("");
+    setUploadProgress("");
   };
 
   const chooseFromGallery = async () => {
@@ -106,7 +107,6 @@ export default function Step4WardrobeSetup({
       }
     } catch (error) {
       console.error("Gallery picker error:", error);
-
       Alert.alert("Unable to open gallery", "Please try again.");
     } finally {
       setIsPicking(false);
@@ -141,7 +141,6 @@ export default function Step4WardrobeSetup({
       }
     } catch (error) {
       console.error("Camera error:", error);
-
       Alert.alert("Unable to open camera", "Please try again.");
     } finally {
       setIsPicking(false);
@@ -151,10 +150,12 @@ export default function Step4WardrobeSetup({
   const removePhoto = (uri: string) => {
     if (isBusy) return;
 
-    // Remove the photo from both the selection and saved-URI tracking.
-    // This only changes the UI; it does not delete the database item.
     setPhotos((current) =>
       current.filter((photo) => photo.uri !== uri),
+    );
+
+    setUploadedUris((current) =>
+      current.filter((savedUri) => savedUri !== uri),
     );
   };
 
@@ -180,23 +181,35 @@ export default function Step4WardrobeSetup({
           setUploadProgressTotal(total);
         },
         (savedUris) => {
-          // This callback fires once database records have been created,
-          // before AI analysis finishes.
+          // The backend has processed these selections, but some
+          // may be duplicates rather than newly created items.
           setUploadedUris((current) =>
             Array.from(new Set([...current, ...savedUris])),
-          );
-
-          onWardrobeSaved();
-
-          setUploadProgress(
-            `${savedUris.length} ${
-              savedUris.length === 1 ? "item" : "items"
-            } saved to your wardrobe.`,
           );
         },
       );
 
-      if (result.analysisFailed > 0) {
+      // Only mark onboarding as having a saved wardrobe if at least
+      // one actual item exists after this upload.
+      if (result.uploaded > 0 || result.duplicates > 0) {
+        onWardrobeSaved();
+      }
+
+      if (result.duplicates > 0 && result.uploaded === 0) {
+        setUploadProgress(
+          result.duplicates === 1
+            ? "Already in your wardrobe. No duplicate was added."
+            : `All ${result.duplicates} photos are already in your wardrobe. No duplicates were added.`,
+        );
+      } else if (result.duplicates > 0) {
+        setUploadProgress(
+          `${result.uploaded} ${
+            result.uploaded === 1 ? "item" : "items"
+          } added · ${result.duplicates} ${
+            result.duplicates === 1 ? "duplicate" : "duplicates"
+          } skipped.`,
+        );
+      } else if (result.analysisFailed > 0) {
         setUploadProgress(
           `${result.uploaded} ${
             result.uploaded === 1 ? "item is" : "items are"
@@ -204,7 +217,9 @@ export default function Step4WardrobeSetup({
         );
       } else if (result.failed > 0) {
         setUploadProgress(
-          `${result.uploaded} saved. ${result.failed} photo(s) could not be uploaded.`,
+          `${result.uploaded} ${
+            result.uploaded === 1 ? "item" : "items"
+          } added. ${result.failed} photo(s) could not be uploaded.`,
         );
       } else {
         setUploadProgress(
@@ -232,12 +247,14 @@ export default function Step4WardrobeSetup({
     if (isPicking) return "Opening photos...";
     if (isUploading) return "Adding to your wardrobe...";
     if (photos.length === 0) return "Add my first item";
+
     if (pendingPhotos.length > 0) {
       return `Upload ${pendingPhotos.length} ${
         pendingPhotos.length === 1 ? "item" : "items"
       }`;
     }
-    return "Items added";
+
+    return "Items processed";
   })();
 
   return (
@@ -256,7 +273,6 @@ export default function Step4WardrobeSetup({
           subtitle="Add 5–10 favourites, frequently worn pieces, or things you want help styling."
         />
 
-        {/* Selected wardrobe photos */}
         <View
           className="overflow-hidden rounded-[18px] border border-[#E9DDCF]"
           style={{ height: compact ? 190 : 220 }}
@@ -365,9 +381,7 @@ export default function Step4WardrobeSetup({
                             accessibilityRole="button"
                             accessibilityLabel="Remove photo"
                             className="absolute right-1 top-1 h-6 w-6 items-center justify-center rounded-full bg-[#2B1B16]/90"
-                            style={{
-                              opacity: isBusy ? 0.5 : 1,
-                            }}
+                            style={{ opacity: isBusy ? 0.5 : 1 }}
                           >
                             <Ionicons
                               name="close"
@@ -395,7 +409,6 @@ export default function Step4WardrobeSetup({
                           size={24}
                           color="#65463A"
                         />
-
                         <Text
                           className="mt-1 text-[10px] text-[#65463A]"
                           style={{ fontFamily: "Manrope" }}
@@ -411,7 +424,6 @@ export default function Step4WardrobeSetup({
           </ImageBackground>
         </View>
 
-        {/* Starter mix */}
         <Text
           className="mb-2 mt-4 text-[22px] leading-[27px] text-[#2B1B16]"
           style={{ fontFamily: "DMSerifDisplay" }}
@@ -435,13 +447,9 @@ export default function Step4WardrobeSetup({
                 size={compact ? 23 : 26}
                 color="#2B1B16"
               />
-
               <Text
                 className="mt-1 text-center text-[10px] leading-[12px] text-[#2B1B16]"
-                style={{
-                  fontFamily: "Manrope",
-                  fontWeight: "400",
-                }}
+                style={{ fontFamily: "Manrope", fontWeight: "400" }}
               >
                 {item.label}
               </Text>
@@ -449,13 +457,8 @@ export default function Step4WardrobeSetup({
           ))}
         </View>
 
-        {/* Single adaptive upload button */}
         <Pressable
-          onPress={
-            photos.length === 0
-              ? chooseFromGallery
-              : uploadWardrobe
-          }
+          onPress={photos.length === 0 ? chooseFromGallery : uploadWardrobe}
           disabled={
             isBusy ||
             (photos.length > 0 && pendingPhotos.length === 0)
@@ -476,25 +479,18 @@ export default function Step4WardrobeSetup({
             <ActivityIndicator color="#FAF7F2" />
           ) : (
             <>
-              {pendingPhotos.length === 0 && uploadedUris.length > 0 ? (
-                <Ionicons
-                  name="checkmark-circle"
-                  size={20}
-                  color="#FAF7F2"
-                  style={{ marginRight: 8 }}
-                />
-              ) : (
-                <Ionicons
-                  name={
-                    photos.length === 0
+              <Ionicons
+                name={
+                  pendingPhotos.length === 0 && uploadedUris.length > 0
+                    ? "checkmark-circle"
+                    : photos.length === 0
                       ? "add-circle-outline"
                       : "cloud-upload-outline"
-                  }
-                  size={19}
-                  color="#FAF7F2"
-                  style={{ marginRight: 8 }}
-                />
-              )}
+                }
+                size={19}
+                color="#FAF7F2"
+                style={{ marginRight: 8 }}
+              />
 
               <Text
                 className="text-[15px] text-[#FAF7F2]"
@@ -515,7 +511,6 @@ export default function Step4WardrobeSetup({
           )}
         </Pressable>
 
-        {/* Camera and gallery controls for adding more pieces */}
         <View className="mt-2.5 flex-row gap-2">
           <Pressable
             onPress={takePhoto}
@@ -533,7 +528,6 @@ export default function Step4WardrobeSetup({
                 color="#FFFFFF"
               />
             </View>
-
             <Text
               className="text-[12px] text-[#2B1B16]"
               style={{ fontFamily: "DMSerifDisplay" }}
@@ -558,7 +552,6 @@ export default function Step4WardrobeSetup({
                 color="#FFFFFF"
               />
             </View>
-
             <Text
               className="text-[12px] text-[#2B1B16]"
               style={{ fontFamily: "DMSerifDisplay" }}
@@ -568,13 +561,11 @@ export default function Step4WardrobeSetup({
           </Pressable>
         </View>
 
-        {/* Upload progress and saved status */}
         {(isUploading || uploadProgress || uploadError) && (
           <View className="mt-3 rounded-[14px] border border-[#E9DDCF] bg-white/70 p-3">
             {isUploading && (
               <View className="flex-row items-center">
                 <ActivityIndicator color="#0D3767" />
-
                 <Text
                   className="ml-2 flex-1 text-[12px] text-[#2B1B16]"
                   style={{ fontFamily: "Manrope" }}
@@ -587,11 +578,14 @@ export default function Step4WardrobeSetup({
             {!isUploading && uploadProgress !== "" && (
               <View className="flex-row items-start">
                 <Ionicons
-                  name="checkmark-circle"
+                  name={
+                    uploadProgress.toLowerCase().includes("already in your wardrobe")
+                      ? "information-circle"
+                      : "checkmark-circle"
+                  }
                   size={17}
                   color="#326B4B"
                 />
-
                 <Text
                   className="ml-2 flex-1 text-[12px] text-[#326B4B]"
                   style={{ fontFamily: "Manrope" }}
@@ -606,12 +600,10 @@ export default function Step4WardrobeSetup({
                 <View
                   className="h-full rounded-full bg-[#0D3767]"
                   style={{
-                    width: `${
-                      Math.min(
-                        100,
-                        (uploadProgressCount / uploadProgressTotal) * 100,
-                      )
-                    }%`,
+                    width: `${Math.min(
+                      100,
+                      (uploadProgressCount / uploadProgressTotal) * 100,
+                    )}%`,
                   }}
                 />
               </View>
@@ -624,7 +616,6 @@ export default function Step4WardrobeSetup({
                   size={17}
                   color="#B45309"
                 />
-
                 <Text
                   className="ml-2 flex-1 text-[12px] text-[#92400E]"
                   style={{ fontFamily: "Manrope" }}
@@ -636,7 +627,6 @@ export default function Step4WardrobeSetup({
           </View>
         )}
 
-        {/* What happens next */}
         <View className="mt-3 flex-row rounded-[18px] bg-[#F5EDE4] p-3">
           <View className="mr-3 h-10 w-10 items-center justify-center rounded-full bg-[#EDE0D0]">
             <Ionicons
@@ -645,7 +635,6 @@ export default function Step4WardrobeSetup({
               color="#2B1B16"
             />
           </View>
-
           <View className="flex-1 justify-center">
             <Text
               className="mb-1 text-[9px] tracking-[1.5px] text-[#8A6955]"
@@ -653,7 +642,6 @@ export default function Step4WardrobeSetup({
             >
               WHAT HAPPENS NEXT
             </Text>
-
             <Text
               className="text-[14px] leading-[19px] text-[#2B1B16]"
               style={{ fontFamily: "Manrope" }}
@@ -663,14 +651,12 @@ export default function Step4WardrobeSetup({
           </View>
         </View>
 
-        {/* Privacy note */}
         <View className="mt-3 flex-row items-center justify-center gap-1.5 px-1">
           <Ionicons
             name="lock-closed-outline"
             size={14}
             color="#756B68"
           />
-
           <Text
             className="flex-shrink text-center text-[10px] leading-[15px] text-[#756B68]"
             style={{ fontFamily: "Manrope" }}

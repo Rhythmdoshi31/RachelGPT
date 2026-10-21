@@ -115,17 +115,17 @@ async function apiRequest(endpoint: string, body?: unknown) {
 
 
 
-export async function hasWardrobeItems(): Promise<boolean> {
+
+export async function getWardrobeItemCount(): Promise<number> {
   const result = await apiRequest("/api/wardrobe?page=1&limit=1");
 
-  if (!Array.isArray(result.wardrobe)) {
+  if (typeof result.pagination?.total !== "number") {
     throw new Error("Unexpected wardrobe API response.");
   }
 
-  return result.wardrobe.length > 0 ||
-    (typeof result.pagination?.total === "number" &&
-      result.pagination.total > 0);
+  return result.pagination.total;
 }
+
 
 function getFileDetails(photo: WardrobeUploadFile) {
   const uriName = photo.uri.split("/").pop()?.split("?")[0];

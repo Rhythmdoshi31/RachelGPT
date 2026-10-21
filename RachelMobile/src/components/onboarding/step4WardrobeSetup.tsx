@@ -14,7 +14,7 @@ import * as ImagePicker from "expo-image-picker";
 import { Ionicons } from "@expo/vector-icons";
 import StepHeading from "./stepHeading";
 import {
-  hasWardrobeItems,
+  getWardrobeItemCount,
   uploadAndAnalyzeWardrobe,
 } from "../../lib/wardrobe";
 
@@ -50,6 +50,10 @@ export default function Step4WardrobeSetup({
   const [uploadProgressCount, setUploadProgressCount] = useState(0);
   const [uploadProgressTotal, setUploadProgressTotal] = useState(0);
   const [uploadError, setUploadError] = useState("");
+  const [existingWardrobeCount, setExistingWardrobeCount] = useState<
+    number | null
+  >(null);
+  const [isCheckingWardrobe, setIsCheckingWardrobe] = useState(true);
 
   // Check the server when this step mounts. This allows users to resume
   // onboarding after closing the app without losing their saved wardrobe.
@@ -57,14 +61,24 @@ export default function Step4WardrobeSetup({
     let isActive = true;
 
     async function checkExistingWardrobe() {
-      try {
-        const hasItems = await hasWardrobeItems();
+      setIsCheckingWardrobe(true);
 
-        if (isActive && hasItems) {
+      try {
+        const count = await getWardrobeItemCount();
+
+        if (!isActive) return;
+
+        setExistingWardrobeCount(count);
+
+        if (count > 0) {
           onWardrobeSaved();
         }
       } catch (error) {
         console.error("Failed to check existing wardrobe:", error);
+      } finally {
+        if (isActive) {
+          setIsCheckingWardrobe(false);
+        }
       }
     }
 
@@ -143,8 +157,7 @@ export default function Step4WardrobeSetup({
     if (photos.length >= MAX_PHOTOS || isBusy) return;
 
     try {
-      const permission =
-        await ImagePicker.requestCameraPermissionsAsync();
+      const permission = await ImagePicker.requestCameraPermissionsAsync();
 
       if (!permission.granted) {
         Alert.alert(
@@ -176,9 +189,7 @@ export default function Step4WardrobeSetup({
   const removePhoto = (uri: string) => {
     if (isBusy) return;
 
-    setPhotos((current) =>
-      current.filter((photo) => photo.uri !== uri),
-    );
+    setPhotos((current) => current.filter((photo) => photo.uri !== uri));
 
     setUploadedUris((current) =>
       current.filter((savedUri) => savedUri !== uri),
@@ -282,10 +293,15 @@ export default function Step4WardrobeSetup({
   })();
 
   const showUploadStatus =
-    isUploading || uploadProgress !== "" || uploadError !== "";
+    isCheckingWardrobe ||
+    isUploading ||
+    uploadProgress !== "" ||
+    uploadError !== "" ||
+    (existingWardrobeCount !== null && existingWardrobeCount > 0);
 
-  const isDuplicateOnly =
-    uploadProgress.toLowerCase().includes("already in your wardrobe");
+  const isDuplicateOnly = uploadProgress
+    .toLowerCase()
+    .includes("already in your wardrobe");
 
   const isError =
     uploadError !== "" ||
@@ -329,11 +345,7 @@ export default function Step4WardrobeSetup({
                   className="flex-1 items-center justify-center"
                 >
                   <View className="h-12 w-12 items-center justify-center rounded-full bg-[#FAF7F2]/90">
-                    <Ionicons
-                      name="images-outline"
-                      size={25}
-                      color="#65463A"
-                    />
+                    <Ionicons name="images-outline" size={25} color="#65463A" />
                   </View>
 
                   <Text
@@ -420,11 +432,7 @@ export default function Step4WardrobeSetup({
                             className="absolute right-1 top-1 h-6 w-6 items-center justify-center rounded-full bg-[#2B1B16]/90"
                             style={{ opacity: isBusy ? 0.5 : 1 }}
                           >
-                            <Ionicons
-                              name="close"
-                              size={15}
-                              color="#FFFFFF"
-                            />
+                            <Ionicons name="close" size={15} color="#FFFFFF" />
                           </Pressable>
                         </View>
                       );
@@ -441,11 +449,7 @@ export default function Step4WardrobeSetup({
                           opacity: isBusy ? 0.5 : 1,
                         }}
                       >
-                        <Ionicons
-                          name="add"
-                          size={24}
-                          color="#65463A"
-                        />
+                        <Ionicons name="add" size={24} color="#65463A" />
                         <Text
                           className="mt-1 text-[10px] text-[#65463A]"
                           style={{ fontFamily: "Manrope" }}
@@ -508,6 +512,37 @@ export default function Step4WardrobeSetup({
                 </Text>
               </View>
             )}
+
+            {isCheckingWardrobe && !isUploading && (
+              <View className="flex-row items-center">
+                <ActivityIndicator color="#0D3767" />
+                <Text
+                  className="ml-2 flex-1 text-[12px] text-[#2B1B16]"
+                  style={{ fontFamily: "Manrope" }}
+                >
+                  Checking your wardrobe...
+                </Text>
+              </View>
+            )}
+
+            {!isCheckingWardrobe &&
+              !isUploading &&
+              uploadProgress === "" &&
+              uploadError === "" &&
+              existingWardrobeCount !== null &&
+              existingWardrobeCount > 0 && (
+                <View className="flex-row items-start">
+                  <Ionicons name="checkmark-circle" size={19} color="#326B4B" />
+                  <Text
+                    className="ml-2 flex-1 text-[12px] leading-[18px] text-[#326B4B]"
+                    style={{ fontFamily: "Manrope" }}
+                  >
+                    You have {existingWardrobeCount}{" "}
+                    {existingWardrobeCount === 1 ? "item" : "items"} in your
+                    wardrobe already. Add more pieces to build your collection.
+                  </Text>
+                </View>
+              )}
 
             {!isUploading && uploadProgress !== "" && (
               <View className="flex-row items-start">
@@ -579,10 +614,7 @@ export default function Step4WardrobeSetup({
         {/* Main upload button */}
         <Pressable
           onPress={photos.length === 0 ? chooseFromGallery : uploadWardrobe}
-          disabled={
-            isBusy ||
-            (photos.length > 0 && pendingPhotos.length === 0)
-          }
+          disabled={isBusy || (photos.length > 0 && pendingPhotos.length === 0)}
           accessibilityRole="button"
           className="mt-4 h-[48px] flex-row items-center justify-center rounded-full bg-[#0D3767]"
           style={({ pressed }) => ({
@@ -640,11 +672,7 @@ export default function Step4WardrobeSetup({
             }}
           >
             <View className="mr-2 h-8 w-8 items-center justify-center rounded-full bg-[#0D3767]">
-              <Ionicons
-                name="camera-outline"
-                size={19}
-                color="#FFFFFF"
-              />
+              <Ionicons name="camera-outline" size={19} color="#FFFFFF" />
             </View>
             <Text
               className="text-[12px] text-[#2B1B16]"
@@ -663,11 +691,7 @@ export default function Step4WardrobeSetup({
             }}
           >
             <View className="mr-2 h-8 w-8 items-center justify-center rounded-full bg-[#65463A]">
-              <Ionicons
-                name="images-outline"
-                size={18}
-                color="#FFFFFF"
-              />
+              <Ionicons name="images-outline" size={18} color="#FFFFFF" />
             </View>
             <Text
               className="text-[12px] text-[#2B1B16]"
@@ -680,11 +704,7 @@ export default function Step4WardrobeSetup({
 
         <View className="mt-3 flex-row rounded-[18px] bg-[#F5EDE4] p-3">
           <View className="mr-3 h-10 w-10 items-center justify-center rounded-full bg-[#EDE0D0]">
-            <Ionicons
-              name="bulb-outline"
-              size={23}
-              color="#2B1B16"
-            />
+            <Ionicons name="bulb-outline" size={23} color="#2B1B16" />
           </View>
           <View className="flex-1 justify-center">
             <Text
@@ -703,11 +723,7 @@ export default function Step4WardrobeSetup({
         </View>
 
         <View className="mt-3 flex-row items-center justify-center gap-1.5 px-1">
-          <Ionicons
-            name="lock-closed-outline"
-            size={14}
-            color="#756B68"
-          />
+          <Ionicons name="lock-closed-outline" size={14} color="#756B68" />
           <Text
             className="flex-shrink text-center text-[10px] leading-[15px] text-[#756B68]"
             style={{ fontFamily: "Manrope" }}

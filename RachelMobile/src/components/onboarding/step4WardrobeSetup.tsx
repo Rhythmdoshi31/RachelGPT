@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -14,7 +13,10 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import { Ionicons } from "@expo/vector-icons";
 import StepHeading from "./stepHeading";
-import { uploadAndAnalyzeWardrobe } from "../../lib/wardrobe";
+import {
+  hasWardrobeItems,
+  uploadAndAnalyzeWardrobe,
+} from "../../lib/wardrobe";
 
 const wardrobeBackground = require("../../../assets/images/backgrounds/Sunlit_ivory_studio_with_olive_tree.png");
 
@@ -48,6 +50,30 @@ export default function Step4WardrobeSetup({
   const [uploadProgressCount, setUploadProgressCount] = useState(0);
   const [uploadProgressTotal, setUploadProgressTotal] = useState(0);
   const [uploadError, setUploadError] = useState("");
+
+  // Check the server when this step mounts. This allows users to resume
+  // onboarding after closing the app without losing their saved wardrobe.
+  useEffect(() => {
+    let isActive = true;
+
+    async function checkExistingWardrobe() {
+      try {
+        const hasItems = await hasWardrobeItems();
+
+        if (isActive && hasItems) {
+          onWardrobeSaved();
+        }
+      } catch (error) {
+        console.error("Failed to check existing wardrobe:", error);
+      }
+    }
+
+    void checkExistingWardrobe();
+
+    return () => {
+      isActive = false;
+    };
+  }, [onWardrobeSaved]);
 
   const isBusy = isPicking || isUploading;
 
@@ -181,16 +207,14 @@ export default function Step4WardrobeSetup({
           setUploadProgressTotal(total);
         },
         (savedUris) => {
-          // The backend has processed these selections, but some
-          // may be duplicates rather than newly created items.
+          // These photos have been processed by the backend. Some may
+          // match existing wardrobe items instead of creating new items.
           setUploadedUris((current) =>
             Array.from(new Set([...current, ...savedUris])),
           );
         },
       );
 
-      // Only mark onboarding as having a saved wardrobe if at least
-      // one actual item exists after this upload.
       if (result.uploaded > 0 || result.duplicates > 0) {
         onWardrobeSaved();
       }
@@ -256,6 +280,19 @@ export default function Step4WardrobeSetup({
 
     return "Items processed";
   })();
+
+  const showUploadStatus =
+    isUploading || uploadProgress !== "" || uploadError !== "";
+
+  const isDuplicateOnly =
+    uploadProgress.toLowerCase().includes("already in your wardrobe");
+
+  const isError =
+    uploadError !== "" ||
+    (!isUploading &&
+      uploadProgress !== "" &&
+      (uploadProgress.includes("need analysis retry") ||
+        uploadProgress.includes("could not be uploaded")));
 
   return (
     <View className="flex-1 bg-[#FAF7F2]">
@@ -457,6 +494,89 @@ export default function Step4WardrobeSetup({
           ))}
         </View>
 
+        {/* Upload progress and result appear ABOVE the upload button. */}
+        {showUploadStatus && (
+          <View className="mt-3 rounded-[14px] border border-[#E9DDCF] bg-white/70 p-3">
+            {isUploading && (
+              <View className="flex-row items-center">
+                <ActivityIndicator color="#0D3767" />
+                <Text
+                  className="ml-2 flex-1 text-[12px] text-[#2B1B16]"
+                  style={{ fontFamily: "Manrope" }}
+                >
+                  {uploadProgress}
+                </Text>
+              </View>
+            )}
+
+            {!isUploading && uploadProgress !== "" && (
+              <View className="flex-row items-start">
+                <Ionicons
+                  name={
+                    isError
+                      ? "alert-circle-outline"
+                      : isDuplicateOnly
+                        ? "information-circle-outline"
+                        : "checkmark-circle"
+                  }
+                  size={17}
+                  color={
+                    isError
+                      ? "#B45309"
+                      : isDuplicateOnly
+                        ? "#0D3767"
+                        : "#326B4B"
+                  }
+                />
+                <Text
+                  className="ml-2 flex-1 text-[12px]"
+                  style={{
+                    fontFamily: "Manrope",
+                    color: isError
+                      ? "#92400E"
+                      : isDuplicateOnly
+                        ? "#0D3767"
+                        : "#326B4B",
+                  }}
+                >
+                  {uploadProgress}
+                </Text>
+              </View>
+            )}
+
+            {isUploading && uploadProgressTotal > 0 && (
+              <View className="mt-2 h-[5px] overflow-hidden rounded-full bg-[#E9DDCF]">
+                <View
+                  className="h-full rounded-full bg-[#0D3767]"
+                  style={{
+                    width: `${Math.min(
+                      100,
+                      (uploadProgressCount / uploadProgressTotal) * 100,
+                    )}%`,
+                  }}
+                />
+              </View>
+            )}
+
+            {uploadError !== "" && (
+              <View className="mt-2 flex-row items-start">
+                <Ionicons
+                  name="alert-circle-outline"
+                  size={17}
+                  color="#B45309"
+                />
+                <Text
+                  className="ml-2 flex-1 text-[12px] text-[#92400E]"
+                  style={{ fontFamily: "Manrope" }}
+                >
+                  {uploadError}
+                </Text>
+              </View>
+            )}
+          </View>
+        )}
+
+        {/* Main upload button */}
         <Pressable
           onPress={photos.length === 0 ? chooseFromGallery : uploadWardrobe}
           disabled={
@@ -467,8 +587,7 @@ export default function Step4WardrobeSetup({
           className="mt-4 h-[48px] flex-row items-center justify-center rounded-full bg-[#0D3767]"
           style={({ pressed }) => ({
             opacity:
-              isBusy ||
-              (photos.length > 0 && pendingPhotos.length === 0)
+              isBusy || (photos.length > 0 && pendingPhotos.length === 0)
                 ? 0.7
                 : pressed
                   ? 0.88
@@ -517,8 +636,7 @@ export default function Step4WardrobeSetup({
             disabled={isBusy || photos.length >= MAX_PHOTOS}
             className="h-[49px] flex-1 flex-row items-center justify-center rounded-[14px] border border-[#E3DAD2] px-1"
             style={{
-              opacity:
-                isBusy || photos.length >= MAX_PHOTOS ? 0.55 : 1,
+              opacity: isBusy || photos.length >= MAX_PHOTOS ? 0.55 : 1,
             }}
           >
             <View className="mr-2 h-8 w-8 items-center justify-center rounded-full bg-[#0D3767]">
@@ -541,8 +659,7 @@ export default function Step4WardrobeSetup({
             disabled={isBusy || photos.length >= MAX_PHOTOS}
             className="h-[49px] flex-1 flex-row items-center justify-center rounded-[14px] border border-[#E3DAD2] px-1"
             style={{
-              opacity:
-                isBusy || photos.length >= MAX_PHOTOS ? 0.55 : 1,
+              opacity: isBusy || photos.length >= MAX_PHOTOS ? 0.55 : 1,
             }}
           >
             <View className="mr-2 h-8 w-8 items-center justify-center rounded-full bg-[#65463A]">
@@ -560,72 +677,6 @@ export default function Step4WardrobeSetup({
             </Text>
           </Pressable>
         </View>
-
-        {(isUploading || uploadProgress || uploadError) && (
-          <View className="mt-3 rounded-[14px] border border-[#E9DDCF] bg-white/70 p-3">
-            {isUploading && (
-              <View className="flex-row items-center">
-                <ActivityIndicator color="#0D3767" />
-                <Text
-                  className="ml-2 flex-1 text-[12px] text-[#2B1B16]"
-                  style={{ fontFamily: "Manrope" }}
-                >
-                  {uploadProgress}
-                </Text>
-              </View>
-            )}
-
-            {!isUploading && uploadProgress !== "" && (
-              <View className="flex-row items-start">
-                <Ionicons
-                  name={
-                    uploadProgress.toLowerCase().includes("already in your wardrobe")
-                      ? "information-circle"
-                      : "checkmark-circle"
-                  }
-                  size={17}
-                  color="#326B4B"
-                />
-                <Text
-                  className="ml-2 flex-1 text-[12px] text-[#326B4B]"
-                  style={{ fontFamily: "Manrope" }}
-                >
-                  {uploadProgress}
-                </Text>
-              </View>
-            )}
-
-            {isUploading && uploadProgressTotal > 0 && (
-              <View className="mt-2 h-[5px] overflow-hidden rounded-full bg-[#E9DDCF]">
-                <View
-                  className="h-full rounded-full bg-[#0D3767]"
-                  style={{
-                    width: `${Math.min(
-                      100,
-                      (uploadProgressCount / uploadProgressTotal) * 100,
-                    )}%`,
-                  }}
-                />
-              </View>
-            )}
-
-            {uploadError !== "" && (
-              <View className="mt-2 flex-row items-start">
-                <Ionicons
-                  name="alert-circle-outline"
-                  size={17}
-                  color="#B45309"
-                />
-                <Text
-                  className="ml-2 flex-1 text-[12px] text-[#92400E]"
-                  style={{ fontFamily: "Manrope" }}
-                >
-                  {uploadError}
-                </Text>
-              </View>
-            )}
-          </View>
-        )}
 
         <View className="mt-3 flex-row rounded-[18px] bg-[#F5EDE4] p-3">
           <View className="mr-3 h-10 w-10 items-center justify-center rounded-full bg-[#EDE0D0]">

@@ -113,6 +113,20 @@ async function apiRequest(endpoint: string, body?: unknown) {
   return readResponse(response);
 }
 
+
+
+export async function hasWardrobeItems(): Promise<boolean> {
+  const result = await apiRequest("/api/wardrobe?page=1&limit=1");
+
+  if (!Array.isArray(result.wardrobe)) {
+    throw new Error("Unexpected wardrobe API response.");
+  }
+
+  return result.wardrobe.length > 0 ||
+    (typeof result.pagination?.total === "number" &&
+      result.pagination.total > 0);
+}
+
 function getFileDetails(photo: WardrobeUploadFile) {
   const uriName = photo.uri.split("/").pop()?.split("?")[0];
   const fileName =

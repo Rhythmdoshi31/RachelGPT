@@ -1,13 +1,6 @@
-
 import { useCallback, useEffect, useState } from "react";
 import { useFocusEffect, router } from "expo-router";
-import {
-  ActivityIndicator,
-  Alert,
-  Pressable,
-  Text,
-  View,
-} from "react-native";
+import { ActivityIndicator, Alert, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { supabase } from "../../lib/supabase";
@@ -56,8 +49,7 @@ const INITIAL_AVATAR_SELECTION: AvatarSelection = {
 export default function Onboarding() {
   const [step, setStep] = useState(1);
 
-  const [selectedStylist, setSelectedStylist] =
-    useState<Stylist>("Rachel");
+  const [selectedStylist, setSelectedStylist] = useState<Stylist>("Rachel");
 
   const [availablePersonas, setAvailablePersonas] = useState<
     AvailablePersona[]
@@ -70,13 +62,13 @@ export default function Onboarding() {
 
   const [hasSavedWardrobe, setHasSavedWardrobe] = useState(false);
 
-  const [styleAnswers, setStyleAnswers] =
-    useState<StyleQuestionnaireAnswers>({
-      ...initialStyleAnswers,
-    });
+  const [styleAnswers, setStyleAnswers] = useState<StyleQuestionnaireAnswers>({
+    ...initialStyleAnswers,
+  });
 
-  const [avatarSelection, setAvatarSelection] =
-    useState<AvatarSelection>(INITIAL_AVATAR_SELECTION);
+  const [avatarSelection, setAvatarSelection] = useState<AvatarSelection>(
+    INITIAL_AVATAR_SELECTION,
+  );
 
   // Restore the selected stylist whenever onboarding gains focus.
   useFocusEffect(
@@ -104,8 +96,7 @@ export default function Onboarding() {
             if (matchingPersona) {
               const stylistName = SUPPORTED_STYLISTS.find(
                 (name) =>
-                  name.toLowerCase() ===
-                  matchingPersona.name.toLowerCase(),
+                  name.toLowerCase() === matchingPersona.name.toLowerCase(),
               );
 
               if (stylistName) {
@@ -115,16 +106,11 @@ export default function Onboarding() {
           }
         } catch (error) {
           if (active) {
-            console.error(
-              "Failed to restore selected persona:",
-              error,
-            );
+            console.error("Failed to restore selected persona:", error);
 
             Alert.alert(
               "Couldn't load your stylist",
-              error instanceof Error
-                ? error.message
-                : "Please try again.",
+              error instanceof Error ? error.message : "Please try again.",
             );
           }
         } finally {
@@ -151,22 +137,15 @@ export default function Onboarding() {
         const profile = await getStyleProfile();
 
         if (active && profile) {
-          setStyleAnswers(
-            fromStyleProfile(profile, initialStyleAnswers),
-          );
+          setStyleAnswers(fromStyleProfile(profile, initialStyleAnswers));
         }
       } catch (error) {
-        console.error(
-          "Failed to load saved style profile:",
-          error,
-        );
+        console.error("Failed to load saved style profile:", error);
 
         if (active) {
           Alert.alert(
             "Couldn't load your saved preferences",
-            error instanceof Error
-              ? error.message
-              : "Please try again.",
+            error instanceof Error ? error.message : "Please try again.",
           );
         }
       } finally {
@@ -214,9 +193,7 @@ export default function Onboarding() {
         if (active) {
           Alert.alert(
             "Couldn't load your Style Mirror",
-            error instanceof Error
-              ? error.message
-              : "Please try again.",
+            error instanceof Error ? error.message : "Please try again.",
           );
         }
       } finally {
@@ -274,16 +251,11 @@ export default function Onboarding() {
 
         setStep(2);
       } catch (error) {
-        console.error(
-          "Failed to save selected persona:",
-          error,
-        );
+        console.error("Failed to save selected persona:", error);
 
         Alert.alert(
           "Couldn't save your stylist",
-          error instanceof Error
-            ? error.message
-            : "Please try again.",
+          error instanceof Error ? error.message : "Please try again.",
         );
       } finally {
         setIsContinuing(false);
@@ -303,10 +275,7 @@ export default function Onboarding() {
 
         setStep(3);
       } catch (error) {
-        console.error(
-          "Failed to save style profile:",
-          error,
-        );
+        console.error("Failed to save style profile:", error);
 
         Alert.alert(
           "Couldn't save your style",
@@ -338,10 +307,7 @@ export default function Onboarding() {
 
         setStep(4);
       } catch (error) {
-        console.error(
-          "Failed to save Style Mirror:",
-          error,
-        );
+        console.error("Failed to save Style Mirror:", error);
 
         Alert.alert(
           "Couldn't save your Style Mirror",
@@ -367,10 +333,7 @@ export default function Onboarding() {
 
         router.replace("/(main)/home");
       } catch (error) {
-        console.error(
-          "Failed to complete onboarding:",
-          error,
-        );
+        console.error("Failed to complete onboarding:", error);
 
         Alert.alert(
           "Couldn't complete onboarding",
@@ -425,9 +388,7 @@ export default function Onboarding() {
 
       case 4:
         return (
-          <Step4WardrobeSetup
-            onWardrobeSaved={() => setHasSavedWardrobe(true)}
-          />
+          <Step4WardrobeSetup onWardrobeSaved={handleWardrobeSaved} />
         );
 
       default:
@@ -435,8 +396,7 @@ export default function Onboarding() {
     }
   };
 
-  const continueDisabled =
-    busy || (step === 4 && !hasSavedWardrobe);
+  const continueDisabled = busy || (step === 4 && !hasSavedWardrobe);
 
   const continueLabel =
     step === 1
@@ -447,11 +407,12 @@ export default function Onboarding() {
           ? "Continue"
           : "Complete my wardrobe";
 
+  const handleWardrobeSaved = useCallback(() => {
+    setHasSavedWardrobe(true);
+  }, []);
+
   return (
-    <SafeAreaView
-      className="flex-1 bg-[#FAF7F2]"
-      edges={["top", "bottom"]}
-    >
+    <SafeAreaView className="flex-1 bg-[#FAF7F2]" edges={["top", "bottom"]}>
       {/* Shared onboarding header */}
       <View className="h-[49px] flex-row items-center justify-center">
         {step > 1 && (
@@ -462,11 +423,7 @@ export default function Onboarding() {
             accessibilityRole="button"
             accessibilityLabel="Go back"
           >
-            <Ionicons
-              name="chevron-back"
-              size={25}
-              color="#2B1B16"
-            />
+            <Ionicons name="chevron-back" size={25} color="#2B1B16" />
           </Pressable>
         )}
 
@@ -483,9 +440,7 @@ export default function Onboarding() {
               <View
                 key={item}
                 className={`h-[8px] w-[8px] rounded-full ${
-                  item <= step
-                    ? "bg-[#3F5792]"
-                    : "bg-[#E9DDCF]"
+                  item <= step ? "bg-[#3F5792]" : "bg-[#E9DDCF]"
                 }`}
               />
             ))}
@@ -512,10 +467,7 @@ export default function Onboarding() {
       <View className="flex-1">
         {isLoading ? (
           <View className="flex-1 items-center justify-center px-6">
-            <ActivityIndicator
-              size="large"
-              color="#3F5792"
-            />
+            <ActivityIndicator size="large" color="#3F5792" />
 
             <Text
               className="mt-3 text-center text-[13px] text-[#64748B]"
@@ -571,11 +523,7 @@ export default function Onboarding() {
               </Text>
 
               <Ionicons
-                name={
-                  step === 4
-                    ? "checkmark-circle-outline"
-                    : "arrow-forward"
-                }
+                name={step === 4 ? "checkmark-circle-outline" : "arrow-forward"}
                 size={22}
                 color="#FAF7F2"
                 style={{ marginLeft: 9 }}

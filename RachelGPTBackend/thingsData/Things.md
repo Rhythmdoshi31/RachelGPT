@@ -68,7 +68,6 @@ POST http://localhost:3000/api/wardrobe/upload-urls --> uploading to object stor
 
 POST http://localhost:3000/api/wardrobe/complete --> create single wardrobe item
 
-
 checkshirt.jpg
       ↓
 /upload-url
@@ -152,3 +151,27 @@ For generated images, we'll use this digit order:
   "imagePath": "defaults/image1.png",
   "version": 1
 }
+
+### Avatar routes
+
+GET /api/avatar/ (getAvatar)
+POST /api/avatar (saveAvatar)
+
+
+POST /api/wardrobe/upload-urls
+
+
+
+Direct uploads to Supabase Storage, with a small concurrency limit to avoid loading 50 images into memory at once.
+
+
+
+POST /api/wardrobe/complete-batch
+
+
+
+POST /api/wardrobe/analyze-batch
+
+
+
+GET /api/wardrobe/analysis-status?ids=... until analysis finishes.

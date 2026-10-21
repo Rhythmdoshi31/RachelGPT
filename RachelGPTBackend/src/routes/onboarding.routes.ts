@@ -4,6 +4,7 @@ import {
   getStyleProfile,
   getOnboardingStatus,
   updateOnboardingProgress,
+  completeOnboarding,
 } from "../controllers/onboarding.controller.js";
 import { authMiddleware } from "../middleware/auth.js";
 
@@ -28,5 +29,7 @@ router.patch(
   authMiddleware,
   updateOnboardingProgress
 );
+
+router.post("/complete", authMiddleware, completeOnboarding);
 
 export default router;

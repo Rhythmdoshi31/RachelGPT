@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import {
   ActivityIndicator,
@@ -19,6 +20,10 @@ const wardrobeBackground = require("../../../assets/images/backgrounds/Sunlit_iv
 
 type WardrobePhoto = ImagePicker.ImagePickerAsset;
 
+type Step4WardrobeSetupProps = {
+  onWardrobeSaved: () => void;
+};
+
 const MAX_PHOTOS = 50;
 
 const STARTER_ITEMS = [
@@ -29,23 +34,32 @@ const STARTER_ITEMS = [
   { label: "Something\nyou love", icon: "heart-outline" as const },
 ];
 
-export default function Step4WardrobeSetup() {
+export default function Step4WardrobeSetup({
+  onWardrobeSaved,
+}: Step4WardrobeSetupProps) {
   const { height } = useWindowDimensions();
   const compact = height < 850;
 
   const [photos, setPhotos] = useState<WardrobePhoto[]>([]);
+  const [uploadedUris, setUploadedUris] = useState<string[]>([]);
   const [isPicking, setIsPicking] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState("");
   const [uploadProgressCount, setUploadProgressCount] = useState(0);
   const [uploadProgressTotal, setUploadProgressTotal] = useState(0);
+  const [uploadError, setUploadError] = useState("");
 
   const isBusy = isPicking || isUploading;
 
+  const pendingPhotos = photos.filter(
+    (photo) => !uploadedUris.includes(photo.uri),
+  );
+
   const addPhotos = (newPhotos: WardrobePhoto[]) => {
+    let limitReached = false;
+
     setPhotos((current) => {
       const unique = [...current];
-      let added = 0;
 
       for (const photo of newPhotos) {
         if (unique.some((existing) => existing.uri === photo.uri)) {
@@ -53,22 +67,24 @@ export default function Step4WardrobeSetup() {
         }
 
         if (unique.length >= MAX_PHOTOS) {
+          limitReached = true;
           break;
         }
 
         unique.push(photo);
-        added++;
-      }
-
-      if (added < newPhotos.length) {
-        Alert.alert(
-          "Photo limit reached",
-          `You can select up to ${MAX_PHOTOS} unique photos. Duplicate photos are ignored.`,
-        );
       }
 
       return unique;
     });
+
+    if (limitReached) {
+      Alert.alert(
+        "Photo limit reached",
+        `You can select up to ${MAX_PHOTOS} unique photos. Duplicate photos are ignored.`,
+      );
+    }
+
+    setUploadError("");
   };
 
   const chooseFromGallery = async () => {
@@ -101,7 +117,8 @@ export default function Step4WardrobeSetup() {
     if (photos.length >= MAX_PHOTOS || isBusy) return;
 
     try {
-      const permission = await ImagePicker.requestCameraPermissionsAsync();
+      const permission =
+        await ImagePicker.requestCameraPermissionsAsync();
 
       if (!permission.granted) {
         Alert.alert(
@@ -134,28 +151,25 @@ export default function Step4WardrobeSetup() {
   const removePhoto = (uri: string) => {
     if (isBusy) return;
 
-    setPhotos((current) => current.filter((photo) => photo.uri !== uri));
+    // Remove the photo from both the selection and saved-URI tracking.
+    // This only changes the UI; it does not delete the database item.
+    setPhotos((current) =>
+      current.filter((photo) => photo.uri !== uri),
+    );
   };
 
   const uploadWardrobe = async () => {
-    if (isBusy) return;
-
-    if (photos.length === 0) {
-      Alert.alert(
-        "Add your wardrobe",
-        "Choose at least one photo before uploading.",
-      );
-      return;
-    }
+    if (isBusy || pendingPhotos.length === 0) return;
 
     setIsUploading(true);
+    setUploadError("");
     setUploadProgress("Preparing your wardrobe...");
     setUploadProgressCount(0);
-    setUploadProgressTotal(photos.length);
+    setUploadProgressTotal(pendingPhotos.length);
 
     try {
       const result = await uploadAndAnalyzeWardrobe(
-        photos.map((photo) => ({
+        pendingPhotos.map((photo) => ({
           uri: photo.uri,
           fileName: photo.fileName ?? null,
           mimeType: photo.mimeType ?? null,
@@ -165,43 +179,66 @@ export default function Step4WardrobeSetup() {
           setUploadProgressCount(completed);
           setUploadProgressTotal(total);
         },
+        (savedUris) => {
+          // This callback fires once database records have been created,
+          // before AI analysis finishes.
+          setUploadedUris((current) =>
+            Array.from(new Set([...current, ...savedUris])),
+          );
+
+          onWardrobeSaved();
+
+          setUploadProgress(
+            `${savedUris.length} ${
+              savedUris.length === 1 ? "item" : "items"
+            } saved to your wardrobe.`,
+          );
+        },
       );
 
-      const messages = [
-        `${result.uploaded} photo(s) saved to your wardrobe.`,
-        `${result.completed} item(s) analysed successfully.`,
-      ];
-
-      if (result.failed > 0) {
-        messages.push(`${result.failed} photo(s) could not be uploaded.`);
-      }
-
       if (result.analysisFailed > 0) {
-        messages.push(
-          `${result.analysisFailed} item(s) could not be analysed successfully.`,
+        setUploadProgress(
+          `${result.uploaded} ${
+            result.uploaded === 1 ? "item is" : "items are"
+          } saved. ${result.analysisFailed} need analysis retry.`,
+        );
+      } else if (result.failed > 0) {
+        setUploadProgress(
+          `${result.uploaded} saved. ${result.failed} photo(s) could not be uploaded.`,
+        );
+      } else {
+        setUploadProgress(
+          `${result.uploaded} ${
+            result.uploaded === 1 ? "item" : "items"
+          } added to your wardrobe.`,
         );
       }
-
-      Alert.alert("Wardrobe update", messages.join("\n"));
-
-      // Keep the existing selection visible so the user can review
-      // the photos and see the outcome of this upload.
     } catch (error) {
       console.error("Wardrobe upload failed:", error);
 
-      Alert.alert(
-        "Couldn't finish uploading",
+      setUploadError(
         error instanceof Error
           ? error.message
-          : "Please try again. Your selected photos are still available.",
+          : "Something went wrong. Please try again.",
       );
     } finally {
       setIsUploading(false);
-      setUploadProgress("");
       setUploadProgressCount(0);
       setUploadProgressTotal(0);
     }
   };
+
+  const uploadButtonLabel = (() => {
+    if (isPicking) return "Opening photos...";
+    if (isUploading) return "Adding to your wardrobe...";
+    if (photos.length === 0) return "Add my first item";
+    if (pendingPhotos.length > 0) {
+      return `Upload ${pendingPhotos.length} ${
+        pendingPhotos.length === 1 ? "item" : "items"
+      }`;
+    }
+    return "Items added";
+  })();
 
   return (
     <View className="flex-1 bg-[#FAF7F2]">
@@ -219,7 +256,7 @@ export default function Step4WardrobeSetup() {
           subtitle="Add 5–10 favourites, frequently worn pieces, or things you want help styling."
         />
 
-        {/* Photo preview with the blurred studio background */}
+        {/* Selected wardrobe photos */}
         <View
           className="overflow-hidden rounded-[18px] border border-[#E9DDCF]"
           style={{ height: compact ? 190 : 220 }}
@@ -239,7 +276,11 @@ export default function Step4WardrobeSetup() {
                   className="flex-1 items-center justify-center"
                 >
                   <View className="h-12 w-12 items-center justify-center rounded-full bg-[#FAF7F2]/90">
-                    <Ionicons name="images-outline" size={25} color="#65463A" />
+                    <Ionicons
+                      name="images-outline"
+                      size={25}
+                      color="#65463A"
+                    />
                   </View>
 
                   <Text
@@ -284,35 +325,59 @@ export default function Step4WardrobeSetup() {
                       paddingBottom: 4,
                     }}
                   >
-                    {photos.map((photo) => (
-                      <View
-                        key={photo.uri}
-                        className="relative overflow-hidden rounded-xl border border-white"
-                        style={{
-                          width: compact ? 100 : 118,
-                          height: compact ? 140 : 166,
-                        }}
-                      >
-                        <Image
-                          source={{ uri: photo.uri }}
-                          className="h-full w-full"
-                          resizeMode="cover"
-                        />
+                    {photos.map((photo) => {
+                      const isSaved = uploadedUris.includes(photo.uri);
 
-                        <Pressable
-                          onPress={() => removePhoto(photo.uri)}
-                          disabled={isBusy}
-                          accessibilityRole="button"
-                          accessibilityLabel="Remove photo"
-                          className="absolute right-1 top-1 h-6 w-6 items-center justify-center rounded-full bg-[#2B1B16]/90"
+                      return (
+                        <View
+                          key={photo.uri}
+                          className="relative overflow-hidden rounded-xl border border-white"
                           style={{
-                            opacity: isBusy ? 0.5 : 1,
+                            width: compact ? 100 : 118,
+                            height: compact ? 140 : 166,
                           }}
                         >
-                          <Ionicons name="close" size={15} color="#FFFFFF" />
-                        </Pressable>
-                      </View>
-                    ))}
+                          <Image
+                            source={{ uri: photo.uri }}
+                            className="h-full w-full"
+                            resizeMode="cover"
+                          />
+
+                          {isSaved && (
+                            <View className="absolute bottom-1 left-1 flex-row items-center rounded-full bg-[#FAF7F2]/95 px-2 py-1">
+                              <Ionicons
+                                name="checkmark-circle"
+                                size={13}
+                                color="#326B4B"
+                              />
+                              <Text
+                                className="ml-1 text-[9px] text-[#326B4B]"
+                                style={{ fontFamily: "Manrope" }}
+                              >
+                                Saved
+                              </Text>
+                            </View>
+                          )}
+
+                          <Pressable
+                            onPress={() => removePhoto(photo.uri)}
+                            disabled={isBusy}
+                            accessibilityRole="button"
+                            accessibilityLabel="Remove photo"
+                            className="absolute right-1 top-1 h-6 w-6 items-center justify-center rounded-full bg-[#2B1B16]/90"
+                            style={{
+                              opacity: isBusy ? 0.5 : 1,
+                            }}
+                          >
+                            <Ionicons
+                              name="close"
+                              size={15}
+                              color="#FFFFFF"
+                            />
+                          </Pressable>
+                        </View>
+                      );
+                    })}
 
                     {photos.length < MAX_PHOTOS && (
                       <Pressable
@@ -325,7 +390,11 @@ export default function Step4WardrobeSetup() {
                           opacity: isBusy ? 0.5 : 1,
                         }}
                       >
-                        <Ionicons name="add" size={24} color="#65463A" />
+                        <Ionicons
+                          name="add"
+                          size={24}
+                          color="#65463A"
+                        />
 
                         <Text
                           className="mt-1 text-[10px] text-[#65463A]"
@@ -380,35 +449,64 @@ export default function Step4WardrobeSetup() {
           ))}
         </View>
 
-        {/* Add photos */}
+        {/* Single adaptive upload button */}
         <Pressable
-          onPress={chooseFromGallery}
-          disabled={isBusy || photos.length >= MAX_PHOTOS}
+          onPress={
+            photos.length === 0
+              ? chooseFromGallery
+              : uploadWardrobe
+          }
+          disabled={
+            isBusy ||
+            (photos.length > 0 && pendingPhotos.length === 0)
+          }
+          accessibilityRole="button"
           className="mt-4 h-[48px] flex-row items-center justify-center rounded-full bg-[#0D3767]"
           style={({ pressed }) => ({
             opacity:
-              isBusy || photos.length >= MAX_PHOTOS ? 0.65 : pressed ? 0.88 : 1,
+              isBusy ||
+              (photos.length > 0 && pendingPhotos.length === 0)
+                ? 0.7
+                : pressed
+                  ? 0.88
+                  : 1,
           })}
         >
-          {isPicking ? (
+          {isBusy ? (
             <ActivityIndicator color="#FAF7F2" />
           ) : (
             <>
+              {pendingPhotos.length === 0 && uploadedUris.length > 0 ? (
+                <Ionicons
+                  name="checkmark-circle"
+                  size={20}
+                  color="#FAF7F2"
+                  style={{ marginRight: 8 }}
+                />
+              ) : (
+                <Ionicons
+                  name={
+                    photos.length === 0
+                      ? "add-circle-outline"
+                      : "cloud-upload-outline"
+                  }
+                  size={19}
+                  color="#FAF7F2"
+                  style={{ marginRight: 8 }}
+                />
+              )}
+
               <Text
                 className="text-[15px] text-[#FAF7F2]"
                 style={{ fontFamily: "DMSerifDisplay" }}
               >
-                {photos.length === 0
-                  ? "Add my first item"
-                  : photos.length >= MAX_PHOTOS
-                    ? "Photo limit reached"
-                    : "Add more photos"}
+                {uploadButtonLabel}
               </Text>
 
-              {photos.length < MAX_PHOTOS && (
+              {photos.length === 0 && (
                 <Ionicons
                   name="chevron-forward"
-                  size={20}
+                  size={19}
                   color="#FAF7F2"
                   style={{ marginLeft: 8 }}
                 />
@@ -417,18 +515,23 @@ export default function Step4WardrobeSetup() {
           )}
         </Pressable>
 
-        {/* Camera and gallery */}
+        {/* Camera and gallery controls for adding more pieces */}
         <View className="mt-2.5 flex-row gap-2">
           <Pressable
             onPress={takePhoto}
             disabled={isBusy || photos.length >= MAX_PHOTOS}
             className="h-[49px] flex-1 flex-row items-center justify-center rounded-[14px] border border-[#E3DAD2] px-1"
             style={{
-              opacity: isBusy || photos.length >= MAX_PHOTOS ? 0.55 : 1,
+              opacity:
+                isBusy || photos.length >= MAX_PHOTOS ? 0.55 : 1,
             }}
           >
             <View className="mr-2 h-8 w-8 items-center justify-center rounded-full bg-[#0D3767]">
-              <Ionicons name="camera-outline" size={19} color="#FFFFFF" />
+              <Ionicons
+                name="camera-outline"
+                size={19}
+                color="#FFFFFF"
+              />
             </View>
 
             <Text
@@ -444,11 +547,16 @@ export default function Step4WardrobeSetup() {
             disabled={isBusy || photos.length >= MAX_PHOTOS}
             className="h-[49px] flex-1 flex-row items-center justify-center rounded-[14px] border border-[#E3DAD2] px-1"
             style={{
-              opacity: isBusy || photos.length >= MAX_PHOTOS ? 0.55 : 1,
+              opacity:
+                isBusy || photos.length >= MAX_PHOTOS ? 0.55 : 1,
             }}
           >
             <View className="mr-2 h-8 w-8 items-center justify-center rounded-full bg-[#65463A]">
-              <Ionicons name="images-outline" size={18} color="#FFFFFF" />
+              <Ionicons
+                name="images-outline"
+                size={18}
+                color="#FFFFFF"
+              />
             </View>
 
             <Text
@@ -460,66 +568,82 @@ export default function Step4WardrobeSetup() {
           </Pressable>
         </View>
 
-        {/* Upload progress */}
-        {isUploading && (
+        {/* Upload progress and saved status */}
+        {(isUploading || uploadProgress || uploadError) && (
           <View className="mt-3 rounded-[14px] border border-[#E9DDCF] bg-white/70 p-3">
-            <View className="flex-row items-center">
-              <ActivityIndicator color="#0D3767" />
+            {isUploading && (
+              <View className="flex-row items-center">
+                <ActivityIndicator color="#0D3767" />
 
-              <Text
-                className="ml-2 flex-1 text-[12px] text-[#2B1B16]"
-                style={{ fontFamily: "Manrope" }}
-              >
-                {uploadProgress}
-              </Text>
-            </View>
+                <Text
+                  className="ml-2 flex-1 text-[12px] text-[#2B1B16]"
+                  style={{ fontFamily: "Manrope" }}
+                >
+                  {uploadProgress}
+                </Text>
+              </View>
+            )}
 
-            {uploadProgressTotal > 0 && (
+            {!isUploading && uploadProgress !== "" && (
+              <View className="flex-row items-start">
+                <Ionicons
+                  name="checkmark-circle"
+                  size={17}
+                  color="#326B4B"
+                />
+
+                <Text
+                  className="ml-2 flex-1 text-[12px] text-[#326B4B]"
+                  style={{ fontFamily: "Manrope" }}
+                >
+                  {uploadProgress}
+                </Text>
+              </View>
+            )}
+
+            {isUploading && uploadProgressTotal > 0 && (
               <View className="mt-2 h-[5px] overflow-hidden rounded-full bg-[#E9DDCF]">
                 <View
                   className="h-full rounded-full bg-[#0D3767]"
                   style={{
-                    width: `${Math.min(
-                      100,
-                      (uploadProgressCount / uploadProgressTotal) * 100,
-                    )}%`,
+                    width: `${
+                      Math.min(
+                        100,
+                        (uploadProgressCount / uploadProgressTotal) * 100,
+                      )
+                    }%`,
                   }}
                 />
+              </View>
+            )}
+
+            {uploadError !== "" && (
+              <View className="mt-2 flex-row items-start">
+                <Ionicons
+                  name="alert-circle-outline"
+                  size={17}
+                  color="#B45309"
+                />
+
+                <Text
+                  className="ml-2 flex-1 text-[12px] text-[#92400E]"
+                  style={{ fontFamily: "Manrope" }}
+                >
+                  {uploadError}
+                </Text>
               </View>
             )}
           </View>
         )}
 
-        {/* Upload and analyse */}
-        <Pressable
-          onPress={uploadWardrobe}
-          disabled={isBusy || photos.length === 0}
-          accessibilityRole="button"
-          className="mt-3 h-[50px] flex-row items-center justify-center rounded-full bg-[#2B1B16]"
-          style={({ pressed }) => ({
-            opacity: isBusy || photos.length === 0 ? 0.55 : pressed ? 0.88 : 1,
-          })}
-        >
-          {isUploading ? (
-            <ActivityIndicator color="#FAF7F2" />
-          ) : (
-            <>
-              <Ionicons name="cloud-upload-outline" size={19} color="#FAF7F2" />
-
-              <Text
-                className="ml-2 text-[15px] text-[#FAF7F2]"
-                style={{ fontFamily: "DMSerifDisplay" }}
-              >
-                Upload {photos.length} {photos.length === 1 ? "item" : "items"}
-              </Text>
-            </>
-          )}
-        </Pressable>
-
         {/* What happens next */}
         <View className="mt-3 flex-row rounded-[18px] bg-[#F5EDE4] p-3">
           <View className="mr-3 h-10 w-10 items-center justify-center rounded-full bg-[#EDE0D0]">
-            <Ionicons name="bulb-outline" size={23} color="#2B1B16" />
+            <Ionicons
+              name="bulb-outline"
+              size={23}
+              color="#2B1B16"
+            />
           </View>
 
           <View className="flex-1 justify-center">
@@ -541,7 +665,11 @@ export default function Step4WardrobeSetup() {
 
         {/* Privacy note */}
         <View className="mt-3 flex-row items-center justify-center gap-1.5 px-1">
-          <Ionicons name="lock-closed-outline" size={14} color="#756B68" />
+          <Ionicons
+            name="lock-closed-outline"
+            size={14}
+            color="#756B68"
+          />
 
           <Text
             className="flex-shrink text-center text-[10px] leading-[15px] text-[#756B68]"

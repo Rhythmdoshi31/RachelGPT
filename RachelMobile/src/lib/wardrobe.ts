@@ -40,6 +40,7 @@ export type WardrobeUploadResult = {
   failed: number;
   completed: number;
   analysisFailed: number;
+  uploadedUris: string[];
 };
 
 function getApiUrl(): string {
@@ -69,10 +70,7 @@ async function readResponse(response: Response) {
   return result;
 }
 
-async function apiRequest(
-  endpoint: string,
-  body?: unknown,
-) {
+async function apiRequest(endpoint: string, body?: unknown) {
   const token = await getAccessToken();
 
   const response = await fetch(`${getApiUrl()}${endpoint}`, {
@@ -94,7 +92,8 @@ async function apiRequest(
 
 function getFileDetails(photo: WardrobeUploadFile) {
   const uriName = photo.uri.split("/").pop()?.split("?")[0];
-  const fileName = photo.fileName || uriName || `wardrobe-${Date.now()}.jpg`;
+  const fileName =
+    photo.fileName || uriName || `wardrobe-${Date.now()}.jpg`;
 
   let contentType = photo.mimeType?.toLowerCase();
 
@@ -161,7 +160,12 @@ function sleep(ms: number) {
 
 export async function uploadAndAnalyzeWardrobe(
   photos: WardrobeUploadFile[],
-  onProgress?: (message: string, completed: number, total: number) => void,
+  onProgress?: (
+    message: string,
+    completed: number,
+    total: number,
+  ) => void,
+  onSaved?: (uploadedUris: string[]) => void,
 ): Promise<WardrobeUploadResult> {
   if (photos.length === 0) {
     throw new Error("Please select at least one photo.");
@@ -171,7 +175,7 @@ export async function uploadAndAnalyzeWardrobe(
     throw new Error("You can upload up to 50 photos at a time.");
   }
 
-  // Validate the selected file types before creating storage records.
+  // Validate all selected file types before requesting upload URLs.
   const fileDetails = photos.map(getFileDetails);
 
   onProgress?.("Preparing secure uploads...", 0, photos.length);
@@ -259,11 +263,13 @@ export async function uploadAndAnalyzeWardrobe(
     );
   }
 
-  // 3. Create database records for successful uploads only.
-  // The backend validates every object before creating any records.
+  // Preserve the original selection order when associating saved URIs.
+  successfulUploads.sort((a, b) => a.index - b.index);
+
+  // 3. Create database records for successful Storage uploads.
   onProgress?.(
     "Saving your wardrobe...",
-    photos.length,
+    finishedUploads,
     photos.length,
   );
 
@@ -274,14 +280,24 @@ export async function uploadAndAnalyzeWardrobe(
     })),
   });
 
-  // 4. Start background AI analysis for the created records.
-  const ids = successfulUploads.map((upload) => upload.wardrobeItemId);
+  // The images and their database records are now saved.
+  // Notify the UI before starting or polling AI analysis.
+  const uploadedUris = successfulUploads.map(
+    (upload) => photos[upload.index].uri,
+  );
+
+  onSaved?.(uploadedUris);
+
+  // 4. Start background AI analysis for saved records.
+  const ids = successfulUploads.map(
+    (upload) => upload.wardrobeItemId,
+  );
 
   await apiRequest("/api/wardrobe/analyze-batch", {
     wardrobeItemIds: ids,
   });
 
-  // 5. Poll until all successfully uploaded items reach a terminal state.
+  // 5. Poll until all saved items reach a terminal analysis state.
   let completed = 0;
   let analysisFailed = 0;
 
@@ -295,7 +311,9 @@ export async function uploadAndAnalyzeWardrobe(
     const items = statusResult.items as AnalysisStatusItem[];
 
     if (!Array.isArray(items)) {
-      throw new Error("The server returned invalid analysis statuses.");
+      throw new Error(
+        "Your photos are saved, but the server returned invalid analysis statuses.",
+      );
     }
 
     const missing = items.filter(
@@ -304,7 +322,7 @@ export async function uploadAndAnalyzeWardrobe(
 
     if (missing.length > 0) {
       throw new Error(
-        `${missing.length} wardrobe item(s) could not be found while checking analysis status.`,
+        `Your photos are saved, but ${missing.length} wardrobe item(s) could not be found while checking analysis status.`,
       );
     }
 
@@ -330,11 +348,13 @@ export async function uploadAndAnalyzeWardrobe(
         failed: failures.length,
         completed,
         analysisFailed,
+        uploadedUris,
       };
     }
   }
 
+  // The saved items remain saved even if analysis takes too long.
   throw new Error(
-    "Your photos were uploaded, but the AI analysis is taking longer than expected. Your wardrobe items have been saved; please check again later.",
+    "Your photos have been saved, but AI analysis is taking longer than expected. You can continue onboarding and check the analysis later.",
   );
 }

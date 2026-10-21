@@ -1,3 +1,4 @@
+
 import { useCallback, useEffect, useState } from "react";
 import { useFocusEffect, router } from "expo-router";
 import {
@@ -19,6 +20,7 @@ import {
   selectPersona,
   getAvatar,
   saveAvatar,
+  completeOnboarding,
   type AvailablePersona,
   type AvatarSelection,
 } from "../../lib/onboarding";
@@ -65,6 +67,8 @@ export default function Onboarding() {
   const [isLoadingProfile, setIsLoadingProfile] = useState(true);
   const [isLoadingStylist, setIsLoadingStylist] = useState(true);
   const [isLoadingAvatar, setIsLoadingAvatar] = useState(false);
+
+  const [hasSavedWardrobe, setHasSavedWardrobe] = useState(false);
 
   const [styleAnswers, setStyleAnswers] =
     useState<StyleQuestionnaireAnswers>({
@@ -352,7 +356,32 @@ export default function Onboarding() {
       return;
     }
 
-    // Step 4 is handled by Step4WardrobeSetup.
+    // STEP 4: Complete onboarding after a wardrobe item is saved.
+    if (step === 4) {
+      if (!hasSavedWardrobe) return;
+
+      setIsContinuing(true);
+
+      try {
+        await completeOnboarding();
+
+        router.replace("/(main)/home");
+      } catch (error) {
+        console.error(
+          "Failed to complete onboarding:",
+          error,
+        );
+
+        Alert.alert(
+          "Couldn't complete onboarding",
+          error instanceof Error
+            ? error.message
+            : "Your wardrobe may already be saved. Please try again.",
+        );
+      } finally {
+        setIsContinuing(false);
+      }
+    }
   };
 
   const handleLogout = async () => {
@@ -395,12 +424,28 @@ export default function Onboarding() {
         );
 
       case 4:
-        return <Step4WardrobeSetup />;
+        return (
+          <Step4WardrobeSetup
+            onWardrobeSaved={() => setHasSavedWardrobe(true)}
+          />
+        );
 
       default:
         return null;
     }
   };
+
+  const continueDisabled =
+    busy || (step === 4 && !hasSavedWardrobe);
+
+  const continueLabel =
+    step === 1
+      ? `Continue with ${selectedStylist}`
+      : step === 2
+        ? "Create my Style Snapshot"
+        : step === 3
+          ? "Continue"
+          : "Complete my wardrobe";
 
   return (
     <SafeAreaView
@@ -488,53 +533,57 @@ export default function Onboarding() {
         )}
       </View>
 
-      {/* Shared footer. Step 4 manages its own actions. */}
-      {step !== 4 && (
-        <View className="px-[22px] pb-[8px] pt-[7px]">
-          <Text
-            className="mb-[14px] text-center text-[11px] leading-[17px] text-[#64748B]"
-            style={{ fontFamily: "Manrope" }}
-          >
-            {step === 1
-              ? "You can change your stylist anytime in Settings."
-              : `Step ${step} of ${TOTAL_STEPS} · Your style, your way.`}
-          </Text>
+      {/* Shared footer for all four steps */}
+      <View className="px-[22px] pb-[8px] pt-[7px]">
+        <Text
+          className="mb-[14px] text-center text-[11px] leading-[17px] text-[#64748B]"
+          style={{ fontFamily: "Manrope" }}
+        >
+          {step === 1
+            ? "You can change your stylist anytime in Settings."
+            : step === 2
+              ? `Step ${step} of ${TOTAL_STEPS} · Your style, your way.`
+              : step === 3
+                ? "Your Style Mirror helps personalise your experience."
+                : "Your wardrobe is the first step toward outfits made for you."}
+        </Text>
 
-          <Pressable
-            onPress={handleContinue}
-            disabled={busy}
-            accessibilityRole="button"
-            className="h-[52px] w-full flex-row items-center justify-center rounded-full bg-[#0D3767]"
-            style={({ pressed }) => ({
-              opacity: busy ? 0.65 : pressed ? 0.88 : 1,
-            })}
-          >
-            {busy ? (
-              <ActivityIndicator color="#FAF7F2" />
-            ) : (
-              <>
-                <Text
-                  className="text-[17px] text-[#FAF7F2]"
-                  style={{ fontFamily: "DMSerifDisplay" }}
-                >
-                  {step === 1
-                    ? `Continue with ${selectedStylist}`
-                    : step === 2
-                      ? "Create my Style Snapshot"
-                      : "Continue"}
-                </Text>
+        <Pressable
+          onPress={handleContinue}
+          disabled={continueDisabled}
+          accessibilityRole="button"
+          className={`h-[52px] w-full flex-row items-center justify-center rounded-full ${
+            continueDisabled ? "bg-[#0D3767]/60" : "bg-[#0D3767]"
+          }`}
+          style={({ pressed }) => ({
+            opacity: continueDisabled ? 0.7 : pressed ? 0.88 : 1,
+          })}
+        >
+          {isContinuing ? (
+            <ActivityIndicator color="#FAF7F2" />
+          ) : (
+            <>
+              <Text
+                className="text-[17px] text-[#FAF7F2]"
+                style={{ fontFamily: "DMSerifDisplay" }}
+              >
+                {continueLabel}
+              </Text>
 
-                <Ionicons
-                  name="arrow-forward"
-                  size={22}
-                  color="#FAF7F2"
-                  style={{ marginLeft: 9 }}
-                />
-              </>
-            )}
-          </Pressable>
-        </View>
-      )}
+              <Ionicons
+                name={
+                  step === 4
+                    ? "checkmark-circle-outline"
+                    : "arrow-forward"
+                }
+                size={22}
+                color="#FAF7F2"
+                style={{ marginLeft: 9 }}
+              />
+            </>
+          )}
+        </Pressable>
+      </View>
     </SafeAreaView>
   );
 }

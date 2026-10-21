@@ -18,7 +18,7 @@ const wardrobeBackground = require("../../../assets/images/backgrounds/Sunlit_iv
 
 type WardrobePhoto = ImagePicker.ImagePickerAsset;
 
-const MAX_PHOTOS = 10;
+const MAX_PHOTOS = 50;
 
 const STARTER_ITEMS = [
   { label: "A top", icon: "shirt-outline" as const },

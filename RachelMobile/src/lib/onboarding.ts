@@ -35,7 +35,7 @@ export type SavedStyleProfile = {
   createdAt: string;
 };
 
-async function getAccessToken(): Promise<string> {
+export async function getAccessToken(): Promise<string> {
   const {
     data: { session },
     error,

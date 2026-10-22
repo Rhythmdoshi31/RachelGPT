@@ -1,8 +1,10 @@
+
 import { useState } from "react";
 import {
   ActivityIndicator,
   Alert,
   Pressable,
+  ScrollView,
   Text,
   View,
 } from "react-native";
@@ -12,6 +14,8 @@ import BottomNavBar, {
   type BottomNavTab,
 } from "../../components/navigation/BottomNavBar";
 import HomeHero from "../../components/home/homeHero";
+import HomeQuickActions from "../../components/home/homeQuickActions";
+import FreshFromCloset from "../../components/home/freshFromCloset";
 import { supabase } from "../../lib/supabase";
 
 export default function Home() {
@@ -33,7 +37,7 @@ export default function Home() {
 
       Alert.alert(
         "Logout failed",
-        error instanceof Error ? error.message : "Please try again.",
+        error instanceof Error ? error.message : "Please try again."
       );
     } finally {
       setIsLoggingOut(false);
@@ -44,21 +48,33 @@ export default function Home() {
     switch (tab) {
       case "home":
         break;
-
       case "forYou":
-        // Connect when the For You screen is created.
         break;
-
       case "upload":
-        // Connect when the Upload screen is created.
         break;
-
       case "tryOn":
-        // Connect when the Try On screen is created.
         break;
-
       case "stylist":
-        // Connect when the Stylist screen is created.
+        break;
+    }
+  };
+
+  const handleActionPress = (action: string) => {
+    switch (action) {
+      case "stylist":
+        handleTabPress("stylist");
+        break;
+      case "closet":
+        handleTabPress("forYou");
+        break;
+      case "upload":
+        handleTabPress("upload");
+        break;
+      case "tryOn":
+        handleTabPress("tryOn");
+        break;
+      case "shuffle":
+        // Connect to outfit generation later.
         break;
     }
   };
@@ -68,36 +84,41 @@ export default function Home() {
       className="flex-1 bg-[#FAF7F2]"
       edges={["bottom", "left", "right"]}
     >
-      <View className="flex-1 items-center pb-[110px]">
-        
+      <ScrollView
+        className="flex-1"
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 115 }}
+      >
         <HomeHero />
 
-        <Text
-          className="text-[32px] text-[#2B1B16]"
-          style={{ fontFamily: "DMSerifDisplay" }}
-        >
-          Home
-        </Text>
+        <HomeQuickActions onActionPress={handleActionPress} />
 
-        <Pressable
-          onPress={handleLogout}
-          disabled={isLoggingOut}
-          accessibilityRole="button"
-          className="mt-8 h-[48px] w-[180px] flex-row items-center justify-center rounded-full bg-[#0D3767]"
-          style={{ opacity: isLoggingOut ? 0.7 : 1 }}
-        >
-          {isLoggingOut ? (
-            <ActivityIndicator color="#FAF7F2" />
-          ) : (
-            <Text
-              className="text-[15px] text-[#FAF7F2]"
-              style={{ fontFamily: "Manrope" }}
-            >
-              Log out
-            </Text>
-          )}
-        </Pressable>
-      </View>
+        <FreshFromCloset
+          onSeeAll={() => handleTabPress("forYou")}
+        />
+
+        {/* Temporary logout control */}
+        <View className="items-center px-4 pt-5">
+          <Pressable
+            onPress={handleLogout}
+            disabled={isLoggingOut}
+            accessibilityRole="button"
+            className="h-[44px] w-[160px] flex-row items-center justify-center rounded-full bg-[#0D3767]"
+            style={{ opacity: isLoggingOut ? 0.7 : 1 }}
+          >
+            {isLoggingOut ? (
+              <ActivityIndicator color="#FAF7F2" />
+            ) : (
+              <Text
+                className="text-[14px] text-[#FAF7F2]"
+                style={{ fontFamily: "Manrope" }}
+              >
+                Log out
+              </Text>
+            )}
+          </Pressable>
+        </View>
+      </ScrollView>
 
       <BottomNavBar
         activeTab="home"

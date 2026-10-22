@@ -3,11 +3,14 @@ import {
   ActivityIndicator,
   Alert,
   Pressable,
-  SafeAreaView,
   Text,
   View,
 } from "react-native";
 import { router } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
+import BottomNavBar, {
+  type BottomNavTab,
+} from "../../components/navigation/BottomNavBar";
 import { supabase } from "../../lib/supabase";
 
 export default function Home() {
@@ -21,9 +24,7 @@ export default function Home() {
     try {
       const { error } = await supabase.auth.signOut();
 
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
 
       router.replace("/welcome");
     } catch (error) {
@@ -38,9 +39,35 @@ export default function Home() {
     }
   };
 
+  const handleTabPress = (tab: BottomNavTab) => {
+    switch (tab) {
+      case "home":
+        break;
+
+      case "forYou":
+        // Connect when the For You screen is created.
+        break;
+
+      case "upload":
+        // Connect when the Upload screen is created.
+        break;
+
+      case "tryOn":
+        // Connect when the Try On screen is created.
+        break;
+
+      case "stylist":
+        // Connect when the Stylist screen is created.
+        break;
+    }
+  };
+
   return (
-    <SafeAreaView className="flex-1 items-center justify-center bg-[#FAF7F2]">
-      <View className="items-center">
+    <SafeAreaView
+      className="flex-1 bg-[#FAF7F2]"
+      edges={["top"]}
+    >
+      <View className="flex-1 items-center justify-center pb-[110px]">
         <Text
           className="text-[32px] text-[#2B1B16]"
           style={{ fontFamily: "DMSerifDisplay" }}
@@ -67,6 +94,11 @@ export default function Home() {
           )}
         </Pressable>
       </View>
+
+      <BottomNavBar
+        activeTab="home"
+        onTabPress={handleTabPress}
+      />
     </SafeAreaView>
   );
 }

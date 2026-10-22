@@ -11,6 +11,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import BottomNavBar, {
   type BottomNavTab,
 } from "../../components/navigation/BottomNavBar";
+import HomeHero from "../../components/home/homeHero";
 import { supabase } from "../../lib/supabase";
 
 export default function Home() {
@@ -65,9 +66,12 @@ export default function Home() {
   return (
     <SafeAreaView
       className="flex-1 bg-[#FAF7F2]"
-      edges={["top"]}
+      edges={["bottom", "left", "right"]}
     >
-      <View className="flex-1 items-center justify-center pb-[110px]">
+      <View className="flex-1 items-center pb-[110px]">
+        
+        <HomeHero />
+
         <Text
           className="text-[32px] text-[#2B1B16]"
           style={{ fontFamily: "DMSerifDisplay" }}

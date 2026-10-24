@@ -87,6 +87,8 @@ async function readResponse(response: Response) {
 }
 
 async function apiRequest(endpoint: string, body?: unknown) {
+  console.log("[WardrobeUpload] Request starting:", endpoint);
+
   const token = await getAccessToken();
 
   if (!token) {
@@ -102,6 +104,8 @@ async function apiRequest(endpoint: string, body?: unknown) {
     },
     ...(body === undefined ? {} : { body: JSON.stringify(body) }),
   });
+
+  console.log("[WardrobeUpload] Response received:", endpoint, response.status);
 
   return readResponse(response);
 }
@@ -187,6 +191,7 @@ export async function uploadAndAnalyzeWardrobe(
   onProgress?: (message: string, completed: number, total: number) => void,
   onSaved?: (uploadedUris: string[]) => void,
 ): Promise<WardrobeUploadResult> {
+  console.log("[WardrobeUpload] Flow started:", photos.length, "photo(s)");
   if (photos.length === 0) {
     throw new Error("Please select at least one photo.");
   }
@@ -203,6 +208,13 @@ export async function uploadAndAnalyzeWardrobe(
   const urlResult = await apiRequest("/api/wardrobe/upload-urls", {
     files: fileDetails,
   });
+
+  console.log(
+    "[WardrobeUpload] Signed URL response received:",
+    Array.isArray(urlResult.uploads)
+      ? `${urlResult.uploads.length} upload URLs`
+      : "Unexpected response",
+  );
 
   const uploads = urlResult.uploads as UploadUrl[];
 

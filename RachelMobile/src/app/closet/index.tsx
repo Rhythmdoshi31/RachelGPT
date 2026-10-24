@@ -1,20 +1,22 @@
-
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
+  Alert,
   Animated,
   Image,
+  Modal,
   Pressable,
   ScrollView,
   Text,
+  TextInput,
   View,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { router, useFocusEffect } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { getAccessToken } from "../../lib/onboarding";
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
-const LOG_PREFIX = "[MyCloset]";
 
 type PresentationStatus =
   | "pending"
@@ -35,6 +37,19 @@ type WardrobeItem = {
   attributes?: Record<string, unknown>;
 };
 
+const COLORS = {
+  background: "#FCFAF7",
+  white: "#FFFFFF",
+  navy: "#073779",
+  navyDark: "#062F68",
+  ink: "#251713",
+  muted: "#827872",
+  border: "#D9D0C7",
+  beige: "#F2E8DD",
+  placeholder: "#EDE4DA",
+  brown: "#65463A",
+};
+
 const filters = [
   "All",
   "Tops",
@@ -46,26 +61,12 @@ const filters = [
   "Accessories",
 ];
 
-function log(message: string, details?: unknown) {
-  console.log(
-    `${LOG_PREFIX} ${new Date().toISOString()} ${message}`,
-    details ?? "",
-  );
-}
-
-function logError(message: string, error: unknown) {
-  console.error(
-    `${LOG_PREFIX} ${new Date().toISOString()} ${message}`,
-    error instanceof Error
-      ? { message: error.message, stack: error.stack }
-      : error,
-  );
-}
-
-function getCategoryLabel(category: string) {
-  const normalized = category.toLowerCase().replace(/[_-]/g, " ");
-  return normalized.replace(/\b\w/g, (letter) => letter.toUpperCase());
-}
+const MENU_OPTIONS = [
+  { label: "Try on", icon: "shirt-outline" as const },
+  { label: "Style with this", icon: "shirt-outline" as const },
+  { label: "Edit item", icon: "pencil-outline" as const },
+  { label: "Remove", icon: "trash-outline" as const },
+];
 
 function matchesFilter(item: WardrobeItem, filter: string) {
   if (filter === "All") return true;
@@ -99,145 +100,65 @@ function matchesFilter(item: WardrobeItem, filter: string) {
     ],
   };
 
-  const terms = categoryMap[filter] ?? [filter.toLowerCase()];
-
-  return terms.some(
+  return (categoryMap[filter] ?? [filter.toLowerCase()]).some(
     (term) => category.includes(term) || subcategory.includes(term),
   );
 }
 
 async function apiRequest(endpoint: string, body?: unknown) {
-  const requestId = `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
-  const start = Date.now();
-  const method = body === undefined ? "GET" : "POST";
-  const baseUrl = API_URL?.replace(/\/+$/, "");
-  const url = baseUrl ? `${baseUrl}${endpoint}` : undefined;
-
-  log("API request starting", {
-    requestId,
-    method,
-    endpoint,
-    url,
-    hasBody: body !== undefined,
-  });
-
   if (!API_URL) {
-    log("API configuration error: EXPO_PUBLIC_API_URL is missing");
     throw new Error("Missing EXPO_PUBLIC_API_URL.");
   }
 
-  let token: string | null | undefined;
-
-  try {
-    log("Getting access token", { requestId });
-    token = await getAccessToken();
-    log("Access token lookup finished", {
-      requestId,
-      hasToken: Boolean(token),
-      durationMs: Date.now() - start,
-    });
-  } catch (error) {
-    logError(`Access token lookup failed (${requestId})`, error);
-    throw error;
-  }
+  const token = await getAccessToken();
 
   if (!token) {
-    log("No access token available", { requestId });
     throw new Error("Your session has expired. Please sign in again.");
   }
 
-  let response: Response;
+  const baseUrl = API_URL.replace(/\/+$/, "");
 
-  try {
-    log("Sending fetch request", { requestId, method, endpoint });
+  const response = await fetch(`${baseUrl}${endpoint}`, {
+    method: body === undefined ? "GET" : "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
+      ...(body === undefined ? {} : { "Content-Type": "application/json" }),
+    },
+    ...(body === undefined ? {} : { body: JSON.stringify(body) }),
+  });
 
-    response = await fetch(url!, {
-      method,
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: "application/json",
-        ...(body === undefined
-          ? {}
-          : { "Content-Type": "application/json" }),
-      },
-      ...(body === undefined ? {} : { body: JSON.stringify(body) }),
-    });
-
-    log("Fetch response received", {
-      requestId,
-      method,
-      endpoint,
-      status: response.status,
-      ok: response.ok,
-      durationMs: Date.now() - start,
-    });
-  } catch (error) {
-    logError(`Fetch/network request failed (${requestId})`, error);
-    log("Request failed before receiving an HTTP response", {
-      requestId,
-      endpoint,
-      durationMs: Date.now() - start,
-    });
-    throw error;
-  }
-
-  let result: any;
+  let result: any = null;
 
   try {
     result = await response.json();
-    log("Response JSON parsed", {
-      requestId,
-      endpoint,
-      success: result?.success,
-      message: result?.message,
-    });
-  } catch (error) {
-    logError(`Could not parse response JSON (${requestId})`, error);
-    result = null;
+  } catch {
+    // The server may return an empty or non-JSON response.
   }
 
   if (!response.ok || !result?.success) {
-    const message =
-      result?.message ?? `Request failed (HTTP ${response.status}).`;
-
-    log("API request returned an error", {
-      requestId,
-      endpoint,
-      status: response.status,
-      message,
-      durationMs: Date.now() - start,
-    });
-
-    throw new Error(message);
+    throw new Error(
+      result?.message ?? `Request failed (HTTP ${response.status}).`,
+    );
   }
-
-  log("API request completed successfully", {
-    requestId,
-    endpoint,
-    durationMs: Date.now() - start,
-  });
 
   return result;
 }
 
-function sleep(ms: number) {
-  return new Promise<void>((resolve) => setTimeout(resolve, ms));
-}
-
 function GeneratingPlaceholder() {
-  const opacity = useRef(new Animated.Value(0.45)).current;
+  const opacity = useRef(new Animated.Value(0.5)).current;
 
   useEffect(() => {
     const animation = Animated.loop(
       Animated.sequence([
         Animated.timing(opacity, {
           toValue: 1,
-          duration: 850,
+          duration: 900,
           useNativeDriver: true,
         }),
         Animated.timing(opacity, {
-          toValue: 0.45,
-          duration: 850,
+          toValue: 0.5,
+          duration: 900,
           useNativeDriver: true,
         }),
       ]),
@@ -249,39 +170,85 @@ function GeneratingPlaceholder() {
   }, [opacity]);
 
   return (
-    <View className="h-[190px] overflow-hidden rounded-[14px] bg-[#EEE8E0]">
-      <Animated.View
-        style={{ opacity }}
-        className="flex-1 items-center justify-center"
-      >
-        <View className="h-[58px] w-[58px] items-center justify-center rounded-full bg-[#FAF7F2]">
-          <Ionicons name="sparkles-outline" size={27} color="#8A6B58" />
-        </View>
-
+    <View
+      className="items-center justify-center overflow-hidden rounded-[18px]"
+      style={{
+        aspectRatio: 0.88,
+        backgroundColor: COLORS.placeholder,
+      }}
+    >
+      <Animated.View style={{ opacity }} className="items-center">
+        <Ionicons name="sparkles-outline" size={26} color={COLORS.brown} />
         <Text
-          className="mt-4 text-[13px] text-[#65463A]"
-          style={{ fontFamily: "Manrope" }}
+          className="mt-2 text-[11px]"
+          style={{ color: COLORS.brown, fontFamily: "Manrope" }}
         >
           Preparing your image
-        </Text>
-
-        <Text
-          className="mt-1 text-[10px] text-[#927D70]"
-          style={{ fontFamily: "Manrope" }}
-        >
-          Making it closet-ready...
         </Text>
       </Animated.View>
     </View>
   );
 }
 
+function MenuOption({
+  label,
+  icon,
+  last,
+  onPress,
+}: {
+  label: string;
+  icon: (typeof MENU_OPTIONS)[number]["icon"];
+  last: boolean;
+  onPress: () => void;
+}) {
+  const isRemove = label === "Remove";
+
+  return (
+    <Pressable
+      onPress={onPress}
+      className="flex-row items-center px-3"
+      style={{
+        minHeight: 44,
+        opacity: isRemove ? 0.7 : 1,
+      }}
+    >
+      <Ionicons
+        name={icon}
+        size={20}
+        color={isRemove ? "#69615B" : COLORS.ink}
+      />
+
+      <Text
+        className="ml-3 flex-1 text-[14px]"
+        style={{
+          color: isRemove ? "#77716C" : COLORS.navyDark,
+          fontFamily: "DMSerifDisplay",
+        }}
+      >
+        {label}
+      </Text>
+
+      {!last && (
+        <View
+          className="absolute bottom-0 right-3 left-3"
+          style={{
+            height: 1,
+            backgroundColor: "#ECE6E0",
+          }}
+        />
+      )}
+    </Pressable>
+  );
+}
+
 export default function MyClosetScreen() {
   const [items, setItems] = useState<WardrobeItem[]>([]);
   const [activeFilter, setActiveFilter] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [retryingIds, setRetryingIds] = useState<string[]>([]);
+  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
 
   const itemsRef = useRef<WardrobeItem[]>([]);
   const refreshVersion = useRef(0);
@@ -291,16 +258,6 @@ export default function MyClosetScreen() {
       setItems((current) => {
         const next = updater(current);
         itemsRef.current = next;
-
-        log("Wardrobe state updated", {
-          itemCount: next.length,
-          statuses: next.map((item) => ({
-            id: item.id,
-            status: item.presentationImageStatus,
-            hasPresentationUrl: Boolean(item.presentationImageUrl),
-          })),
-        });
-
         return next;
       });
     },
@@ -308,37 +265,13 @@ export default function MyClosetScreen() {
   );
 
   const loadWardrobe = useCallback(async () => {
-    const start = Date.now();
-
-    log("loadWardrobe CALLED");
-
     const result = await apiRequest("/api/wardrobe?page=1&limit=50");
-
-    log("Wardrobe API response received", {
-      durationMs: Date.now() - start,
-      wardrobeIsArray: Array.isArray(result.wardrobe),
-      itemCount: Array.isArray(result.wardrobe)
-        ? result.wardrobe.length
-        : null,
-    });
 
     if (!Array.isArray(result.wardrobe)) {
       throw new Error("The server returned an invalid wardrobe response.");
     }
 
     const fetchedItems = result.wardrobe as WardrobeItem[];
-
-    log(
-      "Wardrobe items loaded",
-      fetchedItems.map((item) => ({
-        id: item.id,
-        category: item.category,
-        analysisStatus: item.analysisStatus,
-        presentationImageStatus: item.presentationImageStatus,
-        hasPresentationImageUrl: Boolean(item.presentationImageUrl),
-        presentationImageError: item.presentationImageError ?? null,
-      })),
-    );
 
     itemsRef.current = fetchedItems;
     setItems(fetchedItems);
@@ -348,49 +281,25 @@ export default function MyClosetScreen() {
 
   const requestGeneration = useCallback(
     async (ids: string[]) => {
-      log("requestGeneration CALLED", {
-        itemIds: ids,
-        count: ids.length,
+      if (!ids.length) return;
+
+      await apiRequest("/api/wardrobe/presentation/generate-batch", {
+        wardrobeItemIds: ids,
       });
 
-      if (ids.length === 0) {
-        log("Generation skipped: no item IDs");
-        return;
-      }
-
-      const start = Date.now();
-
-      try {
-        const result = await apiRequest(
-          "/api/wardrobe/presentation/generate-batch",
-          {
-            wardrobeItemIds: ids,
-          },
-        );
-
-        log("Generation batch accepted by API", {
-          itemIds: ids,
-          durationMs: Date.now() - start,
-          response: result,
-        });
-
-        updateItems((current) =>
-          current.map((item) =>
-            ids.includes(item.id) &&
-            (item.presentationImageStatus === "pending" ||
-              item.presentationImageStatus === "failed")
-              ? {
-                  ...item,
-                  presentationImageStatus: "processing",
-                  presentationImageError: null,
-                }
-              : item,
-          ),
-        );
-      } catch (error) {
-        logError("Generation request failed", error);
-        throw error;
-      }
+      updateItems((current) =>
+        current.map((item) =>
+          ids.includes(item.id) &&
+          (item.presentationImageStatus === "pending" ||
+            item.presentationImageStatus === "failed")
+            ? {
+                ...item,
+                presentationImageStatus: "processing",
+                presentationImageError: null,
+              }
+            : item,
+        ),
+      );
     },
     [updateItems],
   );
@@ -398,29 +307,19 @@ export default function MyClosetScreen() {
   useFocusEffect(
     useCallback(() => {
       let active = true;
-      const currentVersion = ++refreshVersion.current;
-
-      log("Closet screen focused", {
-        currentVersion,
-        apiUrlConfigured: Boolean(API_URL),
-        apiBaseUrl: API_URL ?? "(missing)",
-      });
+      const version = ++refreshVersion.current;
 
       async function run() {
-        log("Closet loading flow started", { currentVersion });
-
         setLoading(true);
         setError(null);
+        setOpenMenuId(null);
 
         try {
-          const fetchedItems = await loadWardrobe();
+          const fetched = await loadWardrobe();
 
-          if (!active || currentVersion !== refreshVersion.current) {
-            log("Ignoring wardrobe result: screen is no longer active");
-            return;
-          }
+          if (!active || version !== refreshVersion.current) return;
 
-          const generationIds = fetchedItems
+          const generationIds = fetched
             .filter(
               (item) =>
                 item.presentationImageStatus === "pending" ||
@@ -428,47 +327,24 @@ export default function MyClosetScreen() {
             )
             .map((item) => item.id);
 
-          const alreadyProcessingIds = fetchedItems
-            .filter((item) => item.presentationImageStatus === "processing")
-            .map((item) => item.id);
-
-          log("Generation eligibility checked", {
-            totalItems: fetchedItems.length,
-            generationIds,
-            generationCount: generationIds.length,
-            alreadyProcessingIds,
-            completedCount: fetchedItems.filter(
-              (item) => item.presentationImageStatus === "completed",
-            ).length,
-            failedCount: fetchedItems.filter(
-              (item) => item.presentationImageStatus === "failed",
-            ).length,
-          });
-
-          if (generationIds.length > 0) {
+          if (generationIds.length) {
             try {
               await requestGeneration(generationIds);
             } catch (generationError) {
-              logError(
-                "Could not start presentation generation",
+              console.error(
+                "[MyCloset] Could not start presentation generation",
                 generationError,
               );
             }
-          } else {
-            log("No new generation request needed");
           }
 
-          if (!active) {
-            log("Stopping flow: screen is no longer active");
-            return;
-          }
+          if (!active) return;
 
           setLoading(false);
-          log("Initial wardrobe loading finished");
 
           let pollCount = 0;
 
-          while (active) {
+          while (active && pollCount < 120) {
             const unfinishedIds = itemsRef.current
               .filter(
                 (item) =>
@@ -477,56 +353,25 @@ export default function MyClosetScreen() {
               )
               .map((item) => item.id);
 
-            if (unfinishedIds.length === 0) {
-              log("Polling stopped: no unfinished presentations", {
-                pollCount,
-              });
-              break;
-            }
+            if (!unfinishedIds.length) break;
+
+            await new Promise<void>((resolve) => setTimeout(resolve, 3000));
+
+            if (!active) break;
 
             pollCount += 1;
 
-            log("Waiting before next status poll", {
-              pollCount,
-              unfinishedIds,
-              delayMs: 3000,
-            });
-
-            await sleep(3000);
-
-            if (!active) {
-              log("Polling cancelled: screen is no longer active");
-              break;
-            }
-
             try {
-              log("Polling presentation status", {
-                pollCount,
-                unfinishedIds,
-              });
-
               const statusResult = await apiRequest(
                 `/api/wardrobe/analysis-status?ids=${unfinishedIds.join(",")}`,
               );
 
-              if (!active || !Array.isArray(statusResult.items)) {
-                log("Status response invalid or screen inactive", {
-                  pollCount,
-                  screenActive: active,
-                  itemsIsArray: Array.isArray(statusResult.items),
-                });
-                break;
-              }
+              if (!active || !Array.isArray(statusResult.items)) break;
 
               const statuses = statusResult.items as Array<{
                 id: string;
                 presentationImageStatus: PresentationStatus;
               }>;
-
-              log("Presentation statuses received", {
-                pollCount,
-                statuses,
-              });
 
               updateItems((current) =>
                 current.map((item) => {
@@ -534,50 +379,31 @@ export default function MyClosetScreen() {
                     (entry) => entry.id === item.id,
                   );
 
-                  if (!status) {
-                    log("No status returned for wardrobe item", {
-                      id: item.id,
-                    });
-                    return item;
-                  }
-
-                  return {
-                    ...item,
-                    presentationImageStatus: status.presentationImageStatus,
-                  };
+                  return status
+                    ? {
+                        ...item,
+                        presentationImageStatus:
+                          status.presentationImageStatus,
+                      }
+                    : item;
                 }),
               );
 
-              const hasNewlyCompleted = statuses.some(
-                (item) => item.presentationImageStatus === "completed",
-              );
-
-              if (hasNewlyCompleted && active) {
-                log("Presentation completed; refreshing signed image URLs", {
-                  pollCount,
-                });
-
+              if (
+                statuses.some(
+                  (item) => item.presentationImageStatus === "completed",
+                )
+              ) {
                 await loadWardrobe();
-
-                log("Wardrobe refreshed after presentation completion", {
-                  pollCount,
-                });
               }
             } catch (pollError) {
-              logError(`Presentation status poll ${pollCount} failed`, pollError);
+              console.error("[MyCloset] Status poll failed", pollError);
 
-              if (active) {
-                await sleep(5000);
-              }
+              await new Promise<void>((resolve) => setTimeout(resolve, 5000));
             }
           }
-
-          log("Closet loading flow exited", {
-            currentVersion,
-            screenActive: active,
-          });
         } catch (loadError) {
-          logError("Closet loading flow failed", loadError);
+          console.error("[MyCloset] Could not load wardrobe", loadError);
 
           if (active) {
             setError(
@@ -585,132 +411,160 @@ export default function MyClosetScreen() {
                 ? loadError.message
                 : "Couldn't load your closet.",
             );
-            setLoading(false);
           }
+        } finally {
+          if (active) setLoading(false);
         }
       }
 
       void run();
 
       return () => {
-        log("Closet screen blurred/unmounted", { currentVersion });
         active = false;
       };
     }, [loadWardrobe, requestGeneration, updateItems]),
   );
 
   const retryGeneration = async (id: string) => {
-    log("Manual retry pressed", { itemId: id });
-
     setRetryingIds((current) => [...current, id]);
 
     try {
       await requestGeneration([id]);
-      log("Manual retry request finished", { itemId: id });
     } catch (retryError) {
-      logError(`Manual retry failed for ${id}`, retryError);
+      Alert.alert(
+        "Couldn't prepare image",
+        retryError instanceof Error ? retryError.message : "Please try again.",
+      );
     } finally {
       setRetryingIds((current) => current.filter((itemId) => itemId !== id));
     }
   };
 
-  const filteredItems = items.filter((item) =>
-    matchesFilter(item, activeFilter),
-  );
+  const filteredItems = items.filter((item) => {
+    const matchesCategory = matchesFilter(item, activeFilter);
+    const query = searchQuery.trim().toLowerCase();
+
+    if (!query) return matchesCategory;
+
+    const searchableText =
+      `${item.category} ${item.subcategory ?? ""} ${JSON.stringify(item.attributes ?? {})}`.toLowerCase();
+
+    return matchesCategory && searchableText.includes(query);
+  });
+
+  const handleMenuOption = (label: string, item: WardrobeItem) => {
+    setOpenMenuId(null);
+
+    // These actions remain placeholders until their routes and backend
+    // operations are implemented.
+    if (
+      label === "Try on" ||
+      label === "Style with this" ||
+      label === "Edit item" ||
+      label === "Remove"
+    ) {
+      return;
+    }
+  };
 
   return (
-    <View className="flex-1 bg-[#FAF8F5]">
+    <SafeAreaView
+      className="flex-1"
+      edges={["top"]}
+      style={{ backgroundColor: COLORS.background }}
+    >
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 36 }}
+        keyboardShouldPersistTaps="handled"
+        onScrollBeginDrag={() => setOpenMenuId(null)}
+        contentContainerStyle={{ paddingBottom: 16 }}
       >
-        <View className="flex-row items-center justify-between px-5 pb-5 pt-4">
+        {/* Header */}
+        <View className="flex-row items-center justify-between px-5 pb-2 pt-1">
           <Pressable
             onPress={() => router.back()}
-            className="h-10 w-10 items-center justify-center rounded-full bg-[#F0ECE6]"
+            hitSlop={10}
+            className="h-9 w-7 items-start justify-center"
           >
-            <Ionicons name="arrow-back" size={21} color="#65463A" />
+            <Ionicons name="chevron-back" size={29} color={COLORS.ink} />
           </Pressable>
 
           <Text
-            className="text-[21px] text-[#2B1B16]"
-            style={{ fontFamily: "DMSerifDisplay" }}
+            className="flex-1 text-[29px]"
+            style={{
+              color: COLORS.ink,
+              fontFamily: "DMSerifDisplay",
+              fontWeight: "400",
+            }}
           >
-            My Closet
+            My closet
           </Text>
 
           <Pressable
-            onPress={() => router.push("/")}
-            className="h-10 w-10 items-center justify-center rounded-full bg-[#F0ECE6]"
+            onPress={() => router.push("/closet/add")}
+            className="flex-row items-center rounded-full px-3"
+            style={{
+              height: 37,
+              backgroundColor: COLORS.navy,
+              gap: 5,
+            }}
           >
-            <Ionicons name="add" size={25} color="#65463A" />
+            <Text
+              className="text-[13px]"
+              style={{
+                color: "#FFFFFF",
+                fontFamily: "DMSerifDisplay",
+              }}
+            >
+              Add item
+            </Text>
+
+            <Ionicons name="add" size={22} color="#FFFFFF" />
           </Pressable>
         </View>
 
-        <View className="px-5">
-          <Text
-            className="text-[28px] leading-[35px] text-[#2B1B16]"
-            style={{ fontFamily: "DMSerifDisplay" }}
-          >
-            Your wardrobe,{"\n"}your possibilities.
-          </Text>
+        {/* Search */}
+        <View
+          className="mx-5 mt-1 flex-row items-center rounded-full border px-3"
+          style={{
+            height: 40,
+            borderColor: "#CFC8C1",
+            backgroundColor: "transparent",
+          }}
+        >
+          <Ionicons name="search-outline" size={19} color={COLORS.ink} />
 
-          <Text
-            className="mt-2 text-[13px] text-[#85756D]"
-            style={{ fontFamily: "Manrope" }}
+          <TextInput
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            placeholder="Search your closet"
+            placeholderTextColor="#827872"
+            className="ml-2 flex-1 py-0 text-[13px]"
+            style={{
+              color: COLORS.ink,
+              fontFamily: "DMSerifDisplay",
+            }}
+            returnKeyType="search"
+          />
+
+          <Pressable
+            onPress={() => setSearchQuery("")}
+            hitSlop={10}
+            className="items-center justify-center"
           >
-            Everything you own, all in one place.
-          </Text>
+            <Ionicons name="options-outline" size={21} color={COLORS.ink} />
+          </Pressable>
         </View>
 
-        <View className="mx-5 mt-5 flex-row items-center rounded-xl border border-[#EAE3DA] bg-white px-4 py-3">
-          <Ionicons name="search-outline" size={19} color="#927D70" />
-          <Text
-            className="ml-3 text-[13px] text-[#A3958B]"
-            style={{ fontFamily: "Manrope" }}
-          >
-            Your wardrobe
-          </Text>
-        </View>
-
-        <View className="mt-6 flex-row items-center justify-between px-5">
-          <View>
-            <Text
-              className="text-[20px] text-[#2B1B16]"
-              style={{ fontFamily: "DMSerifDisplay" }}
-            >
-              Your collection
-            </Text>
-            <Text
-              className="mt-1 text-[11px] text-[#8D7D73]"
-              style={{ fontFamily: "Manrope" }}
-            >
-              {items.length} {items.length === 1 ? "item" : "items"}
-            </Text>
-          </View>
-
-          {items.some(
-            (item) =>
-              item.presentationImageStatus === "pending" ||
-              item.presentationImageStatus === "processing",
-          ) && (
-            <View className="flex-row items-center">
-              <ActivityIndicator size="small" color="#8A6B58" />
-              <Text className="ml-2 text-[11px] text-[#8D7D73]">
-                Preparing images
-              </Text>
-            </View>
-          )}
-        </View>
-
+        {/* Category filters */}
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{
             paddingHorizontal: 20,
-            paddingTop: 16,
-            paddingBottom: 8,
-            gap: 8,
+            paddingTop: 8,
+            paddingBottom: 1,
+            gap: 6,
           }}
         >
           {filters.map((filter) => {
@@ -720,17 +574,19 @@ export default function MyClosetScreen() {
               <Pressable
                 key={filter}
                 onPress={() => setActiveFilter(filter)}
-                className={`rounded-full px-5 py-2.5 ${
-                  selected
-                    ? "bg-[#65463A]"
-                    : "border border-[#E8DFD6] bg-transparent"
-                }`}
+                className="items-center justify-center rounded-full border px-2.5"
+                style={{
+                  height: 29,
+                  backgroundColor: selected ? COLORS.navy : "transparent",
+                  borderColor: selected ? COLORS.navy : COLORS.border,
+                }}
               >
                 <Text
-                  className={`text-[12px] ${
-                    selected ? "text-white" : "text-[#705D52]"
-                  }`}
-                  style={{ fontFamily: "Manrope" }}
+                  className="text-[11px]"
+                  style={{
+                    color: selected ? "#FFFFFF" : COLORS.ink,
+                    fontFamily: "DMSerifDisplay",
+                  }}
                 >
                   {filter}
                 </Text>
@@ -739,45 +595,160 @@ export default function MyClosetScreen() {
           })}
         </ScrollView>
 
+        {/* Closet insight */}
+        <View
+          className="mx-5 mt-2 flex-row items-center rounded-[15px] px-3 py-2"
+          style={{
+            backgroundColor: COLORS.beige,
+            minHeight: 62,
+          }}
+        >
+          <View className="mr-2 h-8 w-8 items-center justify-center">
+            <Ionicons name="shirt-outline" size={25} color={COLORS.ink} />
+            <Ionicons
+              name="sparkles"
+              size={11}
+              color={COLORS.ink}
+              style={{
+                position: "absolute",
+                right: -1,
+                top: -1,
+              }}
+            />
+          </View>
+
+          <View className="flex-1">
+            <Text
+              className="text-[11px]"
+              style={{
+                color: COLORS.muted,
+                fontFamily: "DMSerifDisplay",
+                letterSpacing: -0.2,
+              }}
+            >
+              Closet insight
+            </Text>
+
+            <Text
+              className="text-[15px] leading-[19px]"
+              style={{
+                color: COLORS.ink,
+                fontFamily: "DMSerifDisplay",
+                letterSpacing: -0.2,
+              }}
+            >
+              {items.length > 0
+                ? `You have ${items.length} pieces to style.`
+                : "Your wardrobe, reimagined."}
+            </Text>
+
+            <Text
+              className="text-[11px] leading-[15px]"
+              style={{
+                color: COLORS.muted,
+                fontFamily: "Manrope",
+                letterSpacing: -0.1,
+              }}
+            >
+              {items.length > 0
+                ? "Discover new looks with what you own."
+                : "Add your first item to get started."}
+            </Text>
+          </View>
+
+          <Pressable
+            onPress={() => {}}
+            className="ml-2 flex-row items-center"
+            hitSlop={8}
+          >
+            <Text
+              className="text-[12px]"
+              style={{
+                color: COLORS.navy,
+                fontFamily: "DMSerifDisplay",
+              }}
+            >
+              See the looks
+            </Text>
+
+            <Ionicons
+              name="arrow-forward"
+              size={15}
+              color={COLORS.navy}
+              style={{ marginLeft: 2 }}
+            />
+          </Pressable>
+        </View>
+
+        {/* Loading and errors */}
         {loading && items.length === 0 ? (
-          <View className="items-center py-20">
-            <ActivityIndicator size="large" color="#65463A" />
-            <Text className="mt-3 text-[13px] text-[#85756D]">
+          <View className="items-center py-16">
+            <ActivityIndicator size="large" color={COLORS.navy} />
+
+            <Text
+              className="mt-3 text-[13px]"
+              style={{
+                color: COLORS.muted,
+                fontFamily: "Manrope",
+              }}
+            >
               Opening your closet...
             </Text>
           </View>
         ) : error && items.length === 0 ? (
-          <View className="items-center px-8 py-16">
+          <View className="items-center px-8 py-14">
             <Ionicons
               name="cloud-offline-outline"
-              size={38}
-              color="#927D70"
+              size={36}
+              color={COLORS.muted}
             />
-            <Text className="mt-3 text-center text-[14px] text-[#65463A]">
+
+            <Text
+              className="mt-3 text-center text-[13px]"
+              style={{
+                color: COLORS.brown,
+                fontFamily: "Manrope",
+              }}
+            >
               {error}
             </Text>
+
             <Pressable
               onPress={() => router.replace("/closet")}
-              className="mt-4 rounded-full bg-[#65463A] px-5 py-3"
+              className="mt-4 rounded-full px-5 py-3"
+              style={{ backgroundColor: COLORS.navy }}
             >
               <Text className="text-[13px] text-white">Try again</Text>
             </Pressable>
           </View>
         ) : filteredItems.length === 0 ? (
-          <View className="items-center px-8 py-16">
-            <Ionicons name="shirt-outline" size={42} color="#927D70" />
+          <View className="items-center px-8 py-14">
+            <Ionicons name="shirt-outline" size={38} color={COLORS.muted} />
+
             <Text
-              className="mt-3 text-[19px] text-[#2B1B16]"
-              style={{ fontFamily: "DMSerifDisplay" }}
+              className="mt-3 text-[18px]"
+              style={{
+                color: COLORS.ink,
+                fontFamily: "DMSerifDisplay",
+              }}
             >
-              Your closet is empty
+              {items.length ? "No matching items" : "Your closet is empty"}
             </Text>
-            <Text className="mt-2 text-center text-[12px] text-[#85756D]">
-              Add some clothes to start building your digital wardrobe.
+
+            <Text
+              className="mt-1 text-center text-[12px]"
+              style={{
+                color: COLORS.muted,
+                fontFamily: "Manrope",
+              }}
+            >
+              {items.length
+                ? "Try another search or category."
+                : "Add some clothes to start building your digital wardrobe."}
             </Text>
           </View>
         ) : (
-          <View className="mt-3 flex-row flex-wrap px-[14px]">
+          <View className="mt-1 flex-row flex-wrap px-[14px]">
             {filteredItems.map((item) => {
               const isReady =
                 item.presentationImageStatus === "completed" &&
@@ -787,68 +758,103 @@ export default function MyClosetScreen() {
                 item.presentationImageStatus === "pending" ||
                 item.presentationImageStatus === "processing";
 
+              const isMenuOpen = openMenuId === item.id;
+
               return (
-                <View key={item.id} className="w-1/2 p-[6px]">
-                  <View className="overflow-hidden rounded-[14px]">
-                    {isReady ? (
-                      <Image
-                        source={{ uri: item.presentationImageUrl! }}
-                        resizeMode="cover"
-                        className="h-[190px] w-full rounded-[14px] bg-[#EEE8E0]"
-                        onLoad={() =>
-                          log("Presentation image rendered", {
-                            itemId: item.id,
-                          })
-                        }
-                        onError={(event) =>
-                          log("Presentation image failed to render", {
-                            itemId: item.id,
-                            error: event.nativeEvent.error,
-                          })
-                        }
-                      />
-                    ) : isGenerating ? (
-                      <GeneratingPlaceholder />
-                    ) : (
-                      <View className="h-[190px] items-center justify-center rounded-[14px] bg-[#EEE8E0] px-3">
-                        <Ionicons
-                          name="image-outline"
-                          size={34}
-                          color="#927D70"
+                <View
+                  key={item.id}
+                  className="w-1/2 p-[5px]"
+                  style={{
+                    zIndex: isMenuOpen ? 10 : 1,
+                  }}
+                >
+                  <View
+                    className="overflow-visible rounded-[18px]"
+                    style={{
+                      borderWidth: isMenuOpen ? 1.5 : 0,
+                      borderColor: COLORS.navy,
+                    }}
+                  >
+                    <View
+                      className="overflow-hidden rounded-[17px]"
+                      style={{
+                        backgroundColor: COLORS.placeholder,
+                      }}
+                    >
+                      {isReady ? (
+                        <Image
+                          source={{ uri: item.presentationImageUrl! }}
+                          resizeMode="cover"
+                          style={{
+                            width: "100%",
+                            aspectRatio: 0.88,
+                            backgroundColor: COLORS.placeholder,
+                          }}
                         />
-                        <Text className="mt-2 text-center text-[11px] text-[#65463A]">
-                          Image couldn't be prepared
-                        </Text>
-                        <Pressable
-                          disabled={retryingIds.includes(item.id)}
-                          onPress={() => void retryGeneration(item.id)}
-                          className="mt-3 rounded-full bg-[#65463A] px-3 py-2"
+                      ) : isGenerating ? (
+                        <GeneratingPlaceholder />
+                      ) : (
+                        <View
+                          className="items-center justify-center px-2"
+                          style={{
+                            aspectRatio: 0.88,
+                            backgroundColor: COLORS.placeholder,
+                          }}
                         >
-                          {retryingIds.includes(item.id) ? (
-                            <ActivityIndicator size="small" color="#FFFFFF" />
-                          ) : (
-                            <Text className="text-[11px] text-white">
-                              Try again
-                            </Text>
-                          )}
-                        </Pressable>
-                      </View>
-                    )}
+                          <Ionicons
+                            name="image-outline"
+                            size={30}
+                            color={COLORS.muted}
+                          />
 
-                    <Text
-                      numberOfLines={1}
-                      className="mt-3 text-[14px] text-[#2B1B16]"
-                      style={{ fontFamily: "DMSerifDisplay" }}
-                    >
-                      {getCategoryLabel(item.subcategory || item.category)}
-                    </Text>
+                          <Text
+                            className="mt-2 text-center text-[11px]"
+                            style={{
+                              color: COLORS.brown,
+                              fontFamily: "Manrope",
+                            }}
+                          >
+                            Image couldn't be prepared
+                          </Text>
 
-                    <Text
-                      className="mb-3 mt-1 text-[11px] text-[#8D7D73]"
-                      style={{ fontFamily: "Manrope" }}
-                    >
-                      {getCategoryLabel(item.category)}
-                    </Text>
+                          <Pressable
+                            disabled={retryingIds.includes(item.id)}
+                            onPress={() => void retryGeneration(item.id)}
+                            className="mt-2 rounded-full px-3 py-2"
+                            style={{ backgroundColor: COLORS.navy }}
+                          >
+                            {retryingIds.includes(item.id) ? (
+                              <ActivityIndicator
+                                size="small"
+                                color="#FFFFFF"
+                              />
+                            ) : (
+                              <Text className="text-[11px] text-white">
+                                Try again
+                              </Text>
+                            )}
+                          </Pressable>
+                        </View>
+                      )}
+
+                      {/* Three-dot menu button */}
+                      <Pressable
+                        onPress={() =>
+                          setOpenMenuId(isMenuOpen ? null : item.id)
+                        }
+                        hitSlop={8}
+                        className="absolute right-2 top-2 h-[31px] w-[31px] items-center justify-center rounded-full"
+                        style={{
+                          backgroundColor: "rgba(255,255,255,0.94)",
+                        }}
+                      >
+                        <Ionicons
+                          name="ellipsis-horizontal"
+                          size={21}
+                          color={COLORS.ink}
+                        />
+                      </Pressable>
+                    </View>
                   </View>
                 </View>
               );
@@ -856,6 +862,89 @@ export default function MyClosetScreen() {
           </View>
         )}
       </ScrollView>
-    </View>
+
+      {/* Footer: both elements share one row; no border */}
+      <View
+        className="flex-row items-center justify-between px-5"
+        style={{
+          height: 76,
+          backgroundColor: COLORS.background,
+          borderTopWidth: 0,
+        }}
+      >
+        <Text
+          className="text-[14px]"
+          style={{
+            color: COLORS.muted,
+            fontFamily: "DMSerifDisplay",
+          }}
+        >
+          {items.length} {items.length === 1 ? "item" : "items"}, all yours.
+        </Text>
+
+        <Pressable
+          onPress={() => router.push("/closet/add")}
+          className="h-[50px] w-[50px] items-center justify-center rounded-full"
+          style={{
+            backgroundColor: COLORS.navy,
+          }}
+          accessibilityRole="button"
+          accessibilityLabel="Add item"
+        >
+          <Ionicons name="add" size={28} color="#FFFFFF" />
+        </Pressable>
+      </View>
+
+      {/* Full-screen menu overlay: not clipped by the item card */}
+      <Modal
+        transparent
+        visible={openMenuId !== null}
+        animationType="fade"
+        onRequestClose={() => setOpenMenuId(null)}
+        statusBarTranslucent
+      >
+        <Pressable
+          onPress={() => setOpenMenuId(null)}
+          className="flex-1 justify-center px-7"
+          style={{
+            backgroundColor: "rgba(25,18,14,0.20)",
+          }}
+        >
+          <Pressable
+            onPress={(event) => event.stopPropagation()}
+            className="self-end rounded-[16px] px-2 py-1"
+            style={{
+              width: 205,
+              backgroundColor: COLORS.background,
+              shadowColor: "#000000",
+              shadowOffset: { width: 0, height: 5 },
+              shadowOpacity: 0.2,
+              shadowRadius: 12,
+              elevation: 14,
+            }}
+          >
+            {MENU_OPTIONS.map((option, optionIndex) => (
+              <MenuOption
+                key={option.label}
+                label={option.label}
+                icon={option.icon}
+                last={optionIndex === MENU_OPTIONS.length - 1}
+                onPress={() => {
+                  const selectedItem = items.find(
+                    (item) => item.id === openMenuId,
+                  );
+
+                  if (selectedItem) {
+                    handleMenuOption(option.label, selectedItem);
+                  } else {
+                    setOpenMenuId(null);
+                  }
+                }}
+              />
+            ))}
+          </Pressable>
+        </Pressable>
+      </Modal>
+    </SafeAreaView>
   );
 }

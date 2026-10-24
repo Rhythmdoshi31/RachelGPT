@@ -1,4 +1,3 @@
-
 import path from "node:path";
 import { prisma } from "../lib/prisma.js";
 import { supabaseAdmin } from "../lib/supabaseAdmin.js";
@@ -20,12 +19,10 @@ if (!backgroundPathFromEnv) {
   throw new Error("WARDROBE_BACKGROUND_PATH is missing from .env");
 }
 
-const BACKGROUND_PATH: string = backgroundPathFromEnv;
+const BACKGROUND_PATH = backgroundPathFromEnv;
 
 function getMimeType(storagePath: string): string {
-  const extension = path.extname(storagePath).toLowerCase();
-
-  switch (extension) {
+  switch (path.extname(storagePath).toLowerCase()) {
     case ".png":
       return "image/png";
     case ".webp":
@@ -34,8 +31,6 @@ function getMimeType(storagePath: string): string {
       return "image/heic";
     case ".heif":
       return "image/heif";
-    case ".jpg":
-    case ".jpeg":
     default:
       return "image/jpeg";
   }
@@ -67,23 +62,49 @@ async function downloadStorageImage(storagePath: string): Promise<Buffer> {
   return Buffer.from(await data.arrayBuffer());
 }
 
+async function markFailed(
+  item: PresentationItem,
+  error: unknown,
+): Promise<void> {
+  const message =
+    error instanceof Error
+      ? error.message.slice(0, 1000)
+      : "Unknown presentation generation error";
+
+  try {
+    await prisma.wardrobeItem.updateMany({
+      where: {
+        id: item.id,
+        userId: item.userId,
+        presentationImageStatus: "processing",
+      },
+      data: {
+        presentationImageStatus: "failed",
+        presentationImageError: message,
+      },
+    });
+  } catch (updateError) {
+    console.error(
+      `Could not save presentation failure status for ${item.id}:`,
+      updateError,
+    );
+  }
+}
+
 async function processOnePresentation(item: PresentationItem): Promise<void> {
-  const outputPath =
-    `${item.userId}/${item.id}/presentation.png`;
+  const outputPath = `${item.userId}/${item.id}/presentation.png`;
 
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     try {
       console.log(
-        `Generating wardrobe presentation ${item.id}, attempt ${attempt}/${MAX_ATTEMPTS}`,
+        `Generating presentation ${item.id}, attempt ${attempt}/${MAX_ATTEMPTS}`,
       );
 
-      // Download both reference images from the private bucket.
       const [originalBuffer, backgroundBuffer] = await Promise.all([
         downloadStorageImage(item.primaryImagePath),
         downloadStorageImage(BACKGROUND_PATH),
       ]);
 
-      // Generate the presentation image.
       const generatedBuffer = await generateWardrobePresentationImage(
         originalBuffer,
         getMimeType(item.primaryImagePath),
@@ -91,11 +112,10 @@ async function processOnePresentation(item: PresentationItem): Promise<void> {
         getMimeType(BACKGROUND_PATH),
       );
 
-      if (generatedBuffer.length === 0) {
+      if (!generatedBuffer.length) {
         throw new Error("Generated presentation image is empty");
       }
 
-      // Upload separately; never overwrite the original photo.
       const { error: uploadError } = await supabaseAdmin.storage
         .from(BUCKET)
         .upload(outputPath, generatedBuffer, {
@@ -109,9 +129,13 @@ async function processOnePresentation(item: PresentationItem): Promise<void> {
         );
       }
 
-      // Only mark completed after Storage upload succeeds.
-      await prisma.wardrobeItem.update({
-        where: { id: item.id },
+      // Only mark completed if this job still owns the processing state.
+      const updated = await prisma.wardrobeItem.updateMany({
+        where: {
+          id: item.id,
+          userId: item.userId,
+          presentationImageStatus: "processing",
+        },
         data: {
           presentationImagePath: outputPath,
           presentationImageStatus: "completed",
@@ -119,41 +143,27 @@ async function processOnePresentation(item: PresentationItem): Promise<void> {
         },
       });
 
-      console.log(`Wardrobe presentation completed: ${item.id}`);
+      if (updated.count === 0) {
+        console.warn(
+          `Presentation result for ${item.id} was uploaded, but its database status had changed.`,
+        );
+        return;
+      }
+
+      console.log(`Presentation completed: ${item.id}`);
       return;
     } catch (error) {
       console.error(
-        `Presentation generation failed for ${item.id}, attempt ${attempt}:`,
+        `Presentation failed for ${item.id}, attempt ${attempt}:`,
         error,
       );
 
-      const canRetry =
-        attempt < MAX_ATTEMPTS && isRetryableError(error);
-
-      if (canRetry) {
+      if (attempt < MAX_ATTEMPTS && isRetryableError(error)) {
         await sleep(1000 * 2 ** (attempt - 1));
         continue;
       }
 
-      // Keep the original image and analysis intact.
-      try {
-        await prisma.wardrobeItem.update({
-          where: { id: item.id },
-          data: {
-            presentationImageStatus: "failed",
-            presentationImageError:
-              error instanceof Error
-                ? error.message.slice(0, 1000)
-                : "Unknown presentation generation error",
-          },
-        });
-      } catch (updateError) {
-        console.error(
-          `Could not save presentation failure status for ${item.id}:`,
-          updateError,
-        );
-      }
-
+      await markFailed(item, error);
       return;
     }
   }
@@ -175,56 +185,20 @@ export async function processWardrobePresentationBatch(
       const item = items[index];
 
       try {
-        await prisma.wardrobeItem.update({
-          where: {
-            id: item.id,
-            userId: item.userId,
-          },
-          data: {
-            presentationImageStatus: "processing",
-            presentationImageError: null,
-          },
-        });
-
+        // The controller has already claimed this item.
+        // Do not reset its status or clear its error here.
         await processOnePresentation(item);
       } catch (error) {
-        console.error(
-          `Could not process presentation for ${item.id}:`,
-          error,
-        );
+        console.error(`Unexpected processor error for ${item.id}:`, error);
 
-        try {
-          await prisma.wardrobeItem.update({
-            where: {
-              id: item.id,
-              userId: item.userId,
-            },
-            data: {
-              presentationImageStatus: "failed",
-              presentationImageError:
-                error instanceof Error
-                  ? error.message.slice(0, 1000)
-                  : "Unknown processing error",
-            },
-          });
-        } catch (updateError) {
-          console.error(
-            `Could not update presentation status for ${item.id}:`,
-            updateError,
-          );
-        }
+        await markFailed(item, error);
       }
     }
   }
 
   await Promise.all(
-    Array.from(
-      { length: Math.min(CONCURRENCY, items.length) },
-      () => worker(),
-    ),
+    Array.from({ length: Math.min(CONCURRENCY, items.length) }, () => worker()),
   );
 
-  console.log(
-    `Wardrobe presentation batch finished. Total items: ${items.length}`,
-  );
+  console.log(`Presentation batch finished. Total items: ${items.length}`);
 }

@@ -94,8 +94,24 @@ export async function generateWardrobePresentations(req, res) {
                 id: item.id,
                 userId: item.userId,
                 primaryImagePath: item.primaryImagePath,
-            }))).catch((error) => {
+            }))).catch(async (error) => {
                 console.error("Presentation batch failed unexpectedly:", error);
+                try {
+                    await prisma.wardrobeItem.updateMany({
+                        where: {
+                            id: { in: claimedItems.map((item) => item.id) },
+                            userId,
+                            presentationImageStatus: "processing",
+                        },
+                        data: {
+                            presentationImageStatus: "failed",
+                            presentationImageError: "Presentation generation stopped unexpectedly.",
+                        },
+                    });
+                }
+                catch (updateError) {
+                    console.error("Failed to update presentation statuses after batch failure:", updateError);
+                }
             });
         }
         return res.status(202).json({

@@ -189,20 +189,35 @@ export async function getWardrobe(req, res) {
         ]);
         const wardrobe = await Promise.all(wardrobeItems.map(async (item) => {
             let primaryImageUrl = null;
+            let presentationImageUrl = null;
             if (item.primaryImagePath) {
                 const { data, error } = await supabaseAdmin.storage
                     .from("Wardrobe")
                     .createSignedUrl(item.primaryImagePath, 60 * 60);
                 if (error) {
-                    console.error(`Failed to create signed URL for wardrobe item ${item.id}:`, error);
+                    console.error(`Failed to create original image URL for item ${item.id}:`, error);
                 }
                 else {
                     primaryImageUrl = data.signedUrl;
                 }
             }
+            if (item.presentationImagePath &&
+                item.presentationImageStatus === "completed") {
+                const { data, error } = await supabaseAdmin.storage
+                    .from("Wardrobe")
+                    .createSignedUrl(item.presentationImagePath, 60 * 60);
+                if (error) {
+                    console.error(`Failed to create presentation image URL for item ${item.id}:`, error);
+                }
+                else {
+                    presentationImageUrl = data.signedUrl;
+                }
+            }
             return {
                 ...item,
                 primaryImageUrl,
+                presentationImageUrl,
+                presentationImageStatus: item.presentationImageStatus,
             };
         }));
         const totalPages = Math.ceil(total / limit);
@@ -395,8 +410,7 @@ export async function completeWardrobeUploads(req, res) {
             return {
                 wardrobeItemId: upload.wardrobeItemId,
                 storagePath: upload.storagePath,
-                exists: !error &&
-                    (data ?? []).some((file) => file.name === fileName),
+                exists: !error && (data ?? []).some((file) => file.name === fileName),
                 error: error?.message ?? null,
             };
         }));
@@ -418,9 +432,7 @@ export async function completeWardrobeUploads(req, res) {
                 throw new Error(`Could not read uploaded image ${index + 1}: ${error?.message ?? "Image data is missing"}`);
             }
             const bytes = Buffer.from(await data.arrayBuffer());
-            const contentHash = createHash("sha256")
-                .update(bytes)
-                .digest("hex");
+            const contentHash = createHash("sha256").update(bytes).digest("hex");
             return {
                 ...upload,
                 index,
@@ -443,8 +455,7 @@ export async function completeWardrobeUploads(req, res) {
         });
         const existingHashToItemId = new Map();
         for (const image of existingImages) {
-            if (image.contentHash &&
-                !existingHashToItemId.has(image.contentHash)) {
+            if (image.contentHash && !existingHashToItemId.has(image.contentHash)) {
                 existingHashToItemId.set(image.contentHash, image.wardrobeItemId);
             }
         }
@@ -1142,9 +1153,7 @@ export async function getWardrobeAnalysisStatus(req, res) {
         const uniqueIds = [...new Set(wardrobeItemIds)];
         const items = await prisma.wardrobeItem.findMany({
             where: {
-                id: {
-                    in: uniqueIds,
-                },
+                id: { in: uniqueIds },
                 userId,
                 isArchived: false,
             },
@@ -1155,6 +1164,9 @@ export async function getWardrobeAnalysisStatus(req, res) {
                 attributes: true,
                 analysisStatus: true,
                 primaryImagePath: true,
+                presentationImagePath: true,
+                presentationImageStatus: true,
+                presentationImageError: true,
             },
         });
         const itemMap = new Map(items.map((item) => [item.id, item]));
@@ -1164,6 +1176,7 @@ export async function getWardrobeAnalysisStatus(req, res) {
                 return {
                     id,
                     analysisStatus: "not_found",
+                    presentationImageStatus: "not_found",
                 };
             }
             return {
@@ -1172,12 +1185,20 @@ export async function getWardrobeAnalysisStatus(req, res) {
                 category: item.category,
                 subcategory: item.subcategory,
                 attributes: item.attributes,
+                presentationImageStatus: item.presentationImageStatus,
+                presentationImageError: item.presentationImageError,
             };
         });
+        // Preserve the existing onboarding completion contract:
+        // presentation generation does NOT affect allCompleted.
         const allCompleted = result.every((item) => item.analysisStatus === "completed" || item.analysisStatus === "failed");
+        const allPresentationsCompleted = result.every((item) => item.presentationImageStatus === "completed" ||
+            item.presentationImageStatus === "failed" ||
+            item.presentationImageStatus === "not_found");
         return res.json({
             success: true,
             allCompleted,
+            allPresentationsCompleted,
             items: result,
         });
     }

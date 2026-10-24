@@ -1,4 +1,3 @@
-
 import type { Response } from "express";
 import type { AuthenticatedRequest } from "../middleware/auth.js";
 import { prisma } from "../lib/prisma.js";
@@ -24,9 +23,7 @@ export async function generateWardrobePresentations(
       !Array.isArray(wardrobeItemIds) ||
       wardrobeItemIds.length === 0 ||
       wardrobeItemIds.length > 50 ||
-      wardrobeItemIds.some(
-        (id: unknown) => typeof id !== "string" || !id,
-      )
+      wardrobeItemIds.some((id: unknown) => typeof id !== "string" || !id)
     ) {
       return res.status(400).json({
         success: false,
@@ -64,9 +61,7 @@ export async function generateWardrobePresentations(
       });
     }
 
-    const missingImages = items.filter(
-      (item) => !item.primaryImagePath,
-    );
+    const missingImages = items.filter((item) => !item.primaryImagePath);
 
     if (missingImages.length > 0) {
       return res.status(400).json({
@@ -128,8 +123,28 @@ export async function generateWardrobePresentations(
           userId: item.userId,
           primaryImagePath: item.primaryImagePath!,
         })),
-      ).catch((error) => {
+      ).catch(async (error) => {
         console.error("Presentation batch failed unexpectedly:", error);
+
+        try {
+          await prisma.wardrobeItem.updateMany({
+            where: {
+              id: { in: claimedItems.map((item) => item.id) },
+              userId,
+              presentationImageStatus: "processing",
+            },
+            data: {
+              presentationImageStatus: "failed",
+              presentationImageError:
+                "Presentation generation stopped unexpectedly.",
+            },
+          });
+        } catch (updateError) {
+          console.error(
+            "Failed to update presentation statuses after batch failure:",
+            updateError,
+          );
+        }
       });
     }
 

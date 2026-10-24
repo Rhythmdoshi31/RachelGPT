@@ -235,6 +235,7 @@ export async function getWardrobe(req: AuthenticatedRequest, res: Response) {
     const wardrobe = await Promise.all(
       wardrobeItems.map(async (item) => {
         let primaryImageUrl: string | null = null;
+        let presentationImageUrl: string | null = null;
 
         if (item.primaryImagePath) {
           const { data, error } = await supabaseAdmin.storage
@@ -243,7 +244,7 @@ export async function getWardrobe(req: AuthenticatedRequest, res: Response) {
 
           if (error) {
             console.error(
-              `Failed to create signed URL for wardrobe item ${item.id}:`,
+              `Failed to create original image URL for item ${item.id}:`,
               error,
             );
           } else {
@@ -251,9 +252,29 @@ export async function getWardrobe(req: AuthenticatedRequest, res: Response) {
           }
         }
 
+        if (
+          item.presentationImagePath &&
+          item.presentationImageStatus === "completed"
+        ) {
+          const { data, error } = await supabaseAdmin.storage
+            .from("Wardrobe")
+            .createSignedUrl(item.presentationImagePath, 60 * 60);
+
+          if (error) {
+            console.error(
+              `Failed to create presentation image URL for item ${item.id}:`,
+              error,
+            );
+          } else {
+            presentationImageUrl = data.signedUrl;
+          }
+        }
+
         return {
           ...item,
           primaryImageUrl,
+          presentationImageUrl,
+          presentationImageStatus: item.presentationImageStatus,
         };
       }),
     );
@@ -394,7 +415,6 @@ export async function createWardrobeUploadUrls(
   }
 }
 
-
 export async function completeWardrobeUploads(
   req: AuthenticatedRequest,
   res: Response,
@@ -504,10 +524,7 @@ export async function completeWardrobeUploads(
     // 3. Verify that every uploaded Storage object exists.
     const storageChecks = await Promise.all(
       uploads.map(
-        async (upload: {
-          wardrobeItemId: string;
-          storagePath: string;
-        }) => {
+        async (upload: { wardrobeItemId: string; storagePath: string }) => {
           const lastSlash = upload.storagePath.lastIndexOf("/");
           const folderPath = upload.storagePath.slice(0, lastSlash);
           const fileName = upload.storagePath.slice(lastSlash + 1);
@@ -523,17 +540,14 @@ export async function completeWardrobeUploads(
             wardrobeItemId: upload.wardrobeItemId,
             storagePath: upload.storagePath,
             exists:
-              !error &&
-              (data ?? []).some((file) => file.name === fileName),
+              !error && (data ?? []).some((file) => file.name === fileName),
             error: error?.message ?? null,
           };
         },
       ),
     );
 
-    const missingUploads = storageChecks.filter(
-      (check) => !check.exists,
-    );
+    const missingUploads = storageChecks.filter((check) => !check.exists);
 
     if (missingUploads.length > 0) {
       console.error("Missing wardrobe Storage objects:", missingUploads);
@@ -569,9 +583,7 @@ export async function completeWardrobeUploads(
           }
 
           const bytes = Buffer.from(await data.arrayBuffer());
-          const contentHash = createHash("sha256")
-            .update(bytes)
-            .digest("hex");
+          const contentHash = createHash("sha256").update(bytes).digest("hex");
 
           return {
             ...upload,
@@ -601,14 +613,8 @@ export async function completeWardrobeUploads(
     const existingHashToItemId = new Map<string, string>();
 
     for (const image of existingImages) {
-      if (
-        image.contentHash &&
-        !existingHashToItemId.has(image.contentHash)
-      ) {
-        existingHashToItemId.set(
-          image.contentHash,
-          image.wardrobeItemId,
-        );
+      if (image.contentHash && !existingHashToItemId.has(image.contentHash)) {
+        existingHashToItemId.set(image.contentHash, image.wardrobeItemId);
       }
     }
 
@@ -624,9 +630,7 @@ export async function completeWardrobeUploads(
     }[] = [];
 
     for (const upload of hashedUploads) {
-      const existingItemId = existingHashToItemId.get(
-        upload.contentHash,
-      );
+      const existingItemId = existingHashToItemId.get(upload.contentHash);
 
       if (existingItemId) {
         duplicates.push({
@@ -646,10 +650,7 @@ export async function completeWardrobeUploads(
         continue;
       }
 
-      seenHashes.set(
-        upload.contentHash,
-        upload.wardrobeItemId,
-      );
+      seenHashes.set(upload.contentHash, upload.wardrobeItemId);
 
       uploadsToCreate.push(upload);
     }
@@ -691,8 +692,7 @@ export async function completeWardrobeUploads(
     const duplicatePaths = [
       ...new Set(
         duplicates.map(
-          (duplicate) =>
-            hashedUploads[duplicate.index].storagePath,
+          (duplicate) => hashedUploads[duplicate.index].storagePath,
         ),
       ),
     ];
@@ -705,10 +705,7 @@ export async function completeWardrobeUploads(
       if (error) {
         // The DB duplicate is still prevented. Log cleanup failure
         // so the leftover Storage objects can be investigated.
-        console.error(
-          "Failed to remove duplicate Storage objects:",
-          error,
-        );
+        console.error("Failed to remove duplicate Storage objects:", error);
       }
     }
 
@@ -1505,9 +1502,7 @@ export async function getWardrobeAnalysisStatus(
 
     const items = await prisma.wardrobeItem.findMany({
       where: {
-        id: {
-          in: uniqueIds,
-        },
+        id: { in: uniqueIds },
         userId,
         isArchived: false,
       },
@@ -1518,6 +1513,9 @@ export async function getWardrobeAnalysisStatus(
         attributes: true,
         analysisStatus: true,
         primaryImagePath: true,
+        presentationImagePath: true,
+        presentationImageStatus: true,
+        presentationImageError: true,
       },
     });
 
@@ -1530,6 +1528,7 @@ export async function getWardrobeAnalysisStatus(
         return {
           id,
           analysisStatus: "not_found",
+          presentationImageStatus: "not_found",
         };
       }
 
@@ -1539,17 +1538,29 @@ export async function getWardrobeAnalysisStatus(
         category: item.category,
         subcategory: item.subcategory,
         attributes: item.attributes,
+        presentationImageStatus: item.presentationImageStatus,
+        presentationImageError: item.presentationImageError,
       };
     });
 
+    // Preserve the existing onboarding completion contract:
+    // presentation generation does NOT affect allCompleted.
     const allCompleted = result.every(
       (item) =>
         item.analysisStatus === "completed" || item.analysisStatus === "failed",
     );
 
+    const allPresentationsCompleted = result.every(
+      (item) =>
+        item.presentationImageStatus === "completed" ||
+        item.presentationImageStatus === "failed" ||
+        item.presentationImageStatus === "not_found",
+    );
+
     return res.json({
       success: true,
       allCompleted,
+      allPresentationsCompleted,
       items: result,
     });
   } catch (error) {

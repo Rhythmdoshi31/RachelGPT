@@ -93,7 +93,6 @@ model UserStyleProfile {
   user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-
 model WardrobeItem {
   id               String                 @id @default(uuid())
   userId           String                 @db.Uuid
@@ -137,29 +136,32 @@ model WardrobeItem {
   user             User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
   wearEvents       WearEvent[]
 
+// Presentation-Image Generation  
+  presentationImagePath   String?
+  presentationImageStatus String  @default("pending") // pending processing completed failed
+  presentationImageError  String?
+
   @@index([userId])
   @@index([userId, category])
   @@index([userId, lastWornAt])
 }
 
-
 model WardrobeImage {
-  id             String       @id @default(uuid())
-  userId         String       @db.Uuid
+  id             String   @id @default(uuid())
+  userId         String   @db.Uuid
   wardrobeItemId String
   storagePath    String
   contentHash    String?
-  isPrimary      Boolean      @default(false)
-  createdAt      DateTime     @default(now())
+  isPrimary      Boolean  @default(false)
+  createdAt      DateTime @default(now())
 
-  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  wardrobeItem   WardrobeItem @relation(fields: [wardrobeItemId], references: [id], onDelete: Cascade)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  wardrobeItem WardrobeItem @relation(fields: [wardrobeItemId], references: [id], onDelete: Cascade)
 
   @@unique([userId, contentHash])
   @@index([userId])
   @@index([wardrobeItemId])
 }
-
 
 model Outfit {
   id           String            @id @default(uuid())
@@ -454,28 +456,28 @@ model SavedProduct {
 }
 
 model Avatar {
-  id              String   @id @default(uuid())
-  userId          String   @unique @db.Uuid
+  id     String @id @default(uuid())
+  userId String @unique @db.Uuid
 
   // Style Mirror customization
-  gender          String   @default("FEMALE")
-  hairstyle       Int?
-  faceShape       Int?
-  skinTone        Int?
-  bodyType        Int?
+  gender    String @default("FEMALE")
+  hairstyle Int?
+  faceShape Int?
+  skinTone  Int?
+  bodyType  Int?
 
   // Current avatar image reference
-  imageCode       String   @default("image1")
-  imagePath       String   @default("defaults/image1.png")
+  imageCode String @default("image1")
+  imagePath String @default("defaults/image1.png")
 
   // Increment when the avatar configuration changes
-  version         Int      @default(1)
+  version Int @default(1)
 
   // Optional flexible metadata for future avatar features
-  metadata        Json?
+  metadata Json?
 
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   user            User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
   referenceImages AvatarReferenceImage[]

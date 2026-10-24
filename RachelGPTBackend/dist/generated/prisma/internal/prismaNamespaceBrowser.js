@@ -124,7 +124,10 @@ export const WardrobeItemScalarFieldEnum = {
     timesWorn: 'timesWorn',
     isArchived: 'isArchived',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    presentationImagePath: 'presentationImagePath',
+    presentationImageStatus: 'presentationImageStatus',
+    presentationImageError: 'presentationImageError'
 };
 export const WardrobeImageScalarFieldEnum = {
     id: 'id',

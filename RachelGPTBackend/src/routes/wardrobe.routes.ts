@@ -14,6 +14,7 @@ import {
 } from "../controllers/wardrobe.controller.js";
 
 import { authMiddleware } from "../middleware/auth.js";
+import { generateWardrobePresentations } from "../controllers/wardrobePresentation.controller.js";
 
 const router = Router();
 
@@ -83,5 +84,10 @@ router.post(
   analyzeWardrobeItem
 );
 
+router.post(
+  "/presentation/generate-batch",
+  authMiddleware,
+  generateWardrobePresentations,
+);
 
 export default router;

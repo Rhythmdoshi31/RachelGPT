@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { createWardrobeUploadUrl, createWardrobeUploadUrls, completeWardrobeUpload, completeWardrobeUploads, getWardrobe, getWardrobeItemById, updateWardrobeItem, deleteWardrobeItem, analyzeWardrobeItem, analyzeWardrobeBatch, getWardrobeAnalysisStatus } from "../controllers/wardrobe.controller.js";
 import { authMiddleware } from "../middleware/auth.js";
+import { generateWardrobePresentations } from "../controllers/wardrobePresentation.controller.js";
 const router = Router();
 router.post("/upload-url", authMiddleware, createWardrobeUploadUrl);
 router.post("/upload-urls", authMiddleware, createWardrobeUploadUrls);
@@ -13,5 +14,6 @@ router.get("/:id", authMiddleware, getWardrobeItemById);
 router.patch("/:id", authMiddleware, updateWardrobeItem);
 router.delete("/:id", authMiddleware, deleteWardrobeItem);
 router.post("/:id/analyze", authMiddleware, analyzeWardrobeItem);
+router.post("/presentation/generate-batch", authMiddleware, generateWardrobePresentations);
 export default router;
 //# sourceMappingURL=wardrobe.routes.js.map

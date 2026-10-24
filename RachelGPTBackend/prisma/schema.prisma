@@ -141,6 +141,10 @@ model WardrobeItem {
   presentationImageStatus String  @default("pending") // pending processing completed failed
   presentationImageError  String?
 
+  presentationJobToken                String?  @unique
+  presentationProcessingStartedAt     DateTime?
+
+
   @@index([userId])
   @@index([userId, category])
   @@index([userId, lastWornAt])

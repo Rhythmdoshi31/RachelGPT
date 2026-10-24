@@ -1,4 +1,3 @@
-
 import { File } from "expo-file-system";
 import { getAccessToken } from "./onboarding";
 import { supabase } from "./supabase";
@@ -44,13 +43,14 @@ type CompleteBatchResult = {
 type AnalysisStatusItem = {
   id: string;
   analysisStatus:
-    | "pending"
-    | "processing"
-    | "completed"
-    | "failed"
-    | "not_found";
+    "pending" | "processing" | "completed" | "failed" | "not_found";
   category?: string;
   subcategory?: string | null;
+};
+
+type PresentationStatusItem = {
+  id: string;
+  presentationImageStatus: "pending" | "processing" | "completed" | "failed";
 };
 
 export type WardrobeUploadResult = {
@@ -74,15 +74,12 @@ async function readResponse(response: Response) {
   const result = await response.json().catch(() => null);
 
   if (!result || typeof result !== "object") {
-    throw new Error(
-      `Invalid wardrobe API response (HTTP ${response.status}).`,
-    );
+    throw new Error(`Invalid wardrobe API response (HTTP ${response.status}).`);
   }
 
   if (!response.ok || !result.success) {
     throw new Error(
-      result.message ||
-        `Wardrobe request failed (HTTP ${response.status}).`,
+      result.message || `Wardrobe request failed (HTTP ${response.status}).`,
     );
   }
 
@@ -101,20 +98,13 @@ async function apiRequest(endpoint: string, body?: unknown) {
     headers: {
       Authorization: `Bearer ${token}`,
       Accept: "application/json",
-      ...(body === undefined
-        ? {}
-        : { "Content-Type": "application/json" }),
+      ...(body === undefined ? {} : { "Content-Type": "application/json" }),
     },
-    ...(body === undefined
-      ? {}
-      : { body: JSON.stringify(body) }),
+    ...(body === undefined ? {} : { body: JSON.stringify(body) }),
   });
 
   return readResponse(response);
 }
-
-
-
 
 export async function getWardrobeItemCount(): Promise<number> {
   const result = await apiRequest("/api/wardrobe?page=1&limit=1");
@@ -126,11 +116,9 @@ export async function getWardrobeItemCount(): Promise<number> {
   return result.pagination.total;
 }
 
-
 function getFileDetails(photo: WardrobeUploadFile) {
   const uriName = photo.uri.split("/").pop()?.split("?")[0];
-  const fileName =
-    photo.fileName || uriName || `wardrobe-${Date.now()}.jpg`;
+  const fileName = photo.fileName || uriName || `wardrobe-${Date.now()}.jpg`;
 
   let contentType = photo.mimeType?.toLowerCase();
 
@@ -186,10 +174,7 @@ async function runWithConcurrency<T>(
   }
 
   await Promise.all(
-    Array.from(
-      { length: Math.min(concurrency, items.length) },
-      () => worker(),
-    ),
+    Array.from({ length: Math.min(concurrency, items.length) }, () => worker()),
   );
 }
 
@@ -199,11 +184,7 @@ function sleep(ms: number) {
 
 export async function uploadAndAnalyzeWardrobe(
   photos: WardrobeUploadFile[],
-  onProgress?: (
-    message: string,
-    completed: number,
-    total: number,
-  ) => void,
+  onProgress?: (message: string, completed: number, total: number) => void,
   onSaved?: (uploadedUris: string[]) => void,
 ): Promise<WardrobeUploadResult> {
   if (photos.length === 0) {
@@ -244,61 +225,50 @@ export async function uploadAndAnalyzeWardrobe(
   const failures: string[] = [];
   let finishedUploads = 0;
 
-  await runWithConcurrency(
-    photos,
-    UPLOAD_CONCURRENCY,
-    async (photo, index) => {
-      const upload = uploadByIndex.get(index)!;
-      const details = fileDetails[index];
+  await runWithConcurrency(photos, UPLOAD_CONCURRENCY, async (photo, index) => {
+    const upload = uploadByIndex.get(index)!;
+    const details = fileDetails[index];
 
-      try {
-        const file = new File(photo.uri);
-        const bytes = await file.bytes();
+    try {
+      const file = new File(photo.uri);
+      const bytes = await file.bytes();
 
-        const body = bytes.buffer.slice(
-          bytes.byteOffset,
-          bytes.byteOffset + bytes.byteLength,
-        ) as ArrayBuffer;
+      const body = bytes.buffer.slice(
+        bytes.byteOffset,
+        bytes.byteOffset + bytes.byteLength,
+      ) as ArrayBuffer;
 
-        const { error } = await supabase.storage
-          .from(STORAGE_BUCKET)
-          .uploadToSignedUrl(
-            upload.storagePath,
-            upload.token,
-            body,
-            {
-              contentType: details.contentType,
-              upsert: false,
-            },
-          );
+      const { error } = await supabase.storage
+        .from(STORAGE_BUCKET)
+        .uploadToSignedUrl(upload.storagePath, upload.token, body, {
+          contentType: details.contentType,
+          upsert: false,
+        });
 
-        if (error) {
-          throw new Error(error.message);
-        }
-
-        successfulUploads.push(upload);
-      } catch (error) {
-        failures.push(
-          `Photo ${index + 1}: ${
-            error instanceof Error ? error.message : "Upload failed"
-          }`,
-        );
-      } finally {
-        finishedUploads++;
-
-        onProgress?.(
-          `Uploading photos (${finishedUploads}/${photos.length})...`,
-          finishedUploads,
-          photos.length,
-        );
+      if (error) {
+        throw new Error(error.message);
       }
-    },
-  );
+
+      successfulUploads.push(upload);
+    } catch (error) {
+      failures.push(
+        `Photo ${index + 1}: ${
+          error instanceof Error ? error.message : "Upload failed"
+        }`,
+      );
+    } finally {
+      finishedUploads++;
+
+      onProgress?.(
+        `Uploading photos (${finishedUploads}/${photos.length})...`,
+        finishedUploads,
+        photos.length,
+      );
+    }
+  });
 
   if (successfulUploads.length === 0) {
-    throw new Error(
-      failures[0] || "None of the photos could be uploaded.",
-    );
+    throw new Error(failures[0] || "None of the photos could be uploaded.");
   }
 
   successfulUploads.sort((a, b) => a.index - b.index);
@@ -311,15 +281,12 @@ export async function uploadAndAnalyzeWardrobe(
     photos.length,
   );
 
-  const completionResult = (await apiRequest(
-    "/api/wardrobe/complete-batch",
-    {
-      uploads: successfulUploads.map((upload) => ({
-        wardrobeItemId: upload.wardrobeItemId,
-        storagePath: upload.storagePath,
-      })),
-    },
-  )) as CompleteBatchResult;
+  const completionResult = (await apiRequest("/api/wardrobe/complete-batch", {
+    uploads: successfulUploads.map((upload) => ({
+      wardrobeItemId: upload.wardrobeItemId,
+      storagePath: upload.storagePath,
+    })),
+  })) as CompleteBatchResult;
 
   if (
     !Array.isArray(completionResult.createdUploads) ||
@@ -360,12 +327,23 @@ export async function uploadAndAnalyzeWardrobe(
     };
   }
 
-  // 5. Analyze only newly created wardrobe items.
+  // 5. Start clothing analysis and presentation generation
+  // for newly created wardrobe items.
   const ids = createdUploads.map((upload) => upload.wardrobeItemId);
 
   await apiRequest("/api/wardrobe/analyze-batch", {
     wardrobeItemIds: ids,
   });
+
+  // Presentation generation runs independently in the backend.
+  // Do not let a presentation failure interrupt clothing analysis.
+  try {
+    await apiRequest("/api/wardrobe/presentation/generate-batch", {
+      wardrobeItemIds: ids,
+    });
+  } catch (error) {
+    console.error("Failed to start wardrobe presentation generation:", error);
+  }
 
   // 6. Poll analysis status for newly created items only.
   let completed = 0;
@@ -386,9 +364,7 @@ export async function uploadAndAnalyzeWardrobe(
       );
     }
 
-    const missing = items.filter(
-      (item) => item.analysisStatus === "not_found",
-    );
+    const missing = items.filter((item) => item.analysisStatus === "not_found");
 
     if (missing.length > 0) {
       throw new Error(

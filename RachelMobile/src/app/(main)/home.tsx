@@ -65,7 +65,7 @@ export default function Home() {
         handleTabPress("stylist");
         break;
       case "closet":
-        handleTabPress("forYou");
+        router.push("/closet");
         break;
       case "upload":
         handleTabPress("upload");
@@ -94,7 +94,7 @@ export default function Home() {
         <HomeQuickActions onActionPress={handleActionPress} />
 
         <FreshFromCloset
-          onSeeAll={() => handleTabPress("forYou")}
+          onSeeAll={() => router.push("/closet")}
         />
 
         {/* Temporary logout control */}

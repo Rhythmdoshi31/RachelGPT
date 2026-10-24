@@ -1,6 +1,8 @@
 import { prisma } from "../lib/prisma.js";
 import { processWardrobePresentationBatch } from "../services/wardrobePresentation.processor.js";
+const LOG_PREFIX = "[WardrobePresentation]";
 export async function generateWardrobePresentations(req, res) {
+    const startedAt = Date.now();
     try {
         const userId = req.userId;
         if (!userId) {
@@ -13,7 +15,7 @@ export async function generateWardrobePresentations(req, res) {
         if (!Array.isArray(wardrobeItemIds) ||
             wardrobeItemIds.length === 0 ||
             wardrobeItemIds.length > 50 ||
-            wardrobeItemIds.some((id) => typeof id !== "string" || !id)) {
+            wardrobeItemIds.some((id) => typeof id !== "string" || !id.trim())) {
             return res.status(400).json({
                 success: false,
                 message: "wardrobeItemIds must contain between 1 and 50 valid IDs",
@@ -55,29 +57,19 @@ export async function generateWardrobePresentations(req, res) {
         }
         const eligibleItems = items.filter((item) => item.presentationImageStatus === "pending" ||
             item.presentationImageStatus === "failed");
-        const skippedItems = items
+        const skipped = items
             .filter((item) => !eligibleItems.includes(item))
             .map((item) => ({
             wardrobeItemId: item.id,
             presentationImageStatus: item.presentationImageStatus,
         }));
-        if (eligibleItems.length === 0) {
-            return res.status(200).json({
-                success: true,
-                message: "No items need presentation generation",
-                queued: 0,
-                skipped: skippedItems,
-            });
-        }
-        // Claim eligible items before starting background work.
-        // Conditional updates prevent already-claimed items from
-        // being queued again by a concurrent request.
         const claimedItems = [];
         for (const item of eligibleItems) {
-            const claimed = await prisma.wardrobeItem.updateMany({
+            const result = await prisma.wardrobeItem.updateMany({
                 where: {
                     id: item.id,
                     userId,
+                    isArchived: false,
                     presentationImageStatus: item.presentationImageStatus,
                 },
                 data: {
@@ -85,21 +77,26 @@ export async function generateWardrobePresentations(req, res) {
                     presentationImageError: null,
                 },
             });
-            if (claimed.count === 1) {
+            if (result.count === 1) {
                 claimedItems.push(item);
             }
         }
         if (claimedItems.length > 0) {
-            void processWardrobePresentationBatch(claimedItems.map((item) => ({
+            const processorItems = claimedItems.map((item) => ({
                 id: item.id,
                 userId: item.userId,
                 primaryImagePath: item.primaryImagePath,
-            }))).catch(async (error) => {
-                console.error("Presentation batch failed unexpectedly:", error);
+            }));
+            console.info(`${LOG_PREFIX} Batch queued`, {
+                count: processorItems.length,
+            });
+            // Background work is intentionally not awaited by the HTTP request.
+            void processWardrobePresentationBatch(processorItems).catch(async (error) => {
+                console.error(`${LOG_PREFIX} Unexpected batch failure`, error);
                 try {
                     await prisma.wardrobeItem.updateMany({
                         where: {
-                            id: { in: claimedItems.map((item) => item.id) },
+                            id: { in: processorItems.map((item) => item.id) },
                             userId,
                             presentationImageStatus: "processing",
                         },
@@ -110,16 +107,25 @@ export async function generateWardrobePresentations(req, res) {
                     });
                 }
                 catch (updateError) {
-                    console.error("Failed to update presentation statuses after batch failure:", updateError);
+                    console.error(`${LOG_PREFIX} Could not recover failed batch statuses`, updateError);
                 }
             });
         }
-        return res.status(202).json({
+        console.info(`${LOG_PREFIX} Batch request handled`, {
+            requested: uniqueIds.length,
+            eligible: eligibleItems.length,
+            queued: claimedItems.length,
+            skipped: skipped.length + eligibleItems.length - claimedItems.length,
+            durationMs: Date.now() - startedAt,
+        });
+        const responseBody = {
             success: true,
-            message: "Presentation generation started",
+            message: claimedItems.length > 0
+                ? "Presentation generation started"
+                : "No items need presentation generation",
             queued: claimedItems.length,
             skipped: [
-                ...skippedItems,
+                ...skipped,
                 ...eligibleItems
                     .filter((item) => !claimedItems.includes(item))
                     .map((item) => ({
@@ -127,10 +133,13 @@ export async function generateWardrobePresentations(req, res) {
                     presentationImageStatus: "processing",
                 })),
             ],
-        });
+        };
+        return res
+            .status(claimedItems.length > 0 ? 202 : 200)
+            .json(responseBody);
     }
     catch (error) {
-        console.error("Generate wardrobe presentations error:", error);
+        console.error(`${LOG_PREFIX} Controller failed`, error);
         return res.status(500).json({
             success: false,
             message: "Failed to start presentation generation",

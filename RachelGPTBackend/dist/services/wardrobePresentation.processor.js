@@ -27,9 +27,22 @@ function getMimeType(storagePath) {
 function sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
+function elapsedMs(start) {
+    return Date.now() - start;
+}
+function logItem(itemId, message, details) {
+    console.info(`[WardrobePresentation][${itemId}] ${message}`, details ?? {});
+}
+function getErrorMessage(error) {
+    return error instanceof Error ? error.message : String(error);
+}
 function isRetryableError(error) {
-    const message = error instanceof Error ? error.message : String(error);
-    return /429|500|502|503|504|RESOURCE_EXHAUSTED|UNAVAILABLE|INTERNAL|timeout|fetch failed/i.test(message);
+    const message = getErrorMessage(error);
+    // Quota and billing errors should not be retried automatically.
+    if (/RESOURCE_EXHAUSTED|quota|billing|429/i.test(message)) {
+        return false;
+    }
+    return /500|502|503|504|UNAVAILABLE|INTERNAL|timeout|fetch failed|ECONNRESET|ETIMEDOUT/i.test(message);
 }
 async function downloadStorageImage(storagePath) {
     const { data, error } = await supabaseAdmin.storage
@@ -41,11 +54,9 @@ async function downloadStorageImage(storagePath) {
     return Buffer.from(await data.arrayBuffer());
 }
 async function markFailed(item, error) {
-    const message = error instanceof Error
-        ? error.message.slice(0, 1000)
-        : "Unknown presentation generation error";
+    const message = getErrorMessage(error).slice(0, 1000);
     try {
-        await prisma.wardrobeItem.updateMany({
+        const result = await prisma.wardrobeItem.updateMany({
             where: {
                 id: item.id,
                 userId: item.userId,
@@ -56,16 +67,40 @@ async function markFailed(item, error) {
                 presentationImageError: message,
             },
         });
+        if (result.count === 1) {
+            logItem(item.id, "Failed", { error: message });
+        }
+        else {
+            logItem(item.id, "Failure status not changed; item is no longer processing");
+        }
     }
     catch (updateError) {
-        console.error(`Could not save presentation failure status for ${item.id}:`, updateError);
+        console.error(`[WardrobePresentation][${item.id}] Could not save failure status:`, updateError);
     }
 }
 async function processOnePresentation(item) {
+    const itemStart = Date.now();
     const outputPath = `${item.userId}/${item.id}/presentation.png`;
+    logItem(item.id, "Generation started");
     for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+        const attemptStart = Date.now();
         try {
-            console.log(`Generating presentation ${item.id}, attempt ${attempt}/${MAX_ATTEMPTS}`);
+            // Avoid expensive work if the item is no longer eligible.
+            const currentItem = await prisma.wardrobeItem.findFirst({
+                where: {
+                    id: item.id,
+                    userId: item.userId,
+                    isArchived: false,
+                },
+                select: {
+                    presentationImageStatus: true,
+                },
+            });
+            if (!currentItem ||
+                currentItem.presentationImageStatus !== "processing") {
+                logItem(item.id, "Job skipped; item is no longer processing");
+                return;
+            }
             const [originalBuffer, backgroundBuffer] = await Promise.all([
                 downloadStorageImage(item.primaryImagePath),
                 downloadStorageImage(BACKGROUND_PATH),
@@ -73,6 +108,23 @@ async function processOnePresentation(item) {
             const generatedBuffer = await generateWardrobePresentationImage(originalBuffer, getMimeType(item.primaryImagePath), backgroundBuffer, getMimeType(BACKGROUND_PATH));
             if (!generatedBuffer.length) {
                 throw new Error("Generated presentation image is empty");
+            }
+            // Upload only after checking that the item is still processing.
+            // A claim token is still needed to fully protect against stale workers.
+            const latestItem = await prisma.wardrobeItem.findFirst({
+                where: {
+                    id: item.id,
+                    userId: item.userId,
+                    isArchived: false,
+                },
+                select: {
+                    presentationImageStatus: true,
+                },
+            });
+            if (!latestItem ||
+                latestItem.presentationImageStatus !== "processing") {
+                logItem(item.id, "Upload skipped; item is no longer processing");
+                return;
             }
             const { error: uploadError } = await supabaseAdmin.storage
                 .from(BUCKET)
@@ -83,11 +135,11 @@ async function processOnePresentation(item) {
             if (uploadError) {
                 throw new Error(`Failed to upload presentation image: ${uploadError.message}`);
             }
-            // Only mark completed if this job still owns the processing state.
             const updated = await prisma.wardrobeItem.updateMany({
                 where: {
                     id: item.id,
                     userId: item.userId,
+                    isArchived: false,
                     presentationImageStatus: "processing",
                 },
                 data: {
@@ -97,16 +149,27 @@ async function processOnePresentation(item) {
                 },
             });
             if (updated.count === 0) {
-                console.warn(`Presentation result for ${item.id} was uploaded, but its database status had changed.`);
+                logItem(item.id, "Image uploaded but completion skipped; item is no longer processing");
                 return;
             }
-            console.log(`Presentation completed: ${item.id}`);
+            logItem(item.id, "Completed", {
+                attempt,
+                durationMs: elapsedMs(itemStart),
+            });
             return;
         }
         catch (error) {
-            console.error(`Presentation failed for ${item.id}, attempt ${attempt}:`, error);
-            if (attempt < MAX_ATTEMPTS && isRetryableError(error)) {
-                await sleep(1000 * 2 ** (attempt - 1));
+            const retryable = isRetryableError(error);
+            console.error(`[WardrobePresentation][${item.id}] Attempt failed`, {
+                attempt,
+                durationMs: elapsedMs(attemptStart),
+                retryable,
+                error: getErrorMessage(error),
+            });
+            if (attempt < MAX_ATTEMPTS && retryable) {
+                const delayMs = 1000 * 2 ** (attempt - 1);
+                // Retry only transient failures. Quota/billing failures are excluded.
+                await sleep(delayMs);
                 continue;
             }
             await markFailed(item, error);
@@ -115,27 +178,35 @@ async function processOnePresentation(item) {
     }
 }
 export async function processWardrobePresentationBatch(items) {
-    if (items.length === 0)
+    const batchStart = Date.now();
+    if (items.length === 0) {
         return;
+    }
+    console.info("[WardrobePresentation] Batch started", {
+        count: items.length,
+        concurrency: CONCURRENCY,
+    });
     let currentIndex = 0;
     async function worker() {
         while (true) {
             const index = currentIndex++;
-            if (index >= items.length)
+            if (index >= items.length) {
                 return;
+            }
             const item = items[index];
             try {
-                // The controller has already claimed this item.
-                // Do not reset its status or clear its error here.
                 await processOnePresentation(item);
             }
             catch (error) {
-                console.error(`Unexpected processor error for ${item.id}:`, error);
+                console.error(`[WardrobePresentation][${item.id}] Unexpected worker failure:`, error);
                 await markFailed(item, error);
             }
         }
     }
     await Promise.all(Array.from({ length: Math.min(CONCURRENCY, items.length) }, () => worker()));
-    console.log(`Presentation batch finished. Total items: ${items.length}`);
+    console.info("[WardrobePresentation] Batch finished", {
+        count: items.length,
+        durationMs: elapsedMs(batchStart),
+    });
 }
 //# sourceMappingURL=wardrobePresentation.processor.js.map

@@ -118,6 +118,8 @@ export declare const WardrobeItemScalarFieldEnum: {
     readonly presentationImagePath: 'presentationImagePath';
     readonly presentationImageStatus: 'presentationImageStatus';
     readonly presentationImageError: 'presentationImageError';
+    readonly presentationJobToken: 'presentationJobToken';
+    readonly presentationProcessingStartedAt: 'presentationProcessingStartedAt';
 };
 export type WardrobeItemScalarFieldEnum = (typeof WardrobeItemScalarFieldEnum)[keyof typeof WardrobeItemScalarFieldEnum];
 export declare const WardrobeImageScalarFieldEnum: {

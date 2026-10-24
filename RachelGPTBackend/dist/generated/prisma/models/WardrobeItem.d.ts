@@ -34,6 +34,8 @@ export type WardrobeItemMinAggregateOutputType = {
     presentationImagePath: string | null;
     presentationImageStatus: string | null;
     presentationImageError: string | null;
+    presentationJobToken: string | null;
+    presentationProcessingStartedAt: Date | null;
 };
 export type WardrobeItemMaxAggregateOutputType = {
     id: string | null;
@@ -51,6 +53,8 @@ export type WardrobeItemMaxAggregateOutputType = {
     presentationImagePath: string | null;
     presentationImageStatus: string | null;
     presentationImageError: string | null;
+    presentationJobToken: string | null;
+    presentationProcessingStartedAt: Date | null;
 };
 export type WardrobeItemCountAggregateOutputType = {
     id: number;
@@ -69,6 +73,8 @@ export type WardrobeItemCountAggregateOutputType = {
     presentationImagePath: number;
     presentationImageStatus: number;
     presentationImageError: number;
+    presentationJobToken: number;
+    presentationProcessingStartedAt: number;
     _all: number;
 };
 export type WardrobeItemAvgAggregateInputType = {
@@ -93,6 +99,8 @@ export type WardrobeItemMinAggregateInputType = {
     presentationImagePath?: true;
     presentationImageStatus?: true;
     presentationImageError?: true;
+    presentationJobToken?: true;
+    presentationProcessingStartedAt?: true;
 };
 export type WardrobeItemMaxAggregateInputType = {
     id?: true;
@@ -110,6 +118,8 @@ export type WardrobeItemMaxAggregateInputType = {
     presentationImagePath?: true;
     presentationImageStatus?: true;
     presentationImageError?: true;
+    presentationJobToken?: true;
+    presentationProcessingStartedAt?: true;
 };
 export type WardrobeItemCountAggregateInputType = {
     id?: true;
@@ -128,6 +138,8 @@ export type WardrobeItemCountAggregateInputType = {
     presentationImagePath?: true;
     presentationImageStatus?: true;
     presentationImageError?: true;
+    presentationJobToken?: true;
+    presentationProcessingStartedAt?: true;
     _all?: true;
 };
 export type WardrobeItemAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -223,6 +235,8 @@ export type WardrobeItemGroupByOutputType = {
     presentationImagePath: string | null;
     presentationImageStatus: string;
     presentationImageError: string | null;
+    presentationJobToken: string | null;
+    presentationProcessingStartedAt: Date | null;
     _count: WardrobeItemCountAggregateOutputType | null;
     _avg: WardrobeItemAvgAggregateOutputType | null;
     _sum: WardrobeItemSumAggregateOutputType | null;
@@ -252,6 +266,8 @@ export type WardrobeItemWhereInput = {
     presentationImagePath?: Prisma.StringNullableFilter<"WardrobeItem"> | string | null;
     presentationImageStatus?: Prisma.StringFilter<"WardrobeItem"> | string;
     presentationImageError?: Prisma.StringNullableFilter<"WardrobeItem"> | string | null;
+    presentationJobToken?: Prisma.StringNullableFilter<"WardrobeItem"> | string | null;
+    presentationProcessingStartedAt?: Prisma.DateTimeNullableFilter<"WardrobeItem"> | Date | string | null;
     outfitItems?: Prisma.OutfitItemListRelationFilter;
     interactions?: Prisma.UserInteractionListRelationFilter;
     images?: Prisma.WardrobeImageListRelationFilter;
@@ -275,6 +291,8 @@ export type WardrobeItemOrderByWithRelationInput = {
     presentationImagePath?: Prisma.SortOrderInput | Prisma.SortOrder;
     presentationImageStatus?: Prisma.SortOrder;
     presentationImageError?: Prisma.SortOrderInput | Prisma.SortOrder;
+    presentationJobToken?: Prisma.SortOrderInput | Prisma.SortOrder;
+    presentationProcessingStartedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     outfitItems?: Prisma.OutfitItemOrderByRelationAggregateInput;
     interactions?: Prisma.UserInteractionOrderByRelationAggregateInput;
     images?: Prisma.WardrobeImageOrderByRelationAggregateInput;
@@ -283,6 +301,7 @@ export type WardrobeItemOrderByWithRelationInput = {
 };
 export type WardrobeItemWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
+    presentationJobToken?: string;
     AND?: Prisma.WardrobeItemWhereInput | Prisma.WardrobeItemWhereInput[];
     OR?: Prisma.WardrobeItemWhereInput[];
     NOT?: Prisma.WardrobeItemWhereInput | Prisma.WardrobeItemWhereInput[];
@@ -301,12 +320,13 @@ export type WardrobeItemWhereUniqueInput = Prisma.AtLeast<{
     presentationImagePath?: Prisma.StringNullableFilter<"WardrobeItem"> | string | null;
     presentationImageStatus?: Prisma.StringFilter<"WardrobeItem"> | string;
     presentationImageError?: Prisma.StringNullableFilter<"WardrobeItem"> | string | null;
+    presentationProcessingStartedAt?: Prisma.DateTimeNullableFilter<"WardrobeItem"> | Date | string | null;
     outfitItems?: Prisma.OutfitItemListRelationFilter;
     interactions?: Prisma.UserInteractionListRelationFilter;
     images?: Prisma.WardrobeImageListRelationFilter;
     user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
     wearEvents?: Prisma.WearEventListRelationFilter;
-}, "id">;
+}, "id" | "presentationJobToken">;
 export type WardrobeItemOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
     userId?: Prisma.SortOrder;
@@ -324,6 +344,8 @@ export type WardrobeItemOrderByWithAggregationInput = {
     presentationImagePath?: Prisma.SortOrderInput | Prisma.SortOrder;
     presentationImageStatus?: Prisma.SortOrder;
     presentationImageError?: Prisma.SortOrderInput | Prisma.SortOrder;
+    presentationJobToken?: Prisma.SortOrderInput | Prisma.SortOrder;
+    presentationProcessingStartedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     _count?: Prisma.WardrobeItemCountOrderByAggregateInput;
     _avg?: Prisma.WardrobeItemAvgOrderByAggregateInput;
     _max?: Prisma.WardrobeItemMaxOrderByAggregateInput;
@@ -350,6 +372,8 @@ export type WardrobeItemScalarWhereWithAggregatesInput = {
     presentationImagePath?: Prisma.StringNullableWithAggregatesFilter<"WardrobeItem"> | string | null;
     presentationImageStatus?: Prisma.StringWithAggregatesFilter<"WardrobeItem"> | string;
     presentationImageError?: Prisma.StringNullableWithAggregatesFilter<"WardrobeItem"> | string | null;
+    presentationJobToken?: Prisma.StringNullableWithAggregatesFilter<"WardrobeItem"> | string | null;
+    presentationProcessingStartedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"WardrobeItem"> | Date | string | null;
 };
 export type WardrobeItemCreateInput = {
     id?: string;
@@ -367,6 +391,8 @@ export type WardrobeItemCreateInput = {
     presentationImagePath?: string | null;
     presentationImageStatus?: string;
     presentationImageError?: string | null;
+    presentationJobToken?: string | null;
+    presentationProcessingStartedAt?: Date | string | null;
     outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutWardrobeItemInput;
     interactions?: Prisma.UserInteractionCreateNestedManyWithoutWardrobeItemInput;
     images?: Prisma.WardrobeImageCreateNestedManyWithoutWardrobeItemInput;
@@ -390,6 +416,8 @@ export type WardrobeItemUncheckedCreateInput = {
     presentationImagePath?: string | null;
     presentationImageStatus?: string;
     presentationImageError?: string | null;
+    presentationJobToken?: string | null;
+    presentationProcessingStartedAt?: Date | string | null;
     outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutWardrobeItemInput;
     interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutWardrobeItemInput;
     images?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutWardrobeItemInput;
@@ -411,6 +439,8 @@ export type WardrobeItemUpdateInput = {
     presentationImagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     presentationImageStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     presentationImageError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    presentationJobToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    presentationProcessingStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     outfitItems?: Prisma.OutfitItemUpdateManyWithoutWardrobeItemNestedInput;
     interactions?: Prisma.UserInteractionUpdateManyWithoutWardrobeItemNestedInput;
     images?: Prisma.WardrobeImageUpdateManyWithoutWardrobeItemNestedInput;
@@ -434,6 +464,8 @@ export type WardrobeItemUncheckedUpdateInput = {
     presentationImagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     presentationImageStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     presentationImageError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    presentationJobToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    presentationProcessingStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutWardrobeItemNestedInput;
     interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutWardrobeItemNestedInput;
     images?: Prisma.WardrobeImageUncheckedUpdateManyWithoutWardrobeItemNestedInput;
@@ -456,6 +488,8 @@ export type WardrobeItemCreateManyInput = {
     presentationImagePath?: string | null;
     presentationImageStatus?: string;
     presentationImageError?: string | null;
+    presentationJobToken?: string | null;
+    presentationProcessingStartedAt?: Date | string | null;
 };
 export type WardrobeItemUpdateManyMutationInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -473,6 +507,8 @@ export type WardrobeItemUpdateManyMutationInput = {
     presentationImagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     presentationImageStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     presentationImageError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    presentationJobToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    presentationProcessingStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
 };
 export type WardrobeItemUncheckedUpdateManyInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -491,6 +527,8 @@ export type WardrobeItemUncheckedUpdateManyInput = {
     presentationImagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     presentationImageStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     presentationImageError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    presentationJobToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    presentationProcessingStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
 };
 export type WardrobeItemListRelationFilter = {
     every?: Prisma.WardrobeItemWhereInput;
@@ -517,6 +555,8 @@ export type WardrobeItemCountOrderByAggregateInput = {
     presentationImagePath?: Prisma.SortOrder;
     presentationImageStatus?: Prisma.SortOrder;
     presentationImageError?: Prisma.SortOrder;
+    presentationJobToken?: Prisma.SortOrder;
+    presentationProcessingStartedAt?: Prisma.SortOrder;
 };
 export type WardrobeItemAvgOrderByAggregateInput = {
     timesWorn?: Prisma.SortOrder;
@@ -537,6 +577,8 @@ export type WardrobeItemMaxOrderByAggregateInput = {
     presentationImagePath?: Prisma.SortOrder;
     presentationImageStatus?: Prisma.SortOrder;
     presentationImageError?: Prisma.SortOrder;
+    presentationJobToken?: Prisma.SortOrder;
+    presentationProcessingStartedAt?: Prisma.SortOrder;
 };
 export type WardrobeItemMinOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -554,6 +596,8 @@ export type WardrobeItemMinOrderByAggregateInput = {
     presentationImagePath?: Prisma.SortOrder;
     presentationImageStatus?: Prisma.SortOrder;
     presentationImageError?: Prisma.SortOrder;
+    presentationJobToken?: Prisma.SortOrder;
+    presentationProcessingStartedAt?: Prisma.SortOrder;
 };
 export type WardrobeItemSumOrderByAggregateInput = {
     timesWorn?: Prisma.SortOrder;
@@ -672,6 +716,8 @@ export type WardrobeItemCreateWithoutUserInput = {
     presentationImagePath?: string | null;
     presentationImageStatus?: string;
     presentationImageError?: string | null;
+    presentationJobToken?: string | null;
+    presentationProcessingStartedAt?: Date | string | null;
     outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutWardrobeItemInput;
     interactions?: Prisma.UserInteractionCreateNestedManyWithoutWardrobeItemInput;
     images?: Prisma.WardrobeImageCreateNestedManyWithoutWardrobeItemInput;
@@ -693,6 +739,8 @@ export type WardrobeItemUncheckedCreateWithoutUserInput = {
     presentationImagePath?: string | null;
     presentationImageStatus?: string;
     presentationImageError?: string | null;
+    presentationJobToken?: string | null;
+    presentationProcessingStartedAt?: Date | string | null;
     outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutWardrobeItemInput;
     interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutWardrobeItemInput;
     images?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutWardrobeItemInput;
@@ -739,6 +787,8 @@ export type WardrobeItemScalarWhereInput = {
     presentationImagePath?: Prisma.StringNullableFilter<"WardrobeItem"> | string | null;
     presentationImageStatus?: Prisma.StringFilter<"WardrobeItem"> | string;
     presentationImageError?: Prisma.StringNullableFilter<"WardrobeItem"> | string | null;
+    presentationJobToken?: Prisma.StringNullableFilter<"WardrobeItem"> | string | null;
+    presentationProcessingStartedAt?: Prisma.DateTimeNullableFilter<"WardrobeItem"> | Date | string | null;
 };
 export type WardrobeItemCreateWithoutImagesInput = {
     id?: string;
@@ -756,6 +806,8 @@ export type WardrobeItemCreateWithoutImagesInput = {
     presentationImagePath?: string | null;
     presentationImageStatus?: string;
     presentationImageError?: string | null;
+    presentationJobToken?: string | null;
+    presentationProcessingStartedAt?: Date | string | null;
     outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutWardrobeItemInput;
     interactions?: Prisma.UserInteractionCreateNestedManyWithoutWardrobeItemInput;
     user: Prisma.UserCreateNestedOneWithoutWardrobeItemsInput;
@@ -778,6 +830,8 @@ export type WardrobeItemUncheckedCreateWithoutImagesInput = {
     presentationImagePath?: string | null;
     presentationImageStatus?: string;
     presentationImageError?: string | null;
+    presentationJobToken?: string | null;
+    presentationProcessingStartedAt?: Date | string | null;
     outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutWardrobeItemInput;
     interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutWardrobeItemInput;
     wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutWardrobeItemInput;
@@ -811,6 +865,8 @@ export type WardrobeItemUpdateWithoutImagesInput = {
     presentationImagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     presentationImageStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     presentationImageError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    presentationJobToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    presentationProcessingStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     outfitItems?: Prisma.OutfitItemUpdateManyWithoutWardrobeItemNestedInput;
     interactions?: Prisma.UserInteractionUpdateManyWithoutWardrobeItemNestedInput;
     user?: Prisma.UserUpdateOneRequiredWithoutWardrobeItemsNestedInput;
@@ -833,6 +889,8 @@ export type WardrobeItemUncheckedUpdateWithoutImagesInput = {
     presentationImagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     presentationImageStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     presentationImageError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    presentationJobToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    presentationProcessingStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutWardrobeItemNestedInput;
     interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutWardrobeItemNestedInput;
     wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutWardrobeItemNestedInput;
@@ -853,6 +911,8 @@ export type WardrobeItemCreateWithoutOutfitItemsInput = {
     presentationImagePath?: string | null;
     presentationImageStatus?: string;
     presentationImageError?: string | null;
+    presentationJobToken?: string | null;
+    presentationProcessingStartedAt?: Date | string | null;
     interactions?: Prisma.UserInteractionCreateNestedManyWithoutWardrobeItemInput;
     images?: Prisma.WardrobeImageCreateNestedManyWithoutWardrobeItemInput;
     user: Prisma.UserCreateNestedOneWithoutWardrobeItemsInput;
@@ -875,6 +935,8 @@ export type WardrobeItemUncheckedCreateWithoutOutfitItemsInput = {
     presentationImagePath?: string | null;
     presentationImageStatus?: string;
     presentationImageError?: string | null;
+    presentationJobToken?: string | null;
+    presentationProcessingStartedAt?: Date | string | null;
     interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutWardrobeItemInput;
     images?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutWardrobeItemInput;
     wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutWardrobeItemInput;
@@ -908,6 +970,8 @@ export type WardrobeItemUpdateWithoutOutfitItemsInput = {
     presentationImagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     presentationImageStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     presentationImageError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    presentationJobToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    presentationProcessingStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     interactions?: Prisma.UserInteractionUpdateManyWithoutWardrobeItemNestedInput;
     images?: Prisma.WardrobeImageUpdateManyWithoutWardrobeItemNestedInput;
     user?: Prisma.UserUpdateOneRequiredWithoutWardrobeItemsNestedInput;
@@ -930,6 +994,8 @@ export type WardrobeItemUncheckedUpdateWithoutOutfitItemsInput = {
     presentationImagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     presentationImageStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     presentationImageError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    presentationJobToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    presentationProcessingStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutWardrobeItemNestedInput;
     images?: Prisma.WardrobeImageUncheckedUpdateManyWithoutWardrobeItemNestedInput;
     wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutWardrobeItemNestedInput;
@@ -950,6 +1016,8 @@ export type WardrobeItemCreateWithoutInteractionsInput = {
     presentationImagePath?: string | null;
     presentationImageStatus?: string;
     presentationImageError?: string | null;
+    presentationJobToken?: string | null;
+    presentationProcessingStartedAt?: Date | string | null;
     outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutWardrobeItemInput;
     images?: Prisma.WardrobeImageCreateNestedManyWithoutWardrobeItemInput;
     user: Prisma.UserCreateNestedOneWithoutWardrobeItemsInput;
@@ -972,6 +1040,8 @@ export type WardrobeItemUncheckedCreateWithoutInteractionsInput = {
     presentationImagePath?: string | null;
     presentationImageStatus?: string;
     presentationImageError?: string | null;
+    presentationJobToken?: string | null;
+    presentationProcessingStartedAt?: Date | string | null;
     outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutWardrobeItemInput;
     images?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutWardrobeItemInput;
     wearEvents?: Prisma.WearEventUncheckedCreateNestedManyWithoutWardrobeItemInput;
@@ -1005,6 +1075,8 @@ export type WardrobeItemUpdateWithoutInteractionsInput = {
     presentationImagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     presentationImageStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     presentationImageError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    presentationJobToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    presentationProcessingStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     outfitItems?: Prisma.OutfitItemUpdateManyWithoutWardrobeItemNestedInput;
     images?: Prisma.WardrobeImageUpdateManyWithoutWardrobeItemNestedInput;
     user?: Prisma.UserUpdateOneRequiredWithoutWardrobeItemsNestedInput;
@@ -1027,6 +1099,8 @@ export type WardrobeItemUncheckedUpdateWithoutInteractionsInput = {
     presentationImagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     presentationImageStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     presentationImageError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    presentationJobToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    presentationProcessingStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutWardrobeItemNestedInput;
     images?: Prisma.WardrobeImageUncheckedUpdateManyWithoutWardrobeItemNestedInput;
     wearEvents?: Prisma.WearEventUncheckedUpdateManyWithoutWardrobeItemNestedInput;
@@ -1047,6 +1121,8 @@ export type WardrobeItemCreateWithoutWearEventsInput = {
     presentationImagePath?: string | null;
     presentationImageStatus?: string;
     presentationImageError?: string | null;
+    presentationJobToken?: string | null;
+    presentationProcessingStartedAt?: Date | string | null;
     outfitItems?: Prisma.OutfitItemCreateNestedManyWithoutWardrobeItemInput;
     interactions?: Prisma.UserInteractionCreateNestedManyWithoutWardrobeItemInput;
     images?: Prisma.WardrobeImageCreateNestedManyWithoutWardrobeItemInput;
@@ -1069,6 +1145,8 @@ export type WardrobeItemUncheckedCreateWithoutWearEventsInput = {
     presentationImagePath?: string | null;
     presentationImageStatus?: string;
     presentationImageError?: string | null;
+    presentationJobToken?: string | null;
+    presentationProcessingStartedAt?: Date | string | null;
     outfitItems?: Prisma.OutfitItemUncheckedCreateNestedManyWithoutWardrobeItemInput;
     interactions?: Prisma.UserInteractionUncheckedCreateNestedManyWithoutWardrobeItemInput;
     images?: Prisma.WardrobeImageUncheckedCreateNestedManyWithoutWardrobeItemInput;
@@ -1102,6 +1180,8 @@ export type WardrobeItemUpdateWithoutWearEventsInput = {
     presentationImagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     presentationImageStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     presentationImageError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    presentationJobToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    presentationProcessingStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     outfitItems?: Prisma.OutfitItemUpdateManyWithoutWardrobeItemNestedInput;
     interactions?: Prisma.UserInteractionUpdateManyWithoutWardrobeItemNestedInput;
     images?: Prisma.WardrobeImageUpdateManyWithoutWardrobeItemNestedInput;
@@ -1124,6 +1204,8 @@ export type WardrobeItemUncheckedUpdateWithoutWearEventsInput = {
     presentationImagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     presentationImageStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     presentationImageError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    presentationJobToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    presentationProcessingStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutWardrobeItemNestedInput;
     interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutWardrobeItemNestedInput;
     images?: Prisma.WardrobeImageUncheckedUpdateManyWithoutWardrobeItemNestedInput;
@@ -1144,6 +1226,8 @@ export type WardrobeItemCreateManyUserInput = {
     presentationImagePath?: string | null;
     presentationImageStatus?: string;
     presentationImageError?: string | null;
+    presentationJobToken?: string | null;
+    presentationProcessingStartedAt?: Date | string | null;
 };
 export type WardrobeItemUpdateWithoutUserInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1161,6 +1245,8 @@ export type WardrobeItemUpdateWithoutUserInput = {
     presentationImagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     presentationImageStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     presentationImageError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    presentationJobToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    presentationProcessingStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     outfitItems?: Prisma.OutfitItemUpdateManyWithoutWardrobeItemNestedInput;
     interactions?: Prisma.UserInteractionUpdateManyWithoutWardrobeItemNestedInput;
     images?: Prisma.WardrobeImageUpdateManyWithoutWardrobeItemNestedInput;
@@ -1182,6 +1268,8 @@ export type WardrobeItemUncheckedUpdateWithoutUserInput = {
     presentationImagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     presentationImageStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     presentationImageError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    presentationJobToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    presentationProcessingStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     outfitItems?: Prisma.OutfitItemUncheckedUpdateManyWithoutWardrobeItemNestedInput;
     interactions?: Prisma.UserInteractionUncheckedUpdateManyWithoutWardrobeItemNestedInput;
     images?: Prisma.WardrobeImageUncheckedUpdateManyWithoutWardrobeItemNestedInput;
@@ -1203,6 +1291,8 @@ export type WardrobeItemUncheckedUpdateManyWithoutUserInput = {
     presentationImagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     presentationImageStatus?: Prisma.StringFieldUpdateOperationsInput | string;
     presentationImageError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    presentationJobToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    presentationProcessingStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
 };
 /**
  * Count Type WardrobeItemCountOutputType
@@ -1269,6 +1359,8 @@ export type WardrobeItemSelect<ExtArgs extends runtime.Types.Extensions.Internal
     presentationImagePath?: boolean;
     presentationImageStatus?: boolean;
     presentationImageError?: boolean;
+    presentationJobToken?: boolean;
+    presentationProcessingStartedAt?: boolean;
     outfitItems?: boolean | Prisma.WardrobeItem$outfitItemsArgs<ExtArgs>;
     interactions?: boolean | Prisma.WardrobeItem$interactionsArgs<ExtArgs>;
     images?: boolean | Prisma.WardrobeItem$imagesArgs<ExtArgs>;
@@ -1293,6 +1385,8 @@ export type WardrobeItemSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
     presentationImagePath?: boolean;
     presentationImageStatus?: boolean;
     presentationImageError?: boolean;
+    presentationJobToken?: boolean;
+    presentationProcessingStartedAt?: boolean;
     user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["wardrobeItem"]>;
 export type WardrobeItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1312,6 +1406,8 @@ export type WardrobeItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
     presentationImagePath?: boolean;
     presentationImageStatus?: boolean;
     presentationImageError?: boolean;
+    presentationJobToken?: boolean;
+    presentationProcessingStartedAt?: boolean;
     user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["wardrobeItem"]>;
 export type WardrobeItemSelectScalar = {
@@ -1331,8 +1427,10 @@ export type WardrobeItemSelectScalar = {
     presentationImagePath?: boolean;
     presentationImageStatus?: boolean;
     presentationImageError?: boolean;
+    presentationJobToken?: boolean;
+    presentationProcessingStartedAt?: boolean;
 };
-export type WardrobeItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "category" | "subcategory" | "attributes" | "analysisStatus" | "primaryImagePath" | "addedAt" | "lastWornAt" | "timesWorn" | "isArchived" | "createdAt" | "updatedAt" | "presentationImagePath" | "presentationImageStatus" | "presentationImageError", ExtArgs["result"]["wardrobeItem"]>;
+export type WardrobeItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "category" | "subcategory" | "attributes" | "analysisStatus" | "primaryImagePath" | "addedAt" | "lastWornAt" | "timesWorn" | "isArchived" | "createdAt" | "updatedAt" | "presentationImagePath" | "presentationImageStatus" | "presentationImageError" | "presentationJobToken" | "presentationProcessingStartedAt", ExtArgs["result"]["wardrobeItem"]>;
 export type WardrobeItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     outfitItems?: boolean | Prisma.WardrobeItem$outfitItemsArgs<ExtArgs>;
     interactions?: boolean | Prisma.WardrobeItem$interactionsArgs<ExtArgs>;
@@ -1397,6 +1495,8 @@ export type $WardrobeItemPayload<ExtArgs extends runtime.Types.Extensions.Intern
         presentationImagePath: string | null;
         presentationImageStatus: string;
         presentationImageError: string | null;
+        presentationJobToken: string | null;
+        presentationProcessingStartedAt: Date | null;
     }, ExtArgs["result"]["wardrobeItem"]>;
     composites: {};
 };
@@ -1772,6 +1872,8 @@ export interface WardrobeItemFieldRefs {
     readonly presentationImagePath: Prisma.FieldRef<"WardrobeItem", 'String'>;
     readonly presentationImageStatus: Prisma.FieldRef<"WardrobeItem", 'String'>;
     readonly presentationImageError: Prisma.FieldRef<"WardrobeItem", 'String'>;
+    readonly presentationJobToken: Prisma.FieldRef<"WardrobeItem", 'String'>;
+    readonly presentationProcessingStartedAt: Prisma.FieldRef<"WardrobeItem", 'DateTime'>;
 }
 /**
  * WardrobeItem findUnique

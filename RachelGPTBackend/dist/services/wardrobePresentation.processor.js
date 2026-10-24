@@ -2,9 +2,10 @@ import path from "node:path";
 import { prisma } from "../lib/prisma.js";
 import { supabaseAdmin } from "../lib/supabaseAdmin.js";
 import { generateWardrobePresentationImage } from "./wardrobePresentation.service.js";
+const LOG_PREFIX = "[WardrobePresentation]";
 const BUCKET = "Wardrobe";
 const CONCURRENCY = 2;
-const MAX_ATTEMPTS = 3;
+const MAX_ATTEMPTS = 2;
 const backgroundPathFromEnv = process.env.WARDROBE_BACKGROUND_PATH;
 if (!backgroundPathFromEnv) {
     throw new Error("WARDROBE_BACKGROUND_PATH is missing from .env");
@@ -24,106 +25,104 @@ function getMimeType(storagePath) {
             return "image/jpeg";
     }
 }
-function sleep(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-}
-function elapsedMs(start) {
-    return Date.now() - start;
-}
-function logItem(itemId, message, details) {
-    console.info(`[WardrobePresentation][${itemId}] ${message}`, details ?? {});
-}
-function getErrorMessage(error) {
+function errorMessage(error) {
     return error instanceof Error ? error.message : String(error);
 }
 function isRetryableError(error) {
-    const message = getErrorMessage(error);
-    // Quota and billing errors should not be retried automatically.
-    if (/RESOURCE_EXHAUSTED|quota|billing|429/i.test(message)) {
+    const message = errorMessage(error);
+    // Never retry quota, billing, authentication, or permission errors.
+    if (/RESOURCE_EXHAUSTED|quota|billing|429|401|403|API_KEY_INVALID|PERMISSION_DENIED/i.test(message)) {
         return false;
     }
     return /500|502|503|504|UNAVAILABLE|INTERNAL|timeout|fetch failed|ECONNRESET|ETIMEDOUT/i.test(message);
+}
+function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
 }
 async function downloadStorageImage(storagePath) {
     const { data, error } = await supabaseAdmin.storage
         .from(BUCKET)
         .download(storagePath);
     if (error || !data) {
-        throw new Error(`Failed to download ${storagePath}: ${error?.message ?? "No file data"}`);
+        throw new Error(`Storage download failed: ${error?.message ?? "No file data"}`);
     }
-    return Buffer.from(await data.arrayBuffer());
+    const buffer = Buffer.from(await data.arrayBuffer());
+    if (buffer.length === 0) {
+        throw new Error("Downloaded image is empty");
+    }
+    return buffer;
+}
+async function ownsJob(item) {
+    const current = await prisma.wardrobeItem.findFirst({
+        where: {
+            id: item.id,
+            userId: item.userId,
+            isArchived: false,
+            presentationImageStatus: "processing",
+            presentationJobToken: item.presentationJobToken,
+        },
+        select: { id: true },
+    });
+    return current !== null;
 }
 async function markFailed(item, error) {
-    const message = getErrorMessage(error).slice(0, 1000);
+    const message = errorMessage(error).slice(0, 1000);
     try {
         const result = await prisma.wardrobeItem.updateMany({
             where: {
                 id: item.id,
                 userId: item.userId,
+                isArchived: false,
                 presentationImageStatus: "processing",
+                presentationJobToken: item.presentationJobToken,
             },
             data: {
                 presentationImageStatus: "failed",
                 presentationImageError: message,
+                presentationJobToken: null,
+                presentationProcessingStartedAt: null,
             },
         });
         if (result.count === 1) {
-            logItem(item.id, "Failed", { error: message });
+            console.error(`${LOG_PREFIX} Item failed`, {
+                itemId: item.id,
+                error: message,
+            });
         }
-        else {
-            logItem(item.id, "Failure status not changed; item is no longer processing");
-        }
+        // If the token no longer matches, a newer job owns the item.
     }
     catch (updateError) {
-        console.error(`[WardrobePresentation][${item.id}] Could not save failure status:`, updateError);
+        console.error(`${LOG_PREFIX} Could not save failure status`, {
+            itemId: item.id,
+            error: errorMessage(updateError),
+        });
     }
 }
 async function processOnePresentation(item) {
-    const itemStart = Date.now();
-    const outputPath = `${item.userId}/${item.id}/presentation.png`;
-    logItem(item.id, "Generation started");
+    const startedAt = Date.now();
+    // Each job writes to a different object. A stale worker therefore cannot
+    // overwrite the output of a newer job.
+    const outputPath = `${item.userId}/${item.id}/presentation-${item.presentationJobToken}.png`;
     for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
-        const attemptStart = Date.now();
         try {
-            // Avoid expensive work if the item is no longer eligible.
-            const currentItem = await prisma.wardrobeItem.findFirst({
-                where: {
-                    id: item.id,
-                    userId: item.userId,
-                    isArchived: false,
-                },
-                select: {
-                    presentationImageStatus: true,
-                },
-            });
-            if (!currentItem ||
-                currentItem.presentationImageStatus !== "processing") {
-                logItem(item.id, "Job skipped; item is no longer processing");
+            if (!(await ownsJob(item))) {
                 return;
             }
             const [originalBuffer, backgroundBuffer] = await Promise.all([
                 downloadStorageImage(item.primaryImagePath),
                 downloadStorageImage(BACKGROUND_PATH),
             ]);
+            // Downloading can take time; verify ownership immediately before the
+            // expensive generation call.
+            if (!(await ownsJob(item))) {
+                return;
+            }
             const generatedBuffer = await generateWardrobePresentationImage(originalBuffer, getMimeType(item.primaryImagePath), backgroundBuffer, getMimeType(BACKGROUND_PATH));
-            if (!generatedBuffer.length) {
+            if (!generatedBuffer || generatedBuffer.length === 0) {
                 throw new Error("Generated presentation image is empty");
             }
-            // Upload only after checking that the item is still processing.
-            // A claim token is still needed to fully protect against stale workers.
-            const latestItem = await prisma.wardrobeItem.findFirst({
-                where: {
-                    id: item.id,
-                    userId: item.userId,
-                    isArchived: false,
-                },
-                select: {
-                    presentationImageStatus: true,
-                },
-            });
-            if (!latestItem ||
-                latestItem.presentationImageStatus !== "processing") {
-                logItem(item.id, "Upload skipped; item is no longer processing");
+            // A job may have been reclaimed while Gemini was running.
+            if (!(await ownsJob(item))) {
                 return;
             }
             const { error: uploadError } = await supabaseAdmin.storage
@@ -133,43 +132,42 @@ async function processOnePresentation(item) {
                 upsert: true,
             });
             if (uploadError) {
-                throw new Error(`Failed to upload presentation image: ${uploadError.message}`);
+                throw new Error(`Presentation image upload failed: ${uploadError.message}`);
             }
-            const updated = await prisma.wardrobeItem.updateMany({
+            // The token condition is essential: a stale worker cannot mark a newer
+            // job completed or change its database path.
+            const completion = await prisma.wardrobeItem.updateMany({
                 where: {
                     id: item.id,
                     userId: item.userId,
                     isArchived: false,
                     presentationImageStatus: "processing",
+                    presentationJobToken: item.presentationJobToken,
                 },
                 data: {
                     presentationImagePath: outputPath,
                     presentationImageStatus: "completed",
                     presentationImageError: null,
+                    presentationJobToken: null,
+                    presentationProcessingStartedAt: null,
                 },
             });
-            if (updated.count === 0) {
-                logItem(item.id, "Image uploaded but completion skipped; item is no longer processing");
+            if (completion.count !== 1) {
+                // This job lost ownership after its upload. Its token-specific object
+                // is intentionally not referenced by the wardrobe item.
                 return;
             }
-            logItem(item.id, "Completed", {
-                attempt,
-                durationMs: elapsedMs(itemStart),
+            console.info(`${LOG_PREFIX} Item completed`, {
+                itemId: item.id,
+                durationMs: Date.now() - startedAt,
             });
             return;
         }
         catch (error) {
             const retryable = isRetryableError(error);
-            console.error(`[WardrobePresentation][${item.id}] Attempt failed`, {
-                attempt,
-                durationMs: elapsedMs(attemptStart),
-                retryable,
-                error: getErrorMessage(error),
-            });
             if (attempt < MAX_ATTEMPTS && retryable) {
-                const delayMs = 1000 * 2 ** (attempt - 1);
-                // Retry only transient failures. Quota/billing failures are excluded.
-                await sleep(delayMs);
+                // Keep the retry count low to limit potential duplicate provider costs.
+                await sleep(1000 * attempt);
                 continue;
             }
             await markFailed(item, error);
@@ -178,18 +176,18 @@ async function processOnePresentation(item) {
     }
 }
 export async function processWardrobePresentationBatch(items) {
-    const batchStart = Date.now();
     if (items.length === 0) {
         return;
     }
-    console.info("[WardrobePresentation] Batch started", {
+    const startedAt = Date.now();
+    console.info(`${LOG_PREFIX} Batch started`, {
         count: items.length,
-        concurrency: CONCURRENCY,
+        concurrency: Math.min(CONCURRENCY, items.length),
     });
-    let currentIndex = 0;
+    let nextIndex = 0;
     async function worker() {
         while (true) {
-            const index = currentIndex++;
+            const index = nextIndex++;
             if (index >= items.length) {
                 return;
             }
@@ -198,15 +196,15 @@ export async function processWardrobePresentationBatch(items) {
                 await processOnePresentation(item);
             }
             catch (error) {
-                console.error(`[WardrobePresentation][${item.id}] Unexpected worker failure:`, error);
+                // Unexpected errors are contained per item so other items can finish.
                 await markFailed(item, error);
             }
         }
     }
     await Promise.all(Array.from({ length: Math.min(CONCURRENCY, items.length) }, () => worker()));
-    console.info("[WardrobePresentation] Batch finished", {
+    console.info(`${LOG_PREFIX} Batch finished`, {
         count: items.length,
-        durationMs: elapsedMs(batchStart),
+        durationMs: Date.now() - startedAt,
     });
 }
 //# sourceMappingURL=wardrobePresentation.processor.js.map

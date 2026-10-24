@@ -1,10 +1,23 @@
 
+import { randomUUID } from "node:crypto";
 import type { Response } from "express";
 import type { AuthenticatedRequest } from "../middleware/auth.js";
 import { prisma } from "../lib/prisma.js";
 import { processWardrobePresentationBatch } from "../services/wardrobePresentation.processor.js";
 
 const LOG_PREFIX = "[WardrobePresentation]";
+const STALE_JOB_MS = 10 * 60 * 1000;
+
+interface ClaimedPresentationItem {
+  id: string;
+  userId: string;
+  primaryImagePath: string;
+  presentationJobToken: string;
+}
+
+function errorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
+}
 
 export async function generateWardrobePresentations(
   req: AuthenticatedRequest,
@@ -58,6 +71,7 @@ export async function generateWardrobePresentations(
         userId: true,
         primaryImagePath: true,
         presentationImageStatus: true,
+        presentationProcessingStartedAt: true,
       },
     });
 
@@ -78,110 +92,136 @@ export async function generateWardrobePresentations(
       });
     }
 
-    const eligibleItems = items.filter(
-      (item) =>
+    const now = Date.now();
+    const claimedItems: ClaimedPresentationItem[] = [];
+    const skipped: Array<{
+      wardrobeItemId: string;
+      presentationImageStatus: string;
+    }> = [];
+
+    for (const item of items) {
+      const isStale =
+        item.presentationImageStatus === "processing" &&
+        (!item.presentationProcessingStartedAt ||
+          now - item.presentationProcessingStartedAt.getTime() >
+            STALE_JOB_MS);
+
+      const eligible =
         item.presentationImageStatus === "pending" ||
-        item.presentationImageStatus === "failed",
-    );
+        item.presentationImageStatus === "failed" ||
+        isStale;
 
-    const skipped = items
-      .filter((item) => !eligibleItems.includes(item))
-      .map((item) => ({
-        wardrobeItemId: item.id,
-        presentationImageStatus: item.presentationImageStatus,
-      }));
+      if (!eligible) {
+        skipped.push({
+          wardrobeItemId: item.id,
+          presentationImageStatus: item.presentationImageStatus,
+        });
+        continue;
+      }
 
-    const claimedItems: typeof eligibleItems = [];
+      const token = randomUUID();
+      const staleBefore = new Date(now - STALE_JOB_MS);
 
-    for (const item of eligibleItems) {
-      const result = await prisma.wardrobeItem.updateMany({
+      // Conditional update prevents two requests from claiming the same
+      // pending/failed item. A stale processing job can be reclaimed only
+      // if its timestamp is still stale at the moment of the update.
+      const claimResult = await prisma.wardrobeItem.updateMany({
         where: {
           id: item.id,
           userId,
           isArchived: false,
-          presentationImageStatus: item.presentationImageStatus,
+          ...(isStale
+            ? {
+                presentationImageStatus: "processing",
+                OR: [
+                  { presentationProcessingStartedAt: null },
+                  { presentationProcessingStartedAt: { lt: staleBefore } },
+                ],
+              }
+            : {
+                presentationImageStatus: item.presentationImageStatus,
+              }),
         },
         data: {
           presentationImageStatus: "processing",
           presentationImageError: null,
+          presentationJobToken: token,
+          presentationProcessingStartedAt: new Date(),
         },
       });
 
-      if (result.count === 1) {
-        claimedItems.push(item);
+      if (claimResult.count !== 1) {
+        skipped.push({
+          wardrobeItemId: item.id,
+          presentationImageStatus: "processing",
+        });
+        continue;
       }
-    }
 
-    if (claimedItems.length > 0) {
-      const processorItems = claimedItems.map((item) => ({
+      claimedItems.push({
         id: item.id,
         userId: item.userId,
         primaryImagePath: item.primaryImagePath!,
-      }));
+        presentationJobToken: token,
+      });
+    }
 
+    if (claimedItems.length > 0) {
       console.info(`${LOG_PREFIX} Batch queued`, {
-        count: processorItems.length,
+        count: claimedItems.length,
       });
 
-      // Background work is intentionally not awaited by the HTTP request.
-      void processWardrobePresentationBatch(processorItems).catch(
+      // Do not await background processing in the HTTP request.
+      void processWardrobePresentationBatch(claimedItems).catch(
         async (error: unknown) => {
-          console.error(`${LOG_PREFIX} Unexpected batch failure`, error);
+          console.error(`${LOG_PREFIX} Unexpected batch failure`, {
+            error: errorMessage(error),
+          });
 
-          try {
-            await prisma.wardrobeItem.updateMany({
-              where: {
-                id: { in: processorItems.map((item) => item.id) },
-                userId,
-                presentationImageStatus: "processing",
-              },
-              data: {
-                presentationImageStatus: "failed",
-                presentationImageError:
-                  "Presentation generation stopped unexpectedly.",
-              },
-            });
-          } catch (updateError) {
-            console.error(
-              `${LOG_PREFIX} Could not recover failed batch statuses`,
-              updateError,
-            );
-          }
+          // Only fail jobs still owned by this batch.
+          await Promise.allSettled(
+            claimedItems.map((item) =>
+              prisma.wardrobeItem.updateMany({
+                where: {
+                  id: item.id,
+                  userId: item.userId,
+                  presentationImageStatus: "processing",
+                  presentationJobToken: item.presentationJobToken,
+                },
+                data: {
+                  presentationImageStatus: "failed",
+                  presentationImageError:
+                    "Presentation generation stopped unexpectedly.",
+                  presentationJobToken: null,
+                  presentationProcessingStartedAt: null,
+                },
+              }),
+            ),
+          );
         },
       );
     }
 
-    console.info(`${LOG_PREFIX} Batch request handled`, {
+    console.info(`${LOG_PREFIX} Request handled`, {
       requested: uniqueIds.length,
-      eligible: eligibleItems.length,
       queued: claimedItems.length,
-      skipped: skipped.length + eligibleItems.length - claimedItems.length,
+      skipped: skipped.length,
       durationMs: Date.now() - startedAt,
     });
 
-    const responseBody = {
+    return res.status(claimedItems.length > 0 ? 202 : 200).json({
       success: true,
       message:
         claimedItems.length > 0
           ? "Presentation generation started"
           : "No items need presentation generation",
       queued: claimedItems.length,
-      skipped: [
-        ...skipped,
-        ...eligibleItems
-          .filter((item) => !claimedItems.includes(item))
-          .map((item) => ({
-            wardrobeItemId: item.id,
-            presentationImageStatus: "processing",
-          })),
-      ],
-    };
-
-    return res
-      .status(claimedItems.length > 0 ? 202 : 200)
-      .json(responseBody);
+      skipped,
+    });
   } catch (error) {
-    console.error(`${LOG_PREFIX} Controller failed`, error);
+    console.error(`${LOG_PREFIX} Controller failed`, {
+      error: errorMessage(error),
+    });
 
     return res.status(500).json({
       success: false,
